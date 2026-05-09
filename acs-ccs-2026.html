@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACS & CCS: Resident Tutorial 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Tokens ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0d1117;
+  --bg2:       #161b22;
+  --bg3:       #21262d;
+  --border:    #30363d;
+  --text:      #e6edf3;
+  --text2:     #8b949e;
+  --text3:     #6e7681;
+  --red:       #ff7b72;
+  --orange:    #ffa657;
+  --yellow:    #e3b341;
+  --green:     #3fb950;
+  --blue:      #58a6ff;
+  --purple:    #bc8cff;
+  --teal:      #39d353;
+  --accent:    #1f6feb;
+  --accent2:   #388bfd;
+
+  --font-body: 'IBM Plex Sans Thai', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-head: 'Space Grotesk', sans-serif;
+
+  --radius:    8px;
+  --radius-lg: 12px;
+  --transition: 0.18s ease;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── Layout ──────────────────────────────────────── */
+.shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* ── Sidebar ─────────────────────────────────────── */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.sidebar-logo {
+  padding: 0 1.25rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.sidebar-logo .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--green);
+  background: rgba(63,185,80,0.1);
+  border: 1px solid rgba(63,185,80,0.3);
+  border-radius: 100px;
+  padding: 0.2rem 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-logo h1 {
+  font-family: var(--font-head);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.sidebar-logo p {
+  font-size: 0.72rem;
+  color: var(--text3);
+  margin-top: 0.2rem;
+}
+
+.nav-section {
+  padding: 0 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.nav-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0.5rem 0.25rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: var(--text2);
+  text-decoration: none;
+  transition: all var(--transition);
+  line-height: 1.3;
+}
+
+.nav-link:hover { background: var(--bg3); color: var(--text); }
+.nav-link.active { background: rgba(31,111,235,0.15); color: var(--blue); }
+.nav-link .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Main content ────────────────────────────────── */
+.main {
+  max-width: 860px;
+  padding: 3rem 3.5rem;
+  overflow-x: hidden;
+}
+
+/* ── Hero ─────────────────────────────────────────── */
+.hero {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--blue);
+  background: rgba(88,166,255,0.08);
+  border: 1px solid rgba(88,166,255,0.2);
+  border-radius: 100px;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  font-family: var(--font-head);
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
+}
+
+.hero h1 span { color: var(--blue); }
+
+.hero-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.hero-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text2);
+}
+
+.hero-meta-item .icon { font-size: 1rem; }
+
+/* ── Overview table ──────────────────────────────── */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.overview-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  transition: border-color var(--transition);
+}
+
+.overview-card:hover { border-color: var(--accent2); }
+
+.overview-card .sec-num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text3);
+  margin-bottom: 0.3rem;
+}
+
+.overview-card .sec-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.overview-card .sec-time {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--blue);
+}
+
+/* ── Section headings ────────────────────────────── */
+.section-block { margin: 2.5rem 0; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-pill {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  flex-shrink: 0;
+}
+
+.pill-red    { background: rgba(255,123,114,0.15); color: var(--red);    border: 1px solid rgba(255,123,114,0.3); }
+.pill-blue   { background: rgba(88,166,255,0.12);  color: var(--blue);   border: 1px solid rgba(88,166,255,0.25); }
+.pill-purple { background: rgba(188,140,255,0.12); color: var(--purple); border: 1px solid rgba(188,140,255,0.25); }
+.pill-green  { background: rgba(63,185,80,0.12);   color: var(--green);  border: 1px solid rgba(63,185,80,0.25); }
+
+.section-header h2 {
+  font-family: var(--font-head);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+h3 {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 1.5rem 0 0.75rem;
+}
+
+h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text2);
+  margin: 1rem 0 0.4rem;
+}
+
+p { margin-bottom: 0.75rem; color: var(--text2); font-size: 0.88rem; }
+
+/* ── Tables ──────────────────────────────────────── */
+.table-wrap { overflow-x: auto; margin: 1rem 0; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+
+thead tr { background: var(--bg3); }
+
+th {
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+td {
+  padding: 0.6rem 0.9rem;
+  border-top: 1px solid var(--border);
+  color: var(--text2);
+  line-height: 1.45;
+}
+
+tr:hover td { background: rgba(255,255,255,0.02); }
+td strong { color: var(--text); font-weight: 600; }
+
+/* ── Callouts ────────────────────────────────────── */
+.callout {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  margin: 1rem 0;
+  font-size: 0.83rem;
+  line-height: 1.55;
+  border-left: 3px solid;
+}
+
+.callout-icon { flex-shrink: 0; font-size: 1rem; margin-top: 0.05rem; }
+.callout-body { flex: 1; color: var(--text2); }
+.callout-body strong { color: var(--text); }
+
+.callout-info    { background: rgba(88,166,255,0.07);  border-color: var(--blue);   }
+.callout-warn    { background: rgba(227,179,65,0.08);  border-color: var(--yellow); }
+.callout-danger  { background: rgba(255,123,114,0.08); border-color: var(--red);    }
+.callout-success { background: rgba(63,185,80,0.08);   border-color: var(--green);  }
+
+/* ── Code blocks ─────────────────────────────────── */
+.code-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+}
+
+.code-block pre {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #a5d6ff;
+  white-space: pre;
+}
+
+/* ── Lists ───────────────────────────────────────── */
+ul, ol {
+  padding-left: 1.3rem;
+  margin: 0.5rem 0 0.75rem;
+  color: var(--text2);
+  font-size: 0.87rem;
+}
+
+li { margin-bottom: 0.3rem; line-height: 1.55; }
+li strong { color: var(--text); }
+
+/* ── Rule line ───────────────────────────────────── */
+.rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* ── Quiz block ──────────────────────────────────── */
+.quiz-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.quiz-block::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--blue), var(--purple));
+  border-radius: 3px 0 0 3px;
+}
+
+.quiz-label-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--purple);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.quiz-q {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.quiz-options-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.quiz-option-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  width: 100%;
+  text-align: left;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.55rem 0.85rem;
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.quiz-option-btn:hover { border-color: var(--blue); color: var(--text); background: rgba(88,166,255,0.06); }
+.quiz-option-btn.picked { border-color: var(--blue); background: rgba(88,166,255,0.1); color: var(--text); }
+.quiz-option-btn.correct { border-color: var(--green); background: rgba(63,185,80,0.1); color: #7ee787; }
+.quiz-option-btn.wrong   { border-color: var(--red);   background: rgba(255,123,114,0.08); color: var(--red); opacity: 0.8; }
+.quiz-option-btn.dimmed  { opacity: 0.35; }
+.quiz-option-btn:disabled { cursor: default; }
+
+.quiz-opt-key {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.quiz-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+
+.btn {
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent2); }
+.btn-primary:disabled { opacity: 0.35; cursor: default; }
+.btn-secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border); }
+.btn-secondary:hover { color: var(--text); border-color: var(--text3); }
+
+.quiz-explanation {
+  display: none;
+  margin-top: 0.85rem;
+  padding: 0.75rem 0.9rem;
+  background: rgba(227,179,65,0.07);
+  border-left: 3px solid var(--yellow);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.8rem;
+  color: var(--text2);
+  line-height: 1.6;
+  animation: fadeIn 0.2s ease;
+}
+
+.quiz-explanation strong { color: var(--text); }
+.quiz-explanation.visible { display: block; }
+
+@keyframes fadeIn { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform:none; } }
+
+/* ── Take-home ───────────────────────────────────── */
+.takehome-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.takehome-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.1rem;
+}
+
+.takehome-card h4 {
+  font-size: 0.85rem;
+  margin: 0 0 0.6rem;
+  color: var(--text);
+}
+
+.takehome-card ul {
+  padding-left: 1rem;
+  margin: 0;
+  font-size: 0.79rem;
+}
+
+.takehome-card li { margin-bottom: 0.35rem; }
+
+/* ── References ──────────────────────────────────── */
+.ref-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: var(--bg3);
+  color: var(--text3);
+  border: 1px solid var(--border);
+  margin-right: 0.3rem;
+}
+
+/* ── Footer ──────────────────────────────────────── */
+.footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+
+/* ── Scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Mobile ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; }
+  .main { padding: 1.5rem; }
+  .overview-grid, .takehome-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ── Sidebar ── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">● LIVE 2026</div>
+    <h1>ACS & CCS<br>Resident Tutorial</h1>
+    <p>Board Prep · 30 min · 5 Quizzes</p>
+    <p style="margin-top:0.5rem;font-size:0.72rem;color:var(--text2);line-height:1.4;">
+      ✍️ Dr.Anuchit Wongphen<br>
+      <span style="color:var(--text3);">Udonthani Hospital</span>
+    </p>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Overview</div>
+    <a href="#overview" class="nav-link">
+      <span class="dot" style="background:#58a6ff"></span> Module Overview
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Section 1 · ACS</div>
+    <a href="#acs-guideline" class="nav-link"><span class="dot" style="background:#ff7b72"></span> 2025 ACC/AHA Highlights</a>
+    <a href="#troponin" class="nav-link"><span class="dot" style="background:#ff7b72"></span> hs-Troponin Algorithms</a>
+    <a href="#dapt" class="nav-link"><span class="dot" style="background:#ff7b72"></span> DAPT De-escalation</a>
+    <a href="#quiz1" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 1 — Warm-up</a>
+    <a href="#quiz2" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 2 — hs-Troponin</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Section 2 · CCS</div>
+    <a href="#ccs-paradigm" class="nav-link"><span class="dot" style="background:#3fb950"></span> Paradigm Shift</a>
+    <a href="#rfcl" class="nav-link"><span class="dot" style="background:#3fb950"></span> RF-CL Model</a>
+    <a href="#stepwise" class="nav-link"><span class="dot" style="background:#3fb950"></span> Stepwise Approach</a>
+    <a href="#anoca" class="nav-link"><span class="dot" style="background:#3fb950"></span> ANOCA / INOCA</a>
+    <a href="#quiz3" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 3 — CCS Workup</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Section 3 · Antithrombotic</div>
+    <a href="#bleeding-risk" class="nav-link"><span class="dot" style="background:#ffa657"></span> Bleeding vs Ischemic</a>
+    <a href="#dapt-decision" class="nav-link"><span class="dot" style="background:#ffa657"></span> DAPT Decision</a>
+    <a href="#af-acs" class="nav-link"><span class="dot" style="background:#ffa657"></span> AF + ACS Timeline</a>
+    <a href="#quiz4" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 4 — Antithrombotic</a>
+    <a href="#quiz5" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 5 — Integration</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Summary</div>
+    <a href="#takehome" class="nav-link"><span class="dot" style="background:#e3b341"></span> Take-Home Messages</a>
+    <a href="#references" class="nav-link"><span class="dot" style="background:#6e7681"></span> References</a>
+  </div>
+</nav>
+
+<!-- ── Main ── -->
+<main class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-tag">🫀 Cardiology Board Prep 2026</div>
+    <h1>ACS & CCS<br><span>Update 2026</span></h1>
+    <p style="color:var(--text2);font-size:0.9rem;margin-top:0.5rem;">
+      Tutorial สำหรับ Resident อายุรศาสตร์ — เตรียมสอบ Board<br>
+      Chronic Coronary Syndrome · Acute Coronary Syndrome
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span class="icon">⏱</span> 30 นาที</div>
+      <div class="hero-meta-item"><span class="icon">✅</span> 5 Interactive Quizzes</div>
+      <div class="hero-meta-item"><span class="icon">📋</span> 2025–2026 Guidelines</div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div id="overview" class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-blue">MODULE</span>
+      <h2>📋 Module Overview</h2>
+    </div>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="sec-num">SECTION 01</div>
+        <div class="sec-title">ACS Updates 2026</div>
+        <div class="sec-time">⏱ 8 min</div>
+      </div>
+      <div class="overview-card">
+        <div class="sec-num">SECTION 02</div>
+        <div class="sec-title">CCS Practical Management</div>
+        <div class="sec-time">⏱ 8 min</div>
+      </div>
+      <div class="overview-card">
+        <div class="sec-num">SECTION 03</div>
+        <div class="sec-title">Antithrombotic in Daily Practice</div>
+        <div class="sec-time">⏱ 6 min</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- SECTION 1 -->
+  <div class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-red">SECTION 1</span>
+      <h2>🚨 ACS Updates 2026</h2>
+    </div>
+
+    <!-- 1.1 -->
+    <div id="acs-guideline">
+      <h3>1.1 Highlights: 2025 ACC/AHA ACS Guideline</h3>
+      <div class="callout callout-info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">รวม STEMI + NSTEMI + UA เป็น <strong>single continuum</strong> ของ plaque rupture &amp; thrombosis</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ประเด็น</th><th>Key Change</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Vascular access</strong></td><td>Radial &gt; Femoral → <strong>Class I</strong> (↓ bleeding, ↓ mortality)</td></tr>
+            <tr><td><strong>Intravascular imaging</strong></td><td>IVUS/OCT during PCI → <strong>Class I</strong> (complex lesions)</td></tr>
+            <tr><td><strong>Multivessel PCI</strong></td><td>Complete revascularization แนะนำใน STEMI + NSTE-ACS</td></tr>
+            <tr><td><strong>Cardiogenic shock</strong></td><td>❌ Routine LV unloading device(IABP/Impella) ถ้า hemodynamically stable</td></tr>
+            <tr><td><strong>Lipid target</strong></td><td>LDL-C <strong>&lt; 55 mg/dL</strong> + add non-statin ถ้า LDL ≥ 70</td></tr>
+            <tr><td><strong>Colchicine</strong></td><td>0.5 mg OD post-ACS → Class IIb (↓ MACE)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body"><strong>STEMI-DTU 2026:</strong> LV unloading ก่อน reperfusion ใน stable anterior STEMI → ไม่ลด infarct size + เพิ่ม bleeding</div>
+      </div>
+    </div>
+
+    <!-- 1.2 -->
+    <div id="troponin">
+      <h3>1.2 hs-Troponin Algorithms: ESC 0/1h vs High-STEACS</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Algorithm</th><th>จุดเด่น</th><th>Rule-out rate</th><th>Best for</th></tr></thead>
+          <tbody>
+            <tr><td><strong>ESC 0/1h</strong></td><td>Sensitivity 100%, PPV สูง</td><td>52.1%</td><td>Dx NSTEMI Type 1</td></tr>
+            <tr><td><strong>High-STEACS 0/2h</strong></td><td>Rule-out สูงกว่า</td><td>72.5%</td><td>Busy ED, throughput</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h4>Observation Zone — ทำอย่างไร?</h4>
+      <ul>
+        <li>❌ อย่า repeat troponin ซ้ำไปเรื่อยๆ</li>
+        <li>✅ ทำ <strong>CCTA</strong> หรือ <strong>Functional imaging</strong> เพื่อ clarify diagnosis</li>
+      </ul>
+      <h4>Single-draw Rule-out (Class I) — ครบ 3 เงื่อนไขพร้อมกัน</h4>
+      <ol>
+        <li>hs-cTn <strong>&lt; LoQ</strong> (below limit of quantification)</li>
+        <li>Onset chest pain <strong>&gt; 3 ชั่วโมง</strong></li>
+        <li>ECG: <strong>non-ischemic</strong></li>
+      </ol>
+    </div>
+
+    <!-- 1.3 -->
+    <div id="dapt">
+      <h3>1.3 DAPT De-escalation Strategy</h3>
+      <div class="callout callout-info">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>Concept:</strong> Thrombotic risk สูงสุดใน 1–3 เดือนแรก → ลดลง<br>
+          Bleeding risk: คงที่ตลอด → de-escalate เมื่อปลอดภัย
+        </div>
+      </div>
+      <div class="code-block"><pre>PCI for ACS
+    │
+    ├─ High Bleeding Risk (PRECISE-DAPT ≥ 25 / ARC-HBR)
+    │       └─► Abbreviated DAPT 1–3 mo → P2Y12 monotherapy
+    │               Best: Ticagrelor mono (ULTIMATE-DAPT, T-PASS)
+    │
+    └─ Standard Risk
+            └─► DAPT 12 mo (ASA + Ticagrelor/Prasugrel)
+                    └─ After 1 mo stable → De-escalate (Class IIa)
+                            Ticagrelor mono: TWILIGHT (↓ bleeding 50%)</pre></div>
+      <div class="callout callout-danger">
+        <span class="callout-icon">🚫</span>
+        <div class="callout-body"><strong>Ultra-Early Withdrawal (&lt; 1 mo) — ห้ามทำ</strong><br>
+        NEO-MINDSET + STOPDAPT-3: ↑ early stent thrombosis · ต้องใช้ dual-pathway ≥ 2–4 สัปดาห์</div>
+      </div>
+      <div class="callout callout-success">
+        <span class="callout-icon">📊</span>
+        <div class="callout-body"><strong>Long-term (&gt; 12 mo): HOST-EXAM Paradigm</strong><br>
+        Clopidogrel mono &gt; Aspirin (↓ ischemic + ↓ bleeding) — 10-year follow-up confirmed</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 1 -->
+  <div id="quiz1" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 1 — Warm-up</div>
+    <div class="quiz-q">ชาย 62 ปี STEMI, มา PCI-capable hospital. Door-to-balloon time goal คือ?</div>
+    <ul class="quiz-options-list" id="q1-opts">
+      <li><button class="quiz-option-btn" data-q="1" data-i="0" onclick="pick(1,0)"><span class="quiz-opt-key">A.</span> ≤ 60 นาที</button></li>
+      <li><button class="quiz-option-btn" data-q="1" data-i="1" onclick="pick(1,1)"><span class="quiz-opt-key">B.</span> ≤ 90 นาที</button></li>
+      <li><button class="quiz-option-btn" data-q="1" data-i="2" onclick="pick(1,2)"><span class="quiz-opt-key">C.</span> ≤ 120 นาที (สำหรับ transfer case)</button></li>
+      <li><button class="quiz-option-btn" data-q="1" data-i="3" onclick="pick(1,3)"><span class="quiz-opt-key">D.</span> ขึ้นกับ availability</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q1-btn" onclick="reveal(1,1)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(1)" style="display:none" id="q1-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q1-exp">
+      <strong>คำตอบ: B — ≤ 90 นาที</strong><br>
+      2025 ACC/AHA Class I LOE A: primary PCI ≤ 90 min ถ้า present ที่ PCI-capable center<br>
+      Transfer case: first medical contact-to-device ≤ 120 min
+    </div>
+  </div>
+
+  <!-- QUIZ 2 -->
+  <div id="quiz2" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 2 — hs-Troponin Pathway</div>
+    <div class="quiz-q">หญิง 52 ปี chest pain 5 ชม., ECG ปกติ, hs-cTn &lt; LoQ. Next step?</div>
+    <ul class="quiz-options-list">
+      <li><button class="quiz-option-btn" data-q="2" data-i="0" onclick="pick(2,0)"><span class="quiz-opt-key">A.</span> Rule-out สำเร็จ ไม่ต้อง repeat troponin</button></li>
+      <li><button class="quiz-option-btn" data-q="2" data-i="1" onclick="pick(2,1)"><span class="quiz-opt-key">B.</span> Repeat ที่ 1 ชั่วโมง</button></li>
+      <li><button class="quiz-option-btn" data-q="2" data-i="2" onclick="pick(2,2)"><span class="quiz-opt-key">C.</span> Repeat ที่ 3 ชั่วโมง</button></li>
+      <li><button class="quiz-option-btn" data-q="2" data-i="3" onclick="pick(2,3)"><span class="quiz-opt-key">D.</span> Admit observe 12 ชั่วโมง</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q2-btn" onclick="reveal(2,0)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(2)" style="display:none" id="q2-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q2-exp">
+      <strong>คำตอบ: A</strong><br>
+      ครบ 3 เงื่อนไข (hs-cTn &lt; LoQ + onset &gt; 3h + ECG ปกติ) → single-draw rule-out ได้เลย ไม่ต้อง repeat
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- SECTION 2 -->
+  <div class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-green">SECTION 2</span>
+      <h2>🫀 CCS Practical Management</h2>
+    </div>
+
+    <div id="ccs-paradigm">
+      <h3>2.1 Paradigm Shift</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>เดิม (Pre-2024)</th><th>ใหม่ (2024–2026)</th></tr></thead>
+          <tbody>
+            <tr><td>หา flow-limiting blockage</td><td>ประเมิน plaque + microvascular</td></tr>
+            <tr><td>Binary: stable vs unstable</td><td>Continuum: progressive lifelong</td></tr>
+            <tr><td>Exercise ECG first</td><td><strong>CCTA first</strong> (anatomical)</td></tr>
+            <tr><td>ไม่สนใจ small vessel</td><td>INOCA/ANOCA = major entity</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="rfcl">
+      <h3>2.2 Risk-Factor-Weighted Clinical Likelihood (RF-CL)</h3>
+      <p>แทนที่ 2019 PTP model → เพิ่ม risk factors: Age + Sex + Symptoms + <strong>DM, HTN, DLP, Smoking, Family Hx</strong></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>RF-CL</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><strong>≤ 5%</strong></td><td>✅ Defer testing (50% ของผู้ป่วย! vs 19% เดิม)</td></tr>
+            <tr><td><strong>5–15%</strong></td><td>พิจารณา CAC score</td></tr>
+            <tr><td><strong>15–50%</strong></td><td><strong>CCTA</strong> (preferred)</td></tr>
+            <tr><td><strong>50–85%</strong></td><td>CCTA หรือ Functional imaging</td></tr>
+            <tr><td><strong>&gt; 85%</strong></td><td>Direct ICA ± Functional</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="stepwise">
+      <h3>2.3 Stepwise Diagnostic Approach</h3>
+      <div class="code-block"><pre>Step 1: General Clinical Eval
+    └─ Rule out non-cardiac / Rule out ACS / ECG, basic labs
+
+Step 2: Cardiac Specialist + Resting Echo
+    └─ Calculate RF-CL
+        ├─ ≤ 5% → Stop, follow clinically
+        └─ > 5% → Proceed
+
+Step 3: Non-invasive Testing
+    ├─ RF-CL 5–50%  → CCTA (Class I, first-line)
+    ├─ CCTA intermediate → Sequential Functional (stress echo / PET / CMR)
+    └─ RF-CL > 85%  → Direct ICA
+
+Step 4: Treatment
+    └─ Lifestyle + Anti-anginal + Revascularization (if refractory)</pre></div>
+      <div class="callout callout-success">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">10-year follow-up: CCTA-guided care ↓ MI + MACE vs. standard care</div>
+      </div>
+    </div>
+
+    <div id="anoca">
+      <h3>2.4 ANOCA / INOCA — อย่าลืม!</h3>
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body"><strong>&gt; 50% ของ symptomatic CCS</strong> อาจเป็น ANOCA/INOCA · Standard CCTA อาจ miss ทั้งหมด → ต้อง <strong>invasive functional test</strong></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Endotype</th><th>Mechanism</th><th>การรักษา</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Microvascular Dysfunction</strong></td><td>↓ CFR (&lt; 2.0), ↑ IMR (≥ 25)</td><td>β-blocker, ACEi, ranolazine</td></tr>
+            <tr><td><strong>Vasospastic Angina</strong></td><td>(+) Acetylcholine test</td><td>CCB (high-dose), nitrate</td></tr>
+            <tr><td><strong>Mixed</strong></td><td>Both</td><td>Combination individualized</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-danger">
+        <span class="callout-icon">❗</span>
+        <div class="callout-body">Vasospastic angina: <strong>ห้าม</strong> non-selective β-blocker</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 3 -->
+  <div id="quiz3" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 3 — CCS Workup</div>
+    <div class="quiz-q">ชาย 58 ปี stable chest pain, RF-CL = 25%, CCTA: intermediate stenosis. Next step?</div>
+    <ul class="quiz-options-list">
+      <li><button class="quiz-option-btn" data-q="3" data-i="0" onclick="pick(3,0)"><span class="quiz-opt-key">A.</span> ทำ ICA และ stent เลย</button></li>
+      <li><button class="quiz-option-btn" data-q="3" data-i="1" onclick="pick(3,1)"><span class="quiz-opt-key">B.</span> หยุดการตรวจ, non-cardiac</button></li>
+      <li><button class="quiz-option-btn" data-q="3" data-i="2" onclick="pick(3,2)"><span class="quiz-opt-key">C.</span> Sequential functional imaging (stress echo / PET / CMR)</button></li>
+      <li><button class="quiz-option-btn" data-q="3" data-i="3" onclick="pick(3,3)"><span class="quiz-opt-key">D.</span> Invasive functional test เพื่อหา INOCA</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q3-btn" onclick="reveal(3,2)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(3)" style="display:none" id="q3-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q3-exp">
+      <strong>คำตอบ: C</strong><br>
+      Intermediate lesion on CCTA → ต้องประเมิน functional significance ด้วย sequential stress imaging<br>
+      D ใช้เมื่อ large arteries clean + persistent symptoms → suspect ANOCA/INOCA
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- SECTION 3 -->
+  <div class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-purple">SECTION 3</span>
+      <h2>💊 Antithrombotic in Daily Practice</h2>
+    </div>
+
+    <div id="bleeding-risk">
+      <h3>3.1 Bleeding vs. Ischemic Risk Assessment</h3>
+      <div class="code-block"><pre>Ischemic risk  ████████░░░░░░░░  ← สูงช่วง 14 วัน–1 เดือน แล้วลด
+Bleeding risk  ░░░░░░░░████████  ← สม่ำเสมอตลอดเวลา
+               |←→|
+               "Sweet spot" for de-escalation</pre></div>
+      <h4>Tools ที่ต้องรู้</h4>
+      <ul>
+        <li><strong>PRECISE-DAPT</strong> ≥ 25 = High Bleeding Risk → short DAPT</li>
+        <li><strong>ARC-HBR Major:</strong> eGFR &lt; 30, Hb &lt; 11, active malignancy, spontaneous bleeding &lt; 6 mo</li>
+        <li><strong>GRACE 2.0:</strong> NSTE-ACS ischemic risk</li>
+      </ul>
+    </div>
+
+    <div id="dapt-decision">
+      <h3>3.2 DAPT Decision: Standard vs. HBR</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Standard Risk</th><th>High Bleeding Risk</th></tr></thead>
+          <tbody>
+            <tr><td><strong>DAPT duration</strong></td><td>12 เดือน</td><td>1–3 เดือน</td></tr>
+            <tr><td><strong>After DAPT</strong></td><td>ASA mono หรือ Clopidogrel mono</td><td>P2Y12 mono (prefer Ticagrelor)</td></tr>
+            <tr><td><strong>Evidence</strong></td><td>ACC/AHA Class I</td><td>ULTIMATE-DAPT, TWILIGHT</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="af-acs">
+      <h3>3.3 AF + ACS/Stent: Timeline</h3>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem 1.75rem;margin:0.75rem 0;overflow-x:auto;">
+        <svg viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:480px;font-family:'IBM Plex Mono',monospace;">
+
+          <!-- Timeline axis -->
+          <line x1="60" y1="56" x2="680" y2="56" stroke="#58a6ff" stroke-width="2"/>
+          <!-- Arrow head -->
+          <polygon points="680,50 695,56 680,62" fill="#58a6ff"/>
+
+          <!-- Tick marks -->
+          <line x1="60"  y1="48" x2="60"  y2="64" stroke="#58a6ff" stroke-width="2"/>
+          <line x1="180" y1="48" x2="180" y2="64" stroke="#8b949e" stroke-width="1.5"/>
+          <line x1="320" y1="48" x2="320" y2="64" stroke="#8b949e" stroke-width="1.5"/>
+          <line x1="540" y1="48" x2="540" y2="64" stroke="#8b949e" stroke-width="1.5"/>
+
+          <!-- Time labels -->
+          <text x="60"  y="36" text-anchor="middle" fill="#e6edf3" font-size="13" font-weight="600">PCI Day</text>
+          <text x="180" y="36" text-anchor="middle" fill="#8b949e" font-size="12">1 wk</text>
+          <text x="320" y="36" text-anchor="middle" fill="#8b949e" font-size="12">1 mo</text>
+          <text x="540" y="36" text-anchor="middle" fill="#8b949e" font-size="12">12 mo</text>
+
+          <!-- Phase 1: Triple (PCI Day → 1 wk, max to 1 mo) -->
+          <rect x="60" y="72" width="120" height="36" rx="6" fill="rgba(255,123,114,0.15)" stroke="#ff7b72" stroke-width="1.5"/>
+          <text x="120" y="87" text-anchor="middle" fill="#ff7b72" font-size="11" font-weight="700">Triple Rx</text>
+          <text x="120" y="101" text-anchor="middle" fill="#ff7b72" font-size="9.5">DOAC + ASA + Clopi</text>
+
+          <!-- Phase 2: Dual (1 wk → 12 mo) -->
+          <rect x="180" y="72" width="360" height="36" rx="6" fill="rgba(88,166,255,0.1)" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="360" y="87" text-anchor="middle" fill="#58a6ff" font-size="11" font-weight="700">Dual Rx</text>
+          <text x="360" y="101" text-anchor="middle" fill="#58a6ff" font-size="9.5">DOAC + Clopidogrel</text>
+
+          <!-- Phase 3: OAC mono (12 mo →) -->
+          <rect x="540" y="72" width="130" height="36" rx="6" fill="rgba(63,185,80,0.1)" stroke="#3fb950" stroke-width="1.5"/>
+          <text x="605" y="87" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="700">OAC mono</text>
+          <text x="605" y="101" text-anchor="middle" fill="#3fb950" font-size="9.5">DOAC only</text>
+
+          <!-- Note: MAX 1 mo for triple -->
+          <text x="120" y="128" text-anchor="middle" fill="#ffa657" font-size="9" font-style="italic">MAX 1 mo</text>
+          <text x="120" y="140" text-anchor="middle" fill="#ffa657" font-size="9" font-style="italic">(often D/C at discharge)</text>
+
+        </svg>
+      </div>
+      <h4>กฎที่ต้องจำ</h4>
+      <ol>
+        <li><strong>Triple therapy ≤ 1 เดือน</strong> (ส่วนใหญ่ stop ที่ discharge = 1–7 วัน)</li>
+        <li><strong>Dual = DOAC + Clopidogrel</strong> (ไม่ใช่ ASA)</li>
+        <li><strong>ห้าม</strong> Ticagrelor หรือ Prasugrel + OAC</li>
+        <li>หลัง 12 เดือน → <strong>OAC monotherapy เท่านั้น</strong></li>
+      </ol>
+      <div class="callout callout-info">
+        <span class="callout-icon">📚</span>
+        <div class="callout-body">Evidence: <strong>AUGUSTUS trial</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 4 -->
+  <div id="quiz4" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 4 — Antithrombotic Decision</div>
+    <div class="quiz-q">ชาย 68 ปี non-valvular AF (DOAC), post-PCI for ACS. Antithrombotic แผน 1 ปีแรก?</div>
+    <ul class="quiz-options-list">
+      <li><button class="quiz-option-btn" data-q="4" data-i="0" onclick="pick(4,0)"><span class="quiz-opt-key">A.</span> Triple (DOAC+ASA+Ticagrelor) 6 mo → Dual (DOAC+ASA)</button></li>
+      <li><button class="quiz-option-btn" data-q="4" data-i="1" onclick="pick(4,1)"><span class="quiz-opt-key">B.</span> Triple (DOAC+ASA+Clopidogrel) ≤ 1 mo → Dual (DOAC+Clopidogrel)</button></li>
+      <li><button class="quiz-option-btn" data-q="4" data-i="2" onclick="pick(4,2)"><span class="quiz-opt-key">C.</span> Dual (DOAC+ASA) 12 mo ไม่ให้ P2Y12</button></li>
+      <li><button class="quiz-option-btn" data-q="4" data-i="3" onclick="pick(4,3)"><span class="quiz-opt-key">D.</span> DAPT (ASA+Prasugrel) 12 mo หยุด DOAC ชั่วคราว</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q4-btn" onclick="reveal(4,1)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(4)" style="display:none" id="q4-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q4-exp">
+      <strong>คำตอบ: B</strong><br>
+      Triple ≤ 1 mo (มักหยุดที่ discharge), ต่อด้วย Dual (DOAC+Clopidogrel) จนครบ 12 mo<br>
+      ❌ A: Ticagrelor + OAC ห้าม · ❌ D: ห้ามหยุด OAC ในผู้ป่วย AF
+    </div>
+  </div>
+
+  <!-- QUIZ 5 -->
+  <div id="quiz5" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 5 — Integration Case</div>
+    <div class="quiz-q">หญิง 71 ปี T2DM, AF (apixaban), prior MI 3 ปีก่อน → NSTEMI ใหม่ → PCI 1 DES · LDL 88 mg/dL ทั้งที่กิน max-dose statin. Discharge plan?</div>
+    <ul class="quiz-options-list">
+      <li><button class="quiz-option-btn" data-q="5" data-i="0" onclick="pick(5,0)"><span class="quiz-opt-key">A.</span> หยุด apixaban + DAPT (ASA+Prasugrel) 12 mo | LDL &lt; 100 = OK</button></li>
+      <li><button class="quiz-option-btn" data-q="5" data-i="1" onclick="pick(5,1)"><span class="quiz-opt-key">B.</span> Triple (Apixaban+ASA+Ticagrelor) 3 mo | เพิ่ม PCSK9i, target &lt; 70</button></li>
+      <li><button class="quiz-option-btn" data-q="5" data-i="2" onclick="pick(5,2)"><span class="quiz-opt-key">C.</span> หยุด ASA ที่ discharge + Dual (Apixaban+Clopidogrel) | เพิ่ม ezetimibe target &lt; 55</button></li>
+      <li><button class="quiz-option-btn" data-q="5" data-i="3" onclick="pick(5,3)"><span class="quiz-opt-key">D.</span> Triple (Apixaban+ASA+Clopidogrel) 6 mo | เพิ่ม ezetimibe, target &lt; 70</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q5-btn" onclick="reveal(5,2)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(5)" style="display:none" id="q5-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q5-exp">
+      <strong>คำตอบ: C</strong><br>
+      <strong>Antithrombotic:</strong> Prior AF = ห้ามหยุด OAC · Triple ≤ 1 mo → Dual (Apixaban+Clopidogrel) ถึง 12 mo<br>
+      <strong>Lipid:</strong> Prior MI + NSTEMI ใหม่ = multiple ASCVD events → Very High Risk · LDL target <strong>&lt; 55 mg/dL</strong> → Max statin + Ezetimibe (step up ก่อน PCSK9i)
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- Take-home -->
+  <div id="takehome" class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-blue">SUMMARY</span>
+      <h2>📌 Take-Home Messages</h2>
+    </div>
+    <div class="takehome-grid">
+      <div class="takehome-card">
+        <h4>🚨 ACS 2026</h4>
+        <ul>
+          <li>hs-cTn single-draw rule-out ถ้าครบ 3 เงื่อนไข</li>
+          <li><strong>DAPT de-escalation</strong> หลัง 1–3 mo = standard ใหม่</li>
+          <li>Long-term: <strong>Clopidogrel &gt; Aspirin</strong> (HOST-EXAM)</li>
+          <li><strong>LDL &lt; 55</strong> ใน very high-risk</li>
+          <li><strong>Radial + IVUS/OCT</strong> = Class I</li>
+        </ul>
+      </div>
+      <div class="takehome-card">
+        <h4>🫀 CCS 2024–2026</h4>
+        <ul>
+          <li><strong>RF-CL</strong> ≤ 5% → Defer testing</li>
+          <li><strong>CCTA first-line</strong> สำหรับ 5–50%</li>
+          <li>Intermediate CCTA → Sequential functional imaging</li>
+          <li>ANOCA/INOCA: &gt; 50% ของ CCS → invasive functional test</li>
+        </ul>
+      </div>
+      <div class="takehome-card">
+        <h4>💊 Antithrombotic</h4>
+        <ul>
+          <li>AF + ACS: Triple <strong>≤ 1 mo</strong> → Dual → OAC mono</li>
+          <li><strong>ห้าม</strong> Ticagrelor/Prasugrel + OAC</li>
+          <li><strong>ห้าม</strong> ultra-early ASA withdrawal</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- References -->
+  <div id="references" class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-green">REFS</span>
+      <h2>📚 References</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Guideline / Trial</th><th>ปี</th><th>สาระสำคัญ</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ref-tag">Guideline</span>2025 ACC/AHA/ACEP/NAEMSP/SCAI ACS</td><td>2025</td><td>Unified ACS, DAPT de-escalation, Radial/IVUS Class I</td></tr>
+          <tr><td><span class="ref-tag">Guideline</span>2024 ESC CCS</td><td>2024</td><td>RF-CL model, CCTA first-line, ANOCA/INOCA</td></tr>
+          <tr><td><span class="ref-tag">Guideline</span>2023 ESC ACS</td><td>2023</td><td>0/1h algorithm, complete revascularization</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>TWILIGHT</td><td>2019</td><td>Ticagrelor mono after 3 mo ↓ bleeding 50%</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>ULTIMATE-DAPT</td><td>2023</td><td>Ticagrelor mono after 1 mo</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>HOST-EXAM (10yr)</td><td>2024</td><td>Clopidogrel &gt; Aspirin long-term</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>AUGUSTUS</td><td>2019</td><td>AF+PCI: Triple ≤ 1 mo</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>STEMI-DTU</td><td>2026</td><td>LV unloading ก่อน reperfusion: ไม่มี benefit</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    ACS &amp; CCS Resident Tutorial 2026 · Cardiac Center · Generated for educational purposes
+  </div>
+
+</main>
+</div>
+
+<script>
+// Quiz state
+const state = {}
+
+function pick(q, i) {
+  if (state[q]?.revealed) return
+  if (!state[q]) state[q] = {}
+  state[q].picked = i
+
+  // Update button styles
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(btn => {
+    btn.classList.remove('picked')
+    if (parseInt(btn.dataset.i) === i) btn.classList.add('picked')
+  })
+
+  // Enable reveal button
+  document.getElementById(`q${q}-btn`).disabled = false
+}
+
+function reveal(q, correct) {
+  if (!state[q] || state[q].picked === undefined) return
+  state[q].revealed = true
+  const picked = state[q].picked
+
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(btn => {
+    const idx = parseInt(btn.dataset.i)
+    btn.disabled = true
+    btn.classList.remove('picked')
+    if (idx === correct) {
+      btn.classList.add('correct')
+    } else if (idx === picked) {
+      btn.classList.add('wrong')
+    } else {
+      btn.classList.add('dimmed')
+    }
+  })
+
+  document.getElementById(`q${q}-exp`).classList.add('visible')
+  document.getElementById(`q${q}-btn`).style.display = 'none'
+  document.getElementById(`q${q}-reset`).style.display = 'inline-flex'
+}
+
+function resetQuiz(q) {
+  state[q] = {}
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(btn => {
+    btn.disabled = false
+    btn.classList.remove('picked','correct','wrong','dimmed')
+  })
+  document.getElementById(`q${q}-exp`).classList.remove('visible')
+  document.getElementById(`q${q}-btn`).style.display = 'inline-flex'
+  document.getElementById(`q${q}-btn`).disabled = true
+  document.getElementById(`q${q}-reset`).style.display = 'none'
+}
+
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('[id]')
+const navLinks = document.querySelectorAll('.nav-link')
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'))
+      const link = document.querySelector(`.nav-link[href="#${entry.target.id}"]`)
+      if (link) link.classList.add('active')
+    }
+  })
+}, { rootMargin: '-30% 0px -60% 0px' })
+
+sections.forEach(s => observer.observe(s))
+</script>
+</body>
+</html>

@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOAC in Real World Practice 2026 — Dabigatran</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;
+  --text:#e6edf3;--text2:#8b949e;--text3:#6e7681;
+  --red:#ff7b72;--orange:#ffa657;--yellow:#e3b341;
+  --green:#3fb950;--blue:#58a6ff;--purple:#bc8cff;--accent:#1f6feb;--accent2:#388bfd;
+  --font-body:'IBM Plex Sans Thai',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-head:'Space Grotesk',sans-serif;
+  --radius:8px;--radius-lg:12px;--transition:0.18s ease;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-size:15px;line-height:1.7;min-height:100vh}
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--bg2);border-right:1px solid var(--border);padding:1.5rem 0;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.sidebar-logo{padding:0 1.25rem 1.25rem;border-bottom:1px solid var(--border);margin-bottom:1rem}
+.sidebar-logo .badge{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--font-mono);font-size:.65rem;font-weight:600;color:var(--orange);background:rgba(255,166,87,.1);border:1px solid rgba(255,166,87,.3);border-radius:100px;padding:.2rem .6rem;margin-bottom:.5rem}
+.sidebar-logo h1{font-family:var(--font-head);font-size:.9rem;font-weight:700;color:var(--text);line-height:1.3}
+.sidebar-logo p{font-size:.72rem;color:var(--text3);margin-top:.2rem}
+.nav-section{padding:0 .75rem;margin-bottom:.25rem}
+.nav-label{font-family:var(--font-mono);font-size:.62rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;padding:.5rem .5rem .25rem}
+.nav-link{display:flex;align-items:center;gap:.5rem;padding:.35rem .5rem;border-radius:6px;font-size:.8rem;color:var(--text2);text-decoration:none;transition:all var(--transition);line-height:1.3}
+.nav-link:hover{background:var(--bg3);color:var(--text)}
+.nav-link.active{background:rgba(31,111,235,.15);color:var(--blue)}
+.nav-link .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.main{max-width:860px;padding:3rem 3.5rem;overflow-x:hidden}
+.hero{margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid var(--border)}
+.hero-tag{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--font-mono);font-size:.68rem;color:var(--blue);background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.2);border-radius:100px;padding:.25rem .75rem;margin-bottom:1rem}
+.sponsor-tag{display:inline-flex;align-items:center;gap:.35rem;font-family:var(--font-mono);font-size:.65rem;color:var(--orange);background:rgba(255,166,87,.08);border:1px solid rgba(255,166,87,.25);border-radius:100px;padding:.2rem .6rem;margin-left:.5rem}
+.hero h1{font-family:var(--font-head);font-size:2.2rem;font-weight:700;color:var(--text);line-height:1.15;letter-spacing:-.02em;margin-bottom:.6rem}
+.hero h1 span{color:var(--blue)}
+.hero-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1rem}
+.hero-meta-item{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--text2)}
+.overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin:1.5rem 0}
+.overview-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;transition:border-color var(--transition)}
+.overview-card:hover{border-color:var(--accent2)}
+.overview-card .sec-num{font-family:var(--font-mono);font-size:.65rem;color:var(--text3);margin-bottom:.3rem}
+.overview-card .sec-title{font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:.25rem}
+.overview-card .sec-time{font-family:var(--font-mono);font-size:.7rem;color:var(--blue)}
+.section-block{margin:2.5rem 0}
+.section-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.section-pill{font-family:var(--font-mono);font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:100px;flex-shrink:0}
+.pill-red{background:rgba(255,123,114,.15);color:var(--red);border:1px solid rgba(255,123,114,.3)}
+.pill-blue{background:rgba(88,166,255,.12);color:var(--blue);border:1px solid rgba(88,166,255,.25)}
+.pill-purple{background:rgba(188,140,255,.12);color:var(--purple);border:1px solid rgba(188,140,255,.25)}
+.pill-green{background:rgba(63,185,80,.12);color:var(--green);border:1px solid rgba(63,185,80,.25)}
+.pill-orange{background:rgba(255,166,87,.12);color:var(--orange);border:1px solid rgba(255,166,87,.25)}
+.section-header h2{font-family:var(--font-head);font-size:1.25rem;font-weight:700;color:var(--text)}
+h3{font-family:var(--font-head);font-size:1rem;font-weight:600;color:var(--text);margin:1.5rem 0 .75rem}
+h4{font-size:.85rem;font-weight:600;color:var(--text2);margin:1rem 0 .4rem}
+p{margin-bottom:.75rem;color:var(--text2);font-size:.88rem}
+.table-wrap{overflow-x:auto;margin:1rem 0;border-radius:var(--radius-lg);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+thead tr{background:var(--bg3)}
+th{padding:.6rem .9rem;text-align:left;font-family:var(--font-mono);font-size:.68rem;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+td{padding:.6rem .9rem;border-top:1px solid var(--border);color:var(--text2);line-height:1.45}
+tr:hover td{background:rgba(255,255,255,.02)}
+td strong{color:var(--text);font-weight:600}
+.callout{display:flex;gap:.75rem;padding:.85rem 1rem;border-radius:var(--radius);margin:1rem 0;font-size:.83rem;line-height:1.55;border-left:3px solid}
+.callout-icon{flex-shrink:0;font-size:1rem;margin-top:.05rem}
+.callout-body{flex:1;color:var(--text2)}
+.callout-body strong{color:var(--text)}
+.callout-info{background:rgba(88,166,255,.07);border-color:var(--blue)}
+.callout-warn{background:rgba(227,179,65,.08);border-color:var(--yellow)}
+.callout-danger{background:rgba(255,123,114,.08);border-color:var(--red)}
+.callout-success{background:rgba(63,185,80,.08);border-color:var(--green)}
+.callout-orange{background:rgba(255,166,87,.08);border-color:var(--orange)}
+.code-block{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;margin:.75rem 0;overflow-x:auto}
+.code-block pre{font-family:var(--font-mono);font-size:.78rem;line-height:1.6;color:#a5d6ff;white-space:pre}
+ul,ol{padding-left:1.3rem;margin:.5rem 0 .75rem;color:var(--text2);font-size:.87rem}
+li{margin-bottom:.3rem;line-height:1.55}
+li strong{color:var(--text)}
+.rule{border:none;border-top:1px solid var(--border);margin:2rem 0}
+.quiz-block{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:1.5rem 0;position:relative;overflow:hidden}
+.quiz-block::before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--blue),var(--purple));border-radius:3px 0 0 3px}
+.quiz-label-tag{font-family:var(--font-mono);font-size:.65rem;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+.quiz-q{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:1rem;line-height:1.5}
+.quiz-options-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:.4rem;margin-bottom:.75rem}
+.quiz-option-btn{display:flex;align-items:flex-start;gap:.6rem;width:100%;text-align:left;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:.55rem .85rem;font-size:.82rem;font-family:var(--font-body);color:var(--text2);cursor:pointer;transition:all var(--transition)}
+.quiz-option-btn:hover{border-color:var(--blue);color:var(--text);background:rgba(88,166,255,.06)}
+.quiz-option-btn.picked{border-color:var(--blue);background:rgba(88,166,255,.1);color:var(--text)}
+.quiz-option-btn.correct{border-color:var(--green);background:rgba(63,185,80,.1);color:#7ee787}
+.quiz-option-btn.wrong{border-color:var(--red);background:rgba(255,123,114,.08);color:var(--red);opacity:.8}
+.quiz-option-btn.dimmed{opacity:.35}
+.quiz-option-btn:disabled{cursor:default}
+.quiz-opt-key{font-family:var(--font-mono);font-weight:700;font-size:.75rem;flex-shrink:0;margin-top:.05rem}
+.quiz-actions{display:flex;gap:.5rem;margin-top:.75rem}
+.btn{padding:.4rem 1.1rem;border-radius:var(--radius);font-size:.8rem;font-weight:600;font-family:var(--font-body);border:none;cursor:pointer;transition:all var(--transition)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2)}
+.btn-primary:disabled{opacity:.35;cursor:default}
+.btn-secondary{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.btn-secondary:hover{color:var(--text);border-color:var(--text3)}
+.quiz-explanation{display:none;margin-top:.85rem;padding:.75rem .9rem;background:rgba(227,179,65,.07);border-left:3px solid var(--yellow);border-radius:0 var(--radius) var(--radius) 0;font-size:.8rem;color:var(--text2);line-height:1.6;animation:fadeIn .2s ease}
+.quiz-explanation strong{color:var(--text)}
+.quiz-explanation.visible{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.takehome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1rem}
+.takehome-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.1rem}
+.takehome-card h4{font-size:.85rem;margin:0 0 .6rem;color:var(--text)}
+.takehome-card ul{padding-left:1rem;margin:0;font-size:.79rem}
+.takehome-card li{margin-bottom:.35rem}
+.ref-tag{display:inline-block;font-family:var(--font-mono);font-size:.65rem;padding:.1rem .45rem;border-radius:4px;background:var(--bg3);color:var(--text3);border:1px solid var(--border);margin-right:.3rem}
+.footer{margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.72rem;color:var(--text3);font-family:var(--font-mono)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+@media(max-width:768px){
+  .shell{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto}
+  .main{padding:1.5rem}
+  .overview-grid,.takehome-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- Sidebar -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">▲ SPONSOR 2026</div>
+    <h1>NOAC in Real World<br>Dabigatran Focus</h1>
+    <p>Board Prep · 30 min · 5 Quizzes</p>
+    <p style="margin-top:.5rem;font-size:.72rem;color:var(--text2);line-height:1.4">
+      ✍️ Dr.Anuchit Wongphen<br>
+      <span style="color:var(--text3)">Udonthani Hospital</span><br>
+      <span style="color:var(--text3)">Sponsored by Boehringer Ingelheim</span>
+    </p>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Overview</div>
+    <a href="#overview" class="nav-link"><span class="dot" style="background:#58a6ff"></span> Module Overview</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Section 1 · Landscape</div>
+    <a href="#why-noac" class="nav-link"><span class="dot" style="background:#58a6ff"></span> Why Beyond Warfarin?</a>
+    <a href="#mechanism" class="nav-link"><span class="dot" style="background:#58a6ff"></span> Mechanism & Classes</a>
+    <a href="#indications" class="nav-link"><span class="dot" style="background:#58a6ff"></span> Approved Indications</a>
+    <a href="#quiz1" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 1 — Contraindication</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Section 2 · Evidence</div>
+    <a href="#rely" class="nav-link"><span class="dot" style="background:#ff7b72"></span> RE-LY Trial</a>
+    <a href="#realworld" class="nav-link"><span class="dot" style="background:#ff7b72"></span> Real-World Advantages</a>
+    <a href="#quiz2" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 2 — Dose Selection</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Section 3 · Dose & Safety</div>
+    <a href="#cha2ds2" class="nav-link"><span class="dot" style="background:#bc8cff"></span> CHA₂DS₂-VASc</a>
+    <a href="#renal" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Renal Dose Adjustment</a>
+    <a href="#interactions" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Drug Interactions</a>
+    <a href="#contraindications" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Contraindications</a>
+    <a href="#quiz3" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 3 — Switching</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Section 4 · Management</div>
+    <a href="#starting" class="nav-link"><span class="dot" style="background:#3fb950"></span> Starting & Switching</a>
+    <a href="#periop" class="nav-link"><span class="dot" style="background:#3fb950"></span> Perioperative</a>
+    <a href="#quiz4" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 4 — Bleeding Case</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Section 5 · Bleeding</div>
+    <a href="#reversal" class="nav-link"><span class="dot" style="background:#ffa657"></span> Reversal Agents</a>
+    <a href="#special" class="nav-link"><span class="dot" style="background:#ffa657"></span> Special Populations</a>
+    <a href="#quiz5" class="nav-link"><span class="dot" style="background:#bc8cff"></span> Quiz 5 — Integration</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Summary</div>
+    <a href="#takehome" class="nav-link"><span class="dot" style="background:#e3b341"></span> Take-Home Messages</a>
+    <a href="#references" class="nav-link"><span class="dot" style="background:#6e7681"></span> References</a>
+  </div>
+</nav>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div>
+      <span class="hero-tag">💊 Anticoagulation Board Review 2026</span>
+      <span class="sponsor-tag">Sponsored · Boehringer Ingelheim</span>
+    </div>
+    <h1>NOAC in Real World Practice<br><span>Choosing the Right Anticoagulation</span></h1>
+    <p style="color:var(--text2);font-size:.9rem;margin-top:.5rem">
+      Tutorial สำหรับ Resident อายุรศาสตร์ — เตรียมสอบ Board<br>
+      Patient Selection · Dose Adjustment · Bleeding Management
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span>⏱</span> 30 นาที</div>
+      <div class="hero-meta-item"><span>✅</span> 5 Interactive Quizzes</div>
+      <div class="hero-meta-item"><span>📋</span> RE-LY · REVERSE-AD · ESC 2020</div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div id="overview" class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-blue">MODULE</span>
+      <h2>📋 Module Overview</h2>
+    </div>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="sec-num">SECTION 01</div>
+        <div class="sec-title">NOAC Landscape</div>
+        <div class="sec-time">⏱ 5 min</div>
+      </div>
+      <div class="overview-card">
+        <div class="sec-num">SECTION 02</div>
+        <div class="sec-title">Clinical Evidence</div>
+        <div class="sec-time">⏱ 5 min</div>
+      </div>
+      <div class="overview-card">
+        <div class="sec-num">SECTION 03</div>
+        <div class="sec-title">Dose & Drug Safety</div>
+        <div class="sec-time">⏱ 7 min</div>
+      </div>
+      <div class="overview-card">
+        <div class="sec-num">SECTION 04</div>
+        <div class="sec-title">Practical Management</div>
+        <div class="sec-time">⏱ 6 min</div>
+      </div>
+      <div class="overview-card">
+        <div class="sec-num">SECTION 05</div>
+        <div class="sec-title">Bleeding & Reversal</div>
+        <div class="sec-time">⏱ 5 min</div>
+      </div>
+      <div class="overview-card">
+        <div class="sec-num">QUIZZES</div>
+        <div class="sec-title">5 Clinical Cases</div>
+        <div class="sec-time">⏱ 2 min each</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- SECTION 1 -->
+  <div class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-blue">SECTION 1</span>
+      <h2>🔵 NOAC Landscape</h2>
+    </div>
+
+    <div id="why-noac">
+      <h3>1.1 ทำไมต้องก้าวพ้น Warfarin?</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Warfarin — ข้อจำกัด</th><th>NOACs — ข้อได้เปรียบ</th></tr></thead>
+          <tbody>
+            <tr><td>Narrow therapeutic window (INR 2–3)</td><td>Predictable pharmacokinetics</td></tr>
+            <tr><td>ตรวจ INR ซ้ำบ่อย + ปรับขนาดยา</td><td><strong>ไม่ต้องตรวจ INR routine</strong></td></tr>
+            <tr><td>Drug interactions &gt; 200 รายการ</td><td>Drug/food interactions น้อยกว่ามาก</td></tr>
+            <tr><td>Food interactions (vitamin K)</td><td>Rapid onset 1–4 ชม., half-life สั้น</td></tr>
+            <tr><td>Slow onset/offset (หลายวัน)</td><td>ICH น้อยกว่าอย่างมีนัยสำคัญ</td></tr>
+            <tr><td><strong>TTR ในไทย ≈ 50–60%</strong></td><td>Specific reversal agents พร้อมใช้</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body"><strong>ข้อยกเว้น:</strong> NOACs ไม่ได้เหนือกว่าใน <strong>mechanical heart valve</strong> หรือ <strong>moderate–severe mitral stenosis</strong> — ยังต้องใช้ warfarin ทั้งสองกรณี</div>
+      </div>
+    </div>
+
+    <div id="mechanism">
+      <h3>1.2 กลไกและกลุ่มยา</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>กลุ่ม</th><th>ยา</th><th>Target</th><th>ขนาด (AF)</th><th>Renal excretion</th><th>Reversal</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>DTI</strong></td>
+              <td><strong>Dabigatran</strong> (Pradaxa®)</td>
+              <td>Factor <strong>IIa</strong></td>
+              <td>150 mg BID / 110 mg BID</td>
+              <td><strong>80%</strong> — dialyzable ✓</td>
+              <td><strong>Idarucizumab</strong></td>
+            </tr>
+            <tr>
+              <td rowspan="3"><strong>Xa inhibitor</strong></td>
+              <td>Rivaroxaban (Xarelto®)</td>
+              <td>Factor Xa</td>
+              <td>20 mg OD (dinner)</td>
+              <td>35%</td>
+              <td>Andexanet alfa / 4F-PCC</td>
+            </tr>
+            <tr>
+              <td>Apixaban (Eliquis®)</td>
+              <td>Factor Xa</td>
+              <td>5 mg BID</td>
+              <td>27%</td>
+              <td>Andexanet alfa / 4F-PCC</td>
+            </tr>
+            <tr>
+              <td>Edoxaban (Lixiana®)</td>
+              <td>Factor Xa</td>
+              <td>60 mg OD</td>
+              <td>50%</td>
+              <td>Andexanet alfa / 4F-PCC</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body"><strong>Dabigatran เฉพาะ:</strong> P-gp substrate เท่านั้น — ไม่ผ่าน CYP450 เลย ต่างจาก Xa inhibitors ที่ metabolize ผ่าน CYP3A4 + P-gp</div>
+      </div>
+    </div>
+
+    <div id="indications">
+      <h3>1.3 Approved Indications — จำให้ขึ้นใจ</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Indication</th><th>Dabigatran</th><th>Rivaroxaban</th><th>Apixaban</th><th>Edoxaban</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Non-valvular AF</strong></td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅</td></tr>
+            <tr><td><strong>VTE Treatment (DVT/PE)</strong></td><td style="color:var(--green)">✅ *</td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅ *</td></tr>
+            <tr><td><strong>VTE Prophylaxis (THR/TKR)</strong></td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅</td><td style="color:var(--green)">✅</td></tr>
+            <tr><td style="color:var(--red)">❌ Mechanical prosthetic valve</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            <tr><td style="color:var(--red)">❌ Moderate–severe rheumatic MS</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body"><strong>* Dabigatran &amp; Edoxaban สำหรับ VTE:</strong> ต้องให้ parenteral anticoagulation (LMWH/UFH) นำก่อน <strong>5–10 วัน</strong> แล้วจึงเปลี่ยนมา NOAC<br>Rivaroxaban &amp; Apixaban: เริ่มได้ทันที (มี lead-in dose สูงขึ้น × 7–21 วัน)</div>
+      </div>
+      <div class="callout callout-danger">
+        <span class="callout-icon">🚫</span>
+        <div class="callout-body"><strong>RE-ALIGN Trial (2013):</strong> Dabigatran vs Warfarin ใน mechanical valve → ↑↑ stroke (×2) + ↑ bleeding → หยุดก่อนกำหนด<br><strong>Warfarin คือ ONLY option สำหรับ mechanical prosthetic valves ทุกชนิด</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 1 -->
+  <div id="quiz1" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 1 — Contraindication</div>
+    <div class="quiz-q">ผู้ป่วยหญิง อายุ 68 ปี AF ใหม่ CHA₂DS₂-VASc = 3 (HTN, DM, female sex) · Echo: moderate mitral stenosis (MVA 1.2 cm²) สาเหตุ rheumatic · CrCl 52 mL/min — ควรให้ anticoagulant ใด?</div>
+    <ul class="quiz-options-list">
+      <li><button class="quiz-option-btn" data-q="1" data-i="0" onclick="pick(1,0)"><span class="quiz-opt-key">A.</span> Dabigatran 150 mg BID</button></li>
+      <li><button class="quiz-option-btn" data-q="1" data-i="1" onclick="pick(1,1)"><span class="quiz-opt-key">B.</span> Rivaroxaban 20 mg OD</button></li>
+      <li><button class="quiz-option-btn" data-q="1" data-i="2" onclick="pick(1,2)"><span class="quiz-opt-key">C.</span> Apixaban 5 mg BID</button></li>
+      <li><button class="quiz-option-btn" data-q="1" data-i="3" onclick="pick(1,3)"><span class="quiz-opt-key">D.</span> Warfarin (target INR 2–3)</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q1-btn" onclick="reveal(1,3)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(1)" style="display:none" id="q1-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q1-exp">
+      <strong>คำตอบ: D — Warfarin</strong><br>
+      Moderate–severe rheumatic mitral stenosis (MVA &lt; 1.5 cm²) เป็น contraindication ต่อ NOAC <strong>ทุกชนิด</strong> ตาม ESC 2020 และ AHA 2023 Guidelines เพราะ thrombus ใน LA เกิดจาก low-flow/stasis ในห้องที่ผนังหนา ไม่ใช่แค่ AF อย่างเดียว — ยังไม่มี RCT ใดรองรับ NOAC ในกลุ่มนี้
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- SECTION 2 -->
+  <div class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-red">SECTION 2</span>
+      <h2>📊 Clinical Evidence</h2>
+    </div>
+
+    <div id="rely">
+      <h3>2.1 RE-LY Trial: หลักฐานสำคัญของ Dabigatran</h3>
+      <p>18,113 ผู้ป่วย NVAF · follow-up 2.0 ปี · warfarin median TTR 64%</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Endpoint (%/year)</th><th>Warfarin</th><th>Dabig 110 mg BID</th><th>Dabig 150 mg BID</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Stroke / SE</strong></td>
+              <td>1.69</td>
+              <td>1.53 <span style="color:var(--green)">✅ NI</span></td>
+              <td><strong>1.11</strong> <span style="color:var(--green)">✅ Superior (RRR 34%)</span></td>
+            </tr>
+            <tr>
+              <td><strong>Major Bleeding</strong></td>
+              <td>3.36</td>
+              <td><strong>2.71</strong> <span style="color:var(--green)">✅ Less (−19%)</span></td>
+              <td>3.11 <span style="color:var(--text3)">≈</span></td>
+            </tr>
+            <tr>
+              <td><strong>Intracranial Hemorrhage</strong></td>
+              <td>0.74</td>
+              <td><strong>0.23</strong> <span style="color:var(--green)">↓ 69%</span></td>
+              <td><strong>0.30</strong> <span style="color:var(--green)">↓ 59%</span></td>
+            </tr>
+            <tr>
+              <td><strong>GI Bleeding</strong></td>
+              <td>1.02</td>
+              <td>1.12 <span style="color:var(--text3)">≈</span></td>
+              <td>1.51 <span style="color:var(--red)">⬆️ Higher</span></td>
+            </tr>
+            <tr>
+              <td><strong>All-cause Mortality</strong></td>
+              <td>4.13</td>
+              <td>3.75 <span style="color:var(--text3)">≈</span></td>
+              <td><strong>3.64</strong> <span style="color:var(--green)">✅ Lower</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-success">
+        <span class="callout-icon">📊</span>
+        <div class="callout-body">
+          <strong>150 mg BID →</strong> เลือกเมื่อต้องการ stroke prevention สูงสุด (↓ ICH 59% vs warfarin)<br>
+          <strong>110 mg BID →</strong> เลือกเมื่อ bleeding risk สูง: อายุ ≥ 80 / + P-gp inhibitor / HAS-BLED ≥ 3
+        </div>
+      </div>
+    </div>
+
+    <div id="realworld">
+      <h3>2.2 Dabigatran: จุดเด่นในการปฏิบัติจริง</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>จุดเด่น</th><th>รายละเอียด</th><th>Clinical Implication</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:var(--green)">🎯 Specific Reversal</strong></td>
+              <td>Idarucizumab (Praxbind®) — Humanized Fab fragment<br>REVERSE-AD: 100% reversal ใน &lt; 15 นาที</td>
+              <td>ใช้ 5 g IV ฉุกเฉิน ไม่ต้องรอ drug level</td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--blue)">🔄 Dialyzable</strong></td>
+              <td>กำจัดได้ 60–70% ใน 2–3 ชม. HD</td>
+              <td>Backup ถ้าไม่มี idarucizumab หรือ massive overdose</td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--purple)">💊 No Food Interaction</strong></td>
+              <td>ไม่มี vitamin K interaction ไม่ต้องปรับตาม diet</td>
+              <td>Compliance ดีกว่าในผู้ป่วยที่ diet ไม่สม่ำเสมอ</td>
+            </tr>
+            <tr>
+              <td><strong style="color:var(--orange)">🧪 P-gp Only</strong></td>
+              <td>ไม่ผ่าน CYP450 → drug interactions น้อยกว่า Xa inhibitors</td>
+              <td>ใช้ร่วม amiodarone ได้ (ลด dose ถ้า CrCl ต่ำ)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-info">
+        <span class="callout-icon">📚</span>
+        <div class="callout-body"><strong>GLORIA-AF Registry:</strong> ผู้ป่วย NVAF ใหม่ที่เลือก NOAC มากกว่า 50% ได้รับ Dabigatran — outcomes consistent กับ RE-LY ใน real-world setting</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 2 -->
+  <div id="quiz2" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 2 — Dose Selection</div>
+    <div class="quiz-q">ผู้ป่วยชาย อายุ 82 ปี AF + HTN · CrCl 38 mL/min (Cockcroft-Gault) · ได้รับ verapamil 80 mg TID สำหรับ rate control · ไม่มี bleeding risk พิเศษเพิ่มเติม — ต้องการเริ่ม Dabigatran สำหรับ AF ควรใช้ขนาดใด?</div>
+    <ul class="quiz-options-list">
+      <li><button class="quiz-option-btn" data-q="2" data-i="0" onclick="pick(2,0)"><span class="quiz-opt-key">A.</span> 150 mg BID (standard dose)</button></li>
+      <li><button class="quiz-option-btn" data-q="2" data-i="1" onclick="pick(2,1)"><span class="quiz-opt-key">B.</span> 110 mg BID (reduced dose)</button></li>
+      <li><button class="quiz-option-btn" data-q="2" data-i="2" onclick="pick(2,2)"><span class="quiz-opt-key">C.</span> 75 mg BID (low dose)</button></li>
+      <li><button class="quiz-option-btn" data-q="2" data-i="3" onclick="pick(2,3)"><span class="quiz-opt-key">D.</span> Contraindicated — ควรใช้ warfarin แทน</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q2-btn" onclick="reveal(2,1)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(2)" style="display:none" id="q2-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q2-exp">
+      <strong>คำตอบ: B — 110 mg BID</strong><br>
+      มีเหตุผลที่ต้องลดขนาด 2 ข้อพร้อมกัน: (1) <strong>อายุ ≥ 80 ปี</strong> และ (2) <strong>verapamil เป็น P-gp inhibitor</strong> → ระดับ Dabigatran ↑ ~50%<br>
+      CrCl 38 mL/min ยังไม่ถึงเกณฑ์ห้ามใช้ (contraindicated ที่ CrCl &lt; 30) แต่เสริมข้อบ่งชี้ลด dose<br>
+      75 mg BID มีเฉพาะใน US FDA labeling เท่านั้น (ไม่ใช่ Thai/EU guideline)
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- SECTION 3 -->
+  <div class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-purple">SECTION 3</span>
+      <h2>🔬 Dose &amp; Drug Safety</h2>
+    </div>
+
+    <div id="cha2ds2">
+      <h3>3.1 AF Stroke Risk: CHA₂DS₂-VASc Score</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ตัวย่อ</th><th>Risk Factor</th><th>คะแนน</th></tr></thead>
+          <tbody>
+            <tr><td><strong>C</strong></td><td>Congestive heart failure</td><td>1</td></tr>
+            <tr><td><strong>H</strong></td><td>Hypertension</td><td>1</td></tr>
+            <tr><td><strong>A₂</strong></td><td>Age <strong>≥ 75 ปี</strong></td><td><strong>2</strong></td></tr>
+            <tr><td><strong>D</strong></td><td>Diabetes mellitus</td><td>1</td></tr>
+            <tr><td><strong>S₂</strong></td><td>Stroke / TIA / thromboembolism (prior)</td><td><strong>2</strong></td></tr>
+            <tr><td><strong>V</strong></td><td>Vascular disease (MI, PAD, aortic plaque)</td><td>1</td></tr>
+            <tr><td><strong>A</strong></td><td>Age 65–74 ปี</td><td>1</td></tr>
+            <tr><td><strong>Sc</strong></td><td>Sex category (Female)</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body"><strong>แนะนำ OAC:</strong> ชาย score ≥ 2 | หญิง score ≥ 3<br>Female sex เป็น risk modifier ไม่ใช่ independent risk factor — ถ้า score = 1 จากแค่ female เพียงอย่างเดียว อาจไม่ต้องให้ OAC</div>
+      </div>
+    </div>
+
+    <div id="renal">
+      <h3>3.2 Renal Dose Adjustment — ใช้ Cockcroft-Gault เสมอ</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>CrCl (mL/min)</th><th>Dabigatran (AF)</th><th>Rivaroxaban (AF)</th><th>Apixaban (AF)</th><th>Edoxaban (AF)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>&gt; 50</strong></td>
+              <td>150 mg BID</td>
+              <td>20 mg OD (dinner)</td>
+              <td>5 mg BID</td>
+              <td>60 mg OD</td>
+            </tr>
+            <tr>
+              <td><strong>30–50</strong></td>
+              <td>150 mg BID <span style="color:var(--orange)">*</span></td>
+              <td>15 mg OD (dinner)</td>
+              <td>5 mg BID <span style="color:var(--orange)">‡</span></td>
+              <td>30 mg OD</td>
+            </tr>
+            <tr>
+              <td><strong>15–30</strong></td>
+              <td style="color:var(--red)">❌ Avoid <span style="color:var(--orange)">†</span></td>
+              <td>15 mg OD</td>
+              <td>2.5 mg BID <span style="color:var(--orange)">§</span></td>
+              <td>30 mg OD</td>
+            </tr>
+            <tr>
+              <td><strong>&lt; 15</strong></td>
+              <td style="color:var(--red)">🚫 CI</td>
+              <td style="color:var(--red)">🚫 Avoid</td>
+              <td>Limited data</td>
+              <td style="color:var(--red)">🚫 CI</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ul style="font-size:.8rem;margin-top:.5rem">
+        <li><span style="color:var(--orange)">*</span> พิจารณา 110 mg BID ถ้ามี additional risk (อายุ ≥ 80, P-gp inhibitor, HAS-BLED ≥ 3)</li>
+        <li><span style="color:var(--orange)">†</span> 75 mg BID มีใน US FDA labeling เท่านั้น — ไม่ใช่ Thai/EU guideline</li>
+        <li><span style="color:var(--orange)">‡</span> Reduce Apixaban ถ้า ≥ 2/3: อายุ ≥ 80 / น้ำหนัก ≤ 60 kg / SCr ≥ 1.5 mg/dL</li>
+        <li><span style="color:var(--orange)">§</span> Apixaban dose reduction ≠ CrCl cutoff — ใช้ 3-criteria scoring ข้างต้น</li>
+      </ul>
+      <div class="callout callout-warn">
+        <span class="callout-icon">⚡</span>
+        <div class="callout-body"><strong>Board Tip:</strong> Apixaban dose reduction ใช้ 3-criteria score ไม่ใช่แค่ CrCl ต่างจาก Dabigatran และ Rivaroxaban ที่ใช้ CrCl cutoff โดยตรง</div>
+      </div>
+      <h4>Dabigatran: เลือก 150 mg vs 110 mg อย่างไร?</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>150 mg BID — Standard</th><th>110 mg BID — Reduced</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>CrCl &gt; 30 mL/min<br>อายุ &lt; 80 ปี<br>ไม่มี P-gp inhibitor<br>Bleeding risk ปกติ</td>
+              <td>อายุ <strong>≥ 80 ปี</strong><br>CrCl 30–50 mL/min (borderline)<br>ใช้ร่วม <strong>verapamil</strong> หรือ <strong>amiodarone</strong><br>HAS-BLED ≥ 3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-danger">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body"><strong>จุดที่ผู้สอบมักพลาด:</strong> กิน Dabigatran ทั้งแคปซูล — ห้ามเปิดหรือบด (bioavailability ↑ 75%) · เก็บใน blister original (hygroscopic) · กินพร้อมหรือหลังอาหารลด GI side effects</div>
+      </div>
+    </div>
+
+    <div id="interactions">
+      <h3>3.3 Drug Interactions</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ยาร่วม</th><th>Dabigatran (P-gp)</th><th>Xa Inhibitors (CYP3A4+P-gp)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Ketoconazole (systemic)</strong></td><td style="color:var(--red)">🚫 Avoid</td><td style="color:var(--red)">🚫 Avoid</td></tr>
+            <tr><td><strong>Rifampin</strong></td><td style="color:var(--red)">🚫 Avoid (↓ 66%)</td><td style="color:var(--red)">🚫 Avoid</td></tr>
+            <tr><td><strong>Dronedarone</strong></td><td style="color:var(--red)">🚫 Avoid</td><td>ลด dose (Apixaban)</td></tr>
+            <tr><td><strong>HIV protease inhibitors</strong></td><td style="color:var(--text3)">ไม่เกี่ยว (no CYP)</td><td style="color:var(--red)">🚫 Avoid</td></tr>
+            <tr><td><strong>Verapamil</strong></td><td>ลด dose → 110 mg BID</td><td>ระมัดระวัง</td></tr>
+            <tr><td><strong>Amiodarone</strong></td><td>ลด dose ถ้า CrCl &lt; 50 / อายุ ≥ 80</td><td>ระมัดระวัง</td></tr>
+            <tr><td><strong>Clarithromycin</strong></td><td>ระมัดระวัง (+15%)</td><td style="color:var(--red)">🚫 Avoid</td></tr>
+            <tr><td><strong>St. John's Wort</strong></td><td>ลดระดับยา (inducer)</td><td style="color:var(--red)">🚫 Avoid</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="contraindications">
+      <h3>3.4 Contraindications — จำให้ขึ้นใจทุกข้อ</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ข้อห้าม (ทุก NOAC)</th><th>Clinical Pearl</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--red)">🚫 Mechanical prosthetic heart valve</td><td>Warfarin only — RE-ALIGN trial</td></tr>
+            <tr><td style="color:var(--red)">🚫 Moderate–severe rheumatic MS (MVA &lt; 1.5 cm²)</td><td>Warfarin only — no RCT data</td></tr>
+            <tr><td style="color:var(--red)">🚫 Severe hepatic disease (Child-Pugh C)</td><td>—</td></tr>
+            <tr><td style="color:var(--red)">🚫 Active major bleeding</td><td>—</td></tr>
+            <tr><td style="color:var(--red)">🚫 Pregnancy / lactation</td><td>LMWH ± UFH แทน</td></tr>
+            <tr><td style="color:var(--red)">🚫 CrCl &lt; 15 mL/min (เกือบทุกตัว)</td><td>Apixaban: limited data for dialysis</td></tr>
+            <tr><td style="color:var(--yellow)">⚠️ Antiphospholipid syndrome (APS)</td><td>Warfarin preferred — NOAC inferior ใน triple-positive APS</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-info">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>Bioprosthetic valve:</strong> NOACs ใช้ได้ (หลัง 3+ เดือน)<br>
+          <strong>TAVI/TAVR:</strong> Early data supports NOACs after 3 months<br>
+          <strong>Mild MS:</strong> Controversial — ESC 2020 ไม่ห้าม NOAC แต่ข้อมูลจำกัด
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 3 -->
+  <div id="quiz3" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 3 — Switching</div>
+    <div class="quiz-q">ผู้ป่วยชาย อายุ 70 ปี NVAF ต้องการเปลี่ยนจาก Warfarin มาเป็น Dabigatran 150 mg BID ตรวจ INR วันนี้ได้ 2.4 — ควรเริ่ม Dabigatran เมื่อไร?</div>
+    <ul class="quiz-options-list">
+      <li><button class="quiz-option-btn" data-q="3" data-i="0" onclick="pick(3,0)"><span class="quiz-opt-key">A.</span> เริ่มทันทีวันนี้ หยุด Warfarin พร้อมกัน</button></li>
+      <li><button class="quiz-option-btn" data-q="3" data-i="1" onclick="pick(3,1)"><span class="quiz-opt-key">B.</span> รอจนกว่า INR ≤ 2.0 แล้วจึงเริ่ม</button></li>
+      <li><button class="quiz-option-btn" data-q="3" data-i="2" onclick="pick(3,2)"><span class="quiz-opt-key">C.</span> รอจนกว่า INR ≤ 3.0 (เหมือน Rivaroxaban)</button></li>
+      <li><button class="quiz-option-btn" data-q="3" data-i="3" onclick="pick(3,3)"><span class="quiz-opt-key">D.</span> หยุด Warfarin 3 วัน แล้วเริ่ม Dabigatran โดยไม่ต้องตรวจ INR</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q3-btn" onclick="reveal(3,1)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(3)" style="display:none" id="q3-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q3-exp">
+      <strong>คำตอบ: B — รอ INR ≤ 2.0</strong><br>
+      Warfarin → Dabigatran: เริ่มเมื่อ <strong>INR ≤ 2.0</strong> (เข้มกว่า Rivaroxaban/Apixaban ที่รอ INR ≤ 3.0)<br>
+      INR 2.4 ยังสูงเกินไป ให้ตรวจซ้ำ 1–2 วัน · ❌ A: double anticoagulation ช่วง INR ยังสูง · ❌ D: ห้ามหยุด Warfarin โดยไม่วัด INR ก่อน (ไม่ทราบว่า INR จะต่ำพอเมื่อไร)
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- SECTION 4 -->
+  <div class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-green">SECTION 4</span>
+      <h2>⚙️ Practical Management</h2>
+    </div>
+
+    <div id="starting">
+      <h3>4.1 Starting &amp; Switching Anticoagulation</h3>
+      <h4>เริ่มยาหลัง AF Stroke</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ขนาด Stroke</th><th>เริ่ม NOAC</th></tr></thead>
+          <tbody>
+            <tr><td>TIA / minor stroke (NIHSS ≤ 3)</td><td><strong>ทันที — 3 วัน</strong></td></tr>
+            <tr><td>Mild stroke (NIHSS 4–7)</td><td><strong>3–7 วัน</strong></td></tr>
+            <tr><td>Major stroke (NIHSS ≥ 8)</td><td><strong>2 สัปดาห์</strong> (risk hemorrhagic conversion)</td></tr>
+            <tr><td>Large territory infarct</td><td><strong>4 สัปดาห์</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h4>Switching Rules — สรุปทุกทิศทาง</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>สลับจาก → ไป</th><th>เมื่อไร</th><th>หมายเหตุ</th></tr></thead>
+          <tbody>
+            <tr><td>Warfarin → <strong>Dabigatran</strong></td><td>INR ≤ <strong>2.0</strong></td><td>เข้มกว่า Xa inhibitors</td></tr>
+            <tr><td>Warfarin → Rivaroxaban</td><td>INR ≤ <strong>3.0</strong></td><td>—</td></tr>
+            <tr><td>Warfarin → Apixaban</td><td>INR ≤ <strong>2.0</strong></td><td>—</td></tr>
+            <tr><td><strong>NOAC → Warfarin</strong></td><td>Overlap จน INR ≥ 2.0 × 2 วันติดกัน</td><td>ยัง continue NOAC ระหว่าง bridge</td></tr>
+            <tr><td><strong>NOAC → NOAC</strong></td><td>เริ่มที่ dose ถัดไปทันที</td><td>ไม่ต้อง overlap</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Switching Timeline: Warfarin → Dabigatran</h4>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem 1.5rem;margin:.75rem 0;overflow-x:auto">
+        <svg viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:420px;font-family:'IBM Plex Mono',monospace;">
+          <line x1="50" y1="50" x2="640" y2="50" stroke="#58a6ff" stroke-width="2"/>
+          <polygon points="640,44 655,50 640,56" fill="#58a6ff"/>
+          <line x1="50"  y1="42" x2="50"  y2="58" stroke="#58a6ff" stroke-width="2"/>
+          <line x1="240" y1="42" x2="240" y2="58" stroke="#e3b341" stroke-width="2"/>
+          <line x1="380" y1="42" x2="380" y2="58" stroke="#3fb950" stroke-width="2"/>
+          <text x="50"  y="32" text-anchor="middle" fill="#e6edf3" font-size="12" font-weight="600">วันนี้</text>
+          <text x="240" y="32" text-anchor="middle" fill="#e3b341" font-size="12">INR check</text>
+          <text x="380" y="32" text-anchor="middle" fill="#3fb950" font-size="12">INR ≤ 2.0</text>
+          <rect x="50" y="64" width="190" height="34" rx="6" fill="rgba(255,166,87,0.12)" stroke="#ffa657" stroke-width="1.5"/>
+          <text x="145" y="79" text-anchor="middle" fill="#ffa657" font-size="11" font-weight="700">Warfarin ต่อไป</text>
+          <text x="145" y="93" text-anchor="middle" fill="#ffa657" font-size="9.5">ตรวจ INR ทุก 1–2 วัน</text>
+          <rect x="380" y="64" width="250" height="34" rx="6" fill="rgba(63,185,80,0.1)" stroke="#3fb950" stroke-width="1.5"/>
+          <text x="505" y="79" text-anchor="middle" fill="#3fb950" font-size="11" font-weight="700">เริ่ม Dabigatran</text>
+          <text x="505" y="93" text-anchor="middle" fill="#3fb950" font-size="9.5">หยุด Warfarin ทันที</text>
+          <text x="245" y="115" text-anchor="middle" fill="#ff7b72" font-size="10" font-style="italic">INR 2.4 → ยังรอ</text>
+        </svg>
+      </div>
+    </div>
+
+    <div id="periop">
+      <h3>4.2 Perioperative Management</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Procedure Risk</th><th>CrCl ≥ 50</th><th>CrCl 30–50</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Low bleeding risk</strong></td><td>หยุด ≥ 24 h (≥ 2 doses)</td><td>หยุด ≥ 36–48 h</td></tr>
+            <tr><td><strong>High bleeding risk</strong></td><td>หยุด ≥ 48 h (≥ 4 doses)</td><td>หยุด ≥ 72–96 h</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-success">
+        <span class="callout-icon">✅</span>
+        <div class="callout-body">
+          <strong>Restart หลังผ่าตัด:</strong> Low risk → 24 ชม. | High risk → 48–72 ชม. (hemostasis secured)<br>
+          <strong>Bridging ด้วย LMWH:</strong> ไม่แนะนำใน NVAF ทั่วไป — BRIDGE trial: bridging ↑ major bleeding ×3 โดยไม่ลด stroke
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 4 -->
+  <div id="quiz4" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 4 — Bleeding Case</div>
+    <div class="quiz-q">ผู้ป่วยชาย อายุ 75 ปี AF + CrCl 45 mL/min ใช้ Dabigatran 110 mg BID มา 6 เดือน มาด้วย headache รุนแรงฉับพลัน CT brain: spontaneous ICH 35 mL ใน right basal ganglia · Lab: INR 1.1, aPTT 72 วินาที (ปกติ &lt; 38s), Thrombin Time: prolonged มาก — Reversal ที่เหมาะสมที่สุดคืออะไร?</div>
+    <ul class="quiz-options-list">
+      <li><button class="quiz-option-btn" data-q="4" data-i="0" onclick="pick(4,0)"><span class="quiz-opt-key">A.</span> Vitamin K IV 10 mg ทันที</button></li>
+      <li><button class="quiz-option-btn" data-q="4" data-i="1" onclick="pick(4,1)"><span class="quiz-opt-key">B.</span> FFP 4 units</button></li>
+      <li><button class="quiz-option-btn" data-q="4" data-i="2" onclick="pick(4,2)"><span class="quiz-opt-key">C.</span> Idarucizumab (Praxbind®) 5 g IV</button></li>
+      <li><button class="quiz-option-btn" data-q="4" data-i="3" onclick="pick(4,3)"><span class="quiz-opt-key">D.</span> Andexanet alfa</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q4-btn" onclick="reveal(4,2)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(4)" style="display:none" id="q4-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q4-exp">
+      <strong>คำตอบ: C — Idarucizumab 5 g IV</strong><br>
+      Idarucizumab คือ specific reversal agent สำหรับ Dabigatran โดยเฉพาะ ออกฤทธิ์ใน &lt; 15 นาที<br>
+      INR 1.1 ปกติ (INR ไม่ได้บอก dabigatran activity) แต่ <strong>aPTT ↑ และ Thrombin Time prolonged</strong> ยืนยัน active dabigatran<br>
+      ❌ D: Andexanet alfa ใช้กับ Factor Xa inhibitors เท่านั้น · ❌ A, B: Vitamin K และ FFP ไม่ช่วย Dabigatran
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- SECTION 5 -->
+  <div class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-orange">SECTION 5</span>
+      <h2>🩸 Bleeding &amp; Reversal</h2>
+    </div>
+
+    <div id="reversal">
+      <h3>5.1 Reversal Agents — Board Must-Know</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ยา</th><th>Specific Reversal</th><th>Non-specific</th><th>หมายเหตุ</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:var(--orange)">Dabigatran</strong></td>
+              <td><strong>Idarucizumab</strong> (Praxbind®)<br>5 g IV (2 × 2.5 g)</td>
+              <td>4F-PCC 25–50 u/kg</td>
+              <td>Humanized Fab · &lt; 15 นาที · ยัง dialyze ได้เป็น backup</td>
+            </tr>
+            <tr>
+              <td>Rivaroxaban</td>
+              <td>Andexanet alfa</td>
+              <td>4F-PCC</td>
+              <td>rFXa decoy protein</td>
+            </tr>
+            <tr>
+              <td>Apixaban</td>
+              <td>Andexanet alfa</td>
+              <td>4F-PCC</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Edoxaban</td>
+              <td>Andexanet alfa</td>
+              <td>4F-PCC</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Warfarin</td>
+              <td>Vitamin K + 4F-PCC</td>
+              <td>FFP</td>
+              <td>INR-guided</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-success">
+        <span class="callout-icon">🎯</span>
+        <div class="callout-body">
+          <strong>REVERSE-AD Trial (Pollack 2017):</strong> 503 ผู้ป่วย serious bleeding หรือ urgent surgery บน dabigatran<br>
+          → Reversal ของ dabigatran effect: <strong>100%</strong> (median 11.4 นาที)<br>
+          → Hemostasis: surgical 93.5%, bleeding group 68%<br>
+          → Dose: <strong>5 g IV</strong> (2.5 g ครั้งที่ 1 → wait 15 min → 2.5 g ครั้งที่ 2)
+        </div>
+      </div>
+      <h4>ยืนยัน Drug Activity ก่อน Reversal</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ยา</th><th>Test ที่บอกได้</th><th>ข้อสังเกต</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dabigatran</strong></td><td>Thrombin Time (TT), dilute TT (dTT), aPTT (คร่าวๆ)</td><td>INR ปกติ ≠ ไม่มี dabigatran</td></tr>
+            <tr><td><strong>Xa inhibitors</strong></td><td>Anti-Xa level (calibrated)</td><td>PT/INR อาจสูงเล็กน้อย</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="special">
+      <h3>5.2 Special Populations</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>กลุ่ม</th><th>แนวทาง</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Elderly ≥ 80 ปี</strong></td>
+              <td>Dabigatran <strong>110 mg BID</strong> preferred · ตรวจ CrCl ทุก 6–12 เดือน · Fall risk ≠ contraindication (ICH risk ต่ำกว่าถ้าไม่ anticoagulate)</td>
+            </tr>
+            <tr>
+              <td><strong>CKD (CrCl 15–30)</strong></td>
+              <td>Dabigatran: หลีกเลี่ยง · Apixaban หรือ Rivaroxaban 15 mg OD ได้ · Edoxaban 30 mg OD</td>
+            </tr>
+            <tr>
+              <td><strong>AF + ACS/Post-PCI</strong></td>
+              <td>Triple (OAC+ASA+Clopi) ≤ 1 เดือน → Dual (OAC+Clopi) → OAC mono หลัง 12 เดือน · RE-DUAL PCI: Dabigatran dual ↓ bleeding vs triple</td>
+            </tr>
+            <tr>
+              <td><strong>Obesity (BMI &gt; 40)</strong></td>
+              <td>Xa inhibitors preferred (มีข้อมูลมากกว่า) · Dabigatran: absorption อาจแปรปรวน ในผู้ป่วย bariatric surgery</td>
+            </tr>
+            <tr>
+              <td><strong>Post-bariatric surgery</strong></td>
+              <td>หลีกเลี่ยง Dabigatran (capsule absorption ขึ้นกับ gastric acid) · Rivaroxaban/Apixaban preferred</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ 5 -->
+  <div id="quiz5" class="quiz-block">
+    <div class="quiz-label-tag">🎯 Quiz 5 — Integration: VTE</div>
+    <div class="quiz-q">ผู้ป่วยชาย อายุ 65 ปี NVAF (CHA₂DS₂-VASc = 4) + DVT ขาซ้ายยืนยันด้วย duplex ultrasound · CrCl 58 mL/min · ไม่มี cancer ไม่มี contraindication ต่อ NOAC — แพทย์ต้องการเริ่ม Dabigatran สำหรับ VTE treatment ข้อใดถูกต้อง?</div>
+    <ul class="quiz-options-list">
+      <li><button class="quiz-option-btn" data-q="5" data-i="0" onclick="pick(5,0)"><span class="quiz-opt-key">A.</span> เริ่ม Dabigatran 150 mg BID ได้ทันทีวันนี้ ไม่ต้องการ parenteral anticoagulation</button></li>
+      <li><button class="quiz-option-btn" data-q="5" data-i="1" onclick="pick(5,1)"><span class="quiz-opt-key">B.</span> Dabigatran ไม่มี indication ใน DVT — ต้องใช้ LMWH + warfarin เท่านั้น</button></li>
+      <li><button class="quiz-option-btn" data-q="5" data-i="2" onclick="pick(5,2)"><span class="quiz-opt-key">C.</span> ให้ LMWH หรือ UFH นำก่อน 5–10 วัน แล้วจึงเปลี่ยนมา Dabigatran 150 mg BID</button></li>
+      <li><button class="quiz-option-btn" data-q="5" data-i="3" onclick="pick(5,3)"><span class="quiz-opt-key">D.</span> เริ่ม Dabigatran 110 mg BID เพราะอายุ &lt; 80 ปีแต่ DVT เสี่ยงสูง</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q5-btn" onclick="reveal(5,2)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" onclick="resetQuiz(5)" style="display:none" id="q5-reset">ลองใหม่</button>
+    </div>
+    <div class="quiz-explanation" id="q5-exp">
+      <strong>คำตอบ: C</strong><br>
+      <strong>Dabigatran (และ Edoxaban) สำหรับ VTE treatment ต้องการ parenteral anticoagulation นำก่อน 5–10 วัน</strong> ตาม design ของ RE-COVER trial<br>
+      ต่างจาก <strong>Rivaroxaban</strong> (15 mg BID × 21 วัน) และ <strong>Apixaban</strong> (10 mg BID × 7 วัน) ที่เริ่มได้ทันทีโดยมี lead-in dose สูงขึ้น<br>
+      ❌ B: Dabigatran มี indication ใน VTE treatment · ❌ D: 110 mg ใช้สำหรับ AF ไม่ใช่ VTE
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- Take-home -->
+  <div id="takehome" class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-blue">SUMMARY</span>
+      <h2>📌 Take-Home Messages</h2>
+    </div>
+    <div class="takehome-grid">
+      <div class="takehome-card">
+        <h4>🎯 เลือกยาให้ถูก</h4>
+        <ul>
+          <li>ตรวจสอบ <strong>indication</strong> ก่อนเสมอ — Mechanical valve/MS → warfarin</li>
+          <li>คำนวณ <strong>CrCl (Cockcroft-Gault)</strong> ก่อนเริ่มและ follow-up</li>
+          <li>Dabigatran <strong>110 mg BID</strong> ถ้า ≥ 80 ปี / CrCl 30–50 / + P-gp inhibitor</li>
+          <li>Apixaban dose reduction ≠ CrCl cutoff — ใช้ <strong>3-criteria score</strong></li>
+        </ul>
+      </div>
+      <div class="takehome-card">
+        <h4>🔄 Switching &amp; Periop</h4>
+        <ul>
+          <li>Warfarin → Dabigatran: รอ <strong>INR ≤ 2.0</strong></li>
+          <li>NOAC → Warfarin: overlap จน INR ≥ 2.0 × 2 วัน</li>
+          <li>NOAC → NOAC: เริ่ม dose ถัดไปทันที</li>
+          <li>ไม่ต้อง bridge LMWH ใน NVAF (BRIDGE trial)</li>
+        </ul>
+      </div>
+      <div class="takehome-card">
+        <h4>🩸 Bleeding &amp; Reversal</h4>
+        <ul>
+          <li>ICH on Dabigatran → <strong>Idarucizumab 5 g IV</strong> ทันที</li>
+          <li>Andexanet alfa สำหรับ <strong>Xa inhibitors เท่านั้น</strong></li>
+          <li>TT/dTT prolonged ยืนยัน dabigatran activity (INR ปกติ ≠ safe)</li>
+          <li>Dabigatran <strong>dialyzable</strong> 60–70% ใน 2–3 ชม.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout callout-orange" style="margin-top:1rem">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><strong>VTE Key Distinction:</strong> Dabigatran/Edoxaban → parenteral lead-in 5–10 วัน ก่อนเสมอ · Rivaroxaban/Apixaban → เริ่มได้ทันทีด้วย lead-in dose — นี่คือ <strong>Board exam high-yield</strong> ที่แยก drug class</div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- References -->
+  <div id="references" class="section-block">
+    <div class="section-header">
+      <span class="section-pill pill-green">REFS</span>
+      <h2>📚 References</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Study / Guideline</th><th>ปี</th><th>สาระสำคัญ</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ref-tag">Trial</span>RE-LY (Connolly et al.)</td><td>2009</td><td>Dabigatran 150 mg superior stroke; 110 mg NI + ↓ bleeding vs warfarin; ↓ ICH 59–69%</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>RE-COVER I &amp; II (Schulman et al.)</td><td>2009, 2014</td><td>Dabigatran NI vs warfarin สำหรับ VTE หลัง 5–10 วัน parenteral anticoag</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>RE-ALIGN (Van de Werf et al.)</td><td>2013</td><td>Dabigatran inferior ใน mechanical valve → ↑↑ stroke + bleeding → early termination</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>REVERSE-AD (Pollack et al.)</td><td>2017</td><td>Idarucizumab 5 g IV: 100% reversal &lt; 15 min; n=503 (serious bleeding + urgent surgery)</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>RE-DUAL PCI (Cannon et al.)</td><td>2017</td><td>Dabigatran dual therapy ↓ major bleeding vs triple therapy post-PCI; ischemic ≈</td></tr>
+          <tr><td><span class="ref-tag">Trial</span>BRIDGE (Douketis et al.)</td><td>2015</td><td>No bridging ≈ bridging สำหรับ stroke; bridging ↑ major bleeding ×3 ใน NVAF</td></tr>
+          <tr><td><span class="ref-tag">Guideline</span>ESC AF Guidelines</td><td>2020</td><td>NOAC preferred ใน NVAF; warfarin สำหรับ mechanical valve/moderate–severe MS</td></tr>
+          <tr><td><span class="ref-tag">Guideline</span>AHA/ACC AF Guidelines</td><td>2023</td><td>NOAC preferred over VKA in all NVAF candidates</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    NOAC in Real World Practice 2026 · Sponsored Symposium · Boehringer Ingelheim (Pradaxa®)<br>
+    ✍️ Dr.Anuchit Wongphen · Udonthani Hospital · For educational purposes only
+  </div>
+
+</main>
+</div>
+
+<script>
+const state = {}
+function pick(q,i){
+  if(state[q]?.revealed)return
+  if(!state[q])state[q]={}
+  state[q].picked=i
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(btn=>{
+    btn.classList.remove('picked')
+    if(parseInt(btn.dataset.i)===i)btn.classList.add('picked')
+  })
+  document.getElementById(`q${q}-btn`).disabled=false
+}
+function reveal(q,correct){
+  if(!state[q]||state[q].picked===undefined)return
+  state[q].revealed=true
+  const picked=state[q].picked
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(btn=>{
+    const idx=parseInt(btn.dataset.i)
+    btn.disabled=true
+    btn.classList.remove('picked')
+    if(idx===correct)btn.classList.add('correct')
+    else if(idx===picked)btn.classList.add('wrong')
+    else btn.classList.add('dimmed')
+  })
+  document.getElementById(`q${q}-exp`).classList.add('visible')
+  document.getElementById(`q${q}-btn`).style.display='none'
+  document.getElementById(`q${q}-reset`).style.display='inline-flex'
+}
+function resetQuiz(q){
+  state[q]={}
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(btn=>{
+    btn.disabled=false
+    btn.classList.remove('picked','correct','wrong','dimmed')
+  })
+  document.getElementById(`q${q}-exp`).classList.remove('visible')
+  document.getElementById(`q${q}-btn`).style.display='inline-flex'
+  document.getElementById(`q${q}-btn`).disabled=true
+  document.getElementById(`q${q}-reset`).style.display='none'
+}
+const sections=document.querySelectorAll('[id]')
+const navLinks=document.querySelectorAll('.nav-link')
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navLinks.forEach(l=>l.classList.remove('active'))
+      const link=document.querySelector(`.nav-link[href="#${entry.target.id}"]`)
+      if(link)link.classList.add('active')
+    }
+  })
+},{rootMargin:'-30% 0px -60% 0px'})
+sections.forEach(s=>observer.observe(s))
+</script>
+</body>
+</html>
