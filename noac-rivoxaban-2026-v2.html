@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Therapeutic Goals in The Management of Atrial Fibrillation — v2 15 min</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;
+  --text:#e6edf3;--text2:#8b949e;--text3:#6e7681;
+  --blue:#58a6ff;--green:#3fb950;--red:#ff7b72;
+  --orange:#ffa657;--yellow:#e3b341;--purple:#bc8cff;
+  --accent:#1f6feb;
+  --fb:'IBM Plex Sans Thai',sans-serif;
+  --fm:'IBM Plex Mono',monospace;
+  --fh:'Space Grotesk',sans-serif;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--fb);}
+
+/* ── Deck shell ── */
+#deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+
+/* ── Slides ── */
+.slide{
+  position:absolute;inset:0;padding:2.8rem 3.5rem 2.2rem;
+  display:none;flex-direction:column;
+  background:var(--bg);overflow:hidden;
+}
+.slide.active{display:flex}
+
+/* Cover layout */
+.slide.cover{justify-content:flex-start}
+
+/* Topbar accent */
+.topbar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--purple))}
+.topbar.r{background:linear-gradient(90deg,var(--red),var(--orange))}
+.topbar.p{background:linear-gradient(90deg,var(--purple),var(--blue))}
+.topbar.g{background:linear-gradient(90deg,var(--green),var(--blue))}
+.topbar.o{background:linear-gradient(90deg,var(--orange),var(--red))}
+.topbar.y{background:linear-gradient(90deg,var(--yellow),var(--blue))}
+.topbar.rainbow{background:linear-gradient(90deg,var(--orange),var(--blue),var(--purple))}
+
+/* Footer */
+.footer-bar{
+  position:absolute;bottom:0;left:0;right:0;
+  border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;
+  padding:.32rem 2rem;font-size:.58rem;
+  color:var(--text3);font-family:var(--fm);background:var(--bg);
+}
+
+/* Pills */
+.pill{
+  display:inline-block;font-family:var(--fm);font-size:.58rem;font-weight:700;
+  padding:.18rem .6rem;border-radius:100px;letter-spacing:.06em;margin-bottom:.55rem;
+}
+.pill-blue  {background:rgba(88,166,255,.15); color:var(--blue);   border:1px solid rgba(88,166,255,.3)}
+.pill-red   {background:rgba(255,123,114,.15);color:var(--red);    border:1px solid rgba(255,123,114,.3)}
+.pill-purple{background:rgba(188,140,255,.15);color:var(--purple); border:1px solid rgba(188,140,255,.3)}
+.pill-green {background:rgba(63,185,80,.15);  color:var(--green);  border:1px solid rgba(63,185,80,.3)}
+.pill-orange{background:rgba(255,166,87,.15); color:var(--orange); border:1px solid rgba(255,166,87,.3)}
+.pill-yellow{background:rgba(227,179,65,.15); color:var(--yellow); border:1px solid rgba(227,179,65,.3)}
+
+.sec-title{font-family:var(--fh);font-size:1.25rem;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:.65rem}
+
+/* Callouts */
+.callout{display:flex;gap:.55rem;padding:.6rem .85rem;border-radius:8px;font-size:.74rem;line-height:1.55;border-left:3px solid;margin:.4rem 0}
+.callout-icon{flex-shrink:0;font-size:.95rem;margin-top:.05rem}
+.callout-body{flex:1;color:var(--text2)}
+.callout-body strong{color:var(--text)}
+.callout-info   {background:rgba(88,166,255,.07); border-color:var(--blue)}
+.callout-warn   {background:rgba(227,179,65,.08); border-color:var(--yellow)}
+.callout-danger {background:rgba(255,123,114,.08);border-color:var(--red)}
+.callout-success{background:rgba(63,185,80,.08);  border-color:var(--green)}
+.callout-orange {background:rgba(255,166,87,.08); border-color:var(--orange)}
+
+/* Tables */
+.tw{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:.35rem 0}
+table{width:100%;border-collapse:collapse;font-size:.72rem}
+thead tr{background:var(--bg3)}
+th{padding:.38rem .65rem;text-align:left;font-family:var(--fm);font-size:.58rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border)}
+td{padding:.38rem .65rem;border-top:1px solid var(--border);color:var(--text2);line-height:1.35}
+td strong{color:var(--text)}
+
+/* Chips */
+.chip{display:inline-block;padding:.08rem .4rem;border-radius:4px;font-size:.64rem;font-weight:600}
+.chip-green {background:rgba(63,185,80,.2);  color:var(--green)}
+.chip-red   {background:rgba(255,123,114,.2);color:var(--red)}
+.chip-blue  {background:rgba(88,166,255,.2); color:var(--blue)}
+
+/* Grid layouts */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.55rem}
+
+/* Bento cards */
+.bc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.7rem .85rem}
+.bc h4{font-size:.73rem;font-weight:700;color:var(--text);margin-bottom:.3rem}
+.bc p,.bc li{font-size:.67rem;color:var(--text2);line-height:1.5}
+.bc ul{padding-left:.85rem;margin:0}
+.bc li{margin-bottom:.18rem}
+
+/* ── Controls ── */
+#controls{
+  position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:.75rem;
+  background:rgba(22,27,34,.92);border:1px solid var(--border);
+  border-radius:100px;padding:.35rem .9rem;backdrop-filter:blur(8px);
+  z-index:100;
+}
+.ctrl-btn{
+  background:none;border:none;color:var(--text2);cursor:pointer;
+  font-size:.9rem;padding:.2rem .4rem;border-radius:6px;transition:.15s;line-height:1
+}
+.ctrl-btn:hover{background:var(--bg3);color:var(--text)}
+.ctrl-btn:disabled{opacity:.25;cursor:default}
+#slide-counter{font-family:var(--fm);font-size:.62rem;color:var(--text3);min-width:4rem;text-align:center}
+.prog-wrap{width:6rem;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.prog-bar{height:100%;background:var(--blue);border-radius:2px;transition:width .25s}
+
+/* ── Slide nav dots ── */
+#dots{
+  position:fixed;bottom:3.5rem;left:50%;transform:translateX(-50%);
+  display:flex;gap:.3rem;z-index:99;
+}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--border);cursor:pointer;transition:.15s}
+.dot.active{background:var(--blue);transform:scale(1.35)}
+
+/* ── Keyboard hint ── */
+#hint{
+  position:fixed;top:.6rem;right:1rem;font-family:var(--fm);font-size:.55rem;
+  color:var(--text3);background:rgba(22,27,34,.7);border:1px solid var(--border);
+  border-radius:6px;padding:.25rem .65rem;z-index:99;backdrop-filter:blur(6px);
+}
+
+/* ── Slide num badge ── */
+.slide-num{
+  position:absolute;top:.9rem;right:1.8rem;
+  font-family:var(--fm);font-size:.55rem;color:var(--text3);
+}
+
+/* ── Quiz styles ── */
+.quiz-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.3rem;position:relative;overflow:hidden;flex:1}
+.quiz-wrap::before{content:'';position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--blue),var(--purple))}
+.quiz-tag{font-family:var(--fm);font-size:.6rem;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.45rem}
+.quiz-q{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.85rem;line-height:1.55}
+.quiz-opts{list-style:none;display:flex;flex-direction:column;gap:.35rem;margin-bottom:.65rem}
+.quiz-opt{
+  display:flex;align-items:flex-start;gap:.55rem;width:100%;text-align:left;
+  background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  padding:.45rem .75rem;font-size:.78rem;font-family:var(--fb);color:var(--text2);
+  cursor:pointer;transition:.15s ease;
+}
+.quiz-opt:hover{border-color:var(--blue);color:var(--text);background:rgba(88,166,255,.06)}
+.quiz-opt.picked{border-color:var(--blue);background:rgba(88,166,255,.1);color:var(--text)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(63,185,80,.1);color:#7ee787}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(255,123,114,.08);color:var(--red);opacity:.8}
+.quiz-opt.dimmed{opacity:.3}
+.quiz-opt:disabled{cursor:default}
+.opt-key{font-family:var(--fm);font-weight:700;font-size:.7rem;flex-shrink:0;margin-top:.05rem}
+.quiz-actions{display:flex;gap:.45rem}
+.btn{padding:.35rem 1rem;border-radius:8px;font-size:.75rem;font-weight:600;font-family:var(--fb);border:none;cursor:pointer;transition:.15s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#388bfd}
+.btn-primary:disabled{opacity:.3;cursor:default}
+.btn-secondary{background:var(--bg3);color:var(--text2);border:1px solid var(--border)}
+.btn-secondary:hover{color:var(--text)}
+.quiz-exp{display:none;margin-top:.75rem;padding:.65rem .85rem;background:rgba(227,179,65,.07);border-left:3px solid var(--yellow);border-radius:0 8px 8px 0;font-size:.76rem;color:var(--text2);line-height:1.6}
+.quiz-exp strong{color:var(--text)}
+.quiz-exp.show{display:block;animation:fi .2s ease}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* sponsor badge */
+.sponsor-badge{
+  position:absolute;top:1.3rem;right:2rem;
+  font-family:var(--fm);font-size:.58rem;color:var(--orange);
+  background:rgba(255,166,87,.1);border:1px solid rgba(255,166,87,.3);
+  border-radius:100px;padding:.18rem .65rem;
+}
+</style>
+</head>
+<body>
+
+<div id="hint">← → Space · navigate</div>
+
+<div id="deck">
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 1 · COVER -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide cover active" data-label="Cover">
+  <div class="topbar"></div>
+  <div class="sponsor-badge">▲ Sponsored · Siam Pharmaceutical</div>
+  <div class="slide-num">1</div>
+
+  <div style="margin-top:2.5rem">
+    <div style="font-family:var(--fm);font-size:.6rem;color:var(--blue);margin-bottom:.75rem;letter-spacing:.06em">
+      SPONSORED CME SYMPOSIUM 2026 · 15 MIN
+    </div>
+    <h1 style="font-family:var(--fh);font-size:2rem;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:.5rem">
+      Therapeutic Goals in<br>
+      <span style="color:var(--blue)">The Management of</span><br>
+      Atrial Fibrillation
+    </h1>
+    <p style="color:var(--text2);font-size:.82rem;margin-top:.85rem;line-height:1.75">
+      Generic Rivaroxaban ในการปฏิบัติจริง<br>
+      สำหรับแพทย์และพยาบาลทุกสาขา
+    </p>
+    <div style="display:flex;gap:1.2rem;margin-top:1.1rem;flex-wrap:wrap">
+      <span style="font-size:.72rem;color:var(--text2)">⏱ 15 นาที</span>
+      <span style="font-size:.72rem;color:var(--text2)">✅ 3 Interactive Quizzes</span>
+      <span style="font-size:.72rem;color:var(--text2)">📋 ROCKET-AF · EINSTEIN · ESC 2020</span>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>Dr.Anuchit Wongphen · Udonthani Hospital</span>
+    <span>Siam Pharmaceutical 2026</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 2 · WHY NOAC + MECHANISM -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="Why NOAC?">
+  <div class="topbar"></div>
+  <div class="slide-num">2</div>
+  <div class="pill pill-blue">SECTION 1 · WHY NOAC?</div>
+  <div class="sec-title">ทำไมต้องก้าวพ้น Warfarin? · กลไก NOAC</div>
+
+  <div class="g2" style="flex:1;align-items:start">
+    <div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>⚠️ Warfarin</th><th>✅ NOAC</th></tr></thead>
+          <tbody>
+            <tr><td>ต้องตรวจ INR บ่อย</td><td><strong>ไม่ต้องตรวจ INR</strong></td></tr>
+            <tr><td>Drug interactions &gt; 200</td><td>Interactions น้อยกว่ามาก</td></tr>
+            <tr><td><strong>TTR ไทย ≈ 50–60%</strong></td><td>ICH น้อยกว่าอย่างมีนัย</td></tr>
+            <tr><td>Slow onset/offset</td><td>Specific reversal agents</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-warn" style="margin-top:.4rem">
+        <div class="callout-body" style="font-size:.7rem"><strong>TTR ต่ำ = ความเสี่ยง stroke + major bleeding สูงขึ้น</strong> — NOAC เหมาะกับผู้ป่วยไทยส่วนใหญ่</div>
+      </div>
+    </div>
+    <div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>กลุ่ม</th><th>ยา</th><th>ให้ยา</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:var(--orange)">Xa Inhibitor ⭐</strong></td>
+              <td><strong style="color:var(--orange)">Rivaroxaban</strong></td>
+              <td><strong>OD</strong></td>
+            </tr>
+            <tr><td>Xa Inhibitor</td><td>Apixaban</td><td>BID</td></tr>
+            <tr><td>Xa Inhibitor</td><td>Edoxaban</td><td>OD</td></tr>
+            <tr><td>DTI</td><td>Dabigatran</td><td>BID</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-info" style="margin-top:.4rem">
+        <div class="callout-body" style="font-size:.7rem"><strong>Rivaroxaban:</strong> Factor Xa inhibitor ตัวแรก — ให้ OD เพิ่ม compliance เหมาะผู้ป่วยที่มียาหลายชนิด</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Section 1 · NOAC Landscape</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 3 · INDICATIONS & CI -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="Indications & CI">
+  <div class="topbar"></div>
+  <div class="slide-num">3</div>
+  <div class="pill pill-blue">SECTION 1 · INDICATIONS & CI</div>
+  <div class="sec-title">Indications & Contraindications — Rivaroxaban</div>
+
+  <div class="g2" style="flex:1;align-items:start">
+    <div class="tw">
+      <table>
+        <thead><tr><th>Indication</th><th>ขนาดยา</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>NVAF</strong></td>
+            <td><strong style="color:var(--orange)">20 mg OD</strong> กับอาหาร<br><span style="font-size:.65rem;color:var(--text3)">15 mg OD ถ้า CrCl 15–49</span></td>
+          </tr>
+          <tr>
+            <td><strong>DVT/PE Treatment</strong></td>
+            <td><strong style="color:var(--blue)">15 mg BID × 21 วัน</strong><br><span style="font-size:.65rem;color:var(--text3)">→ 20 mg OD (เริ่มได้ทันที ไม่ต้อง LMWH นำ)</span></td>
+          </tr>
+          <tr>
+            <td><strong>VTE Secondary Prevention</strong></td>
+            <td>20 mg OD หรือ 10 mg OD</td>
+          </tr>
+          <tr>
+            <td><strong>ACS (เสริม antiplatelet)</strong></td>
+            <td>2.5 mg BID + ASA ± Clopi</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="callout callout-danger">
+        <span class="callout-icon">🚫</span>
+        <div class="callout-body" style="font-size:.7rem">
+          <strong>ห้ามใช้ NOAC ทุกชนิด:</strong><br>
+          · Mechanical prosthetic valve<br>
+          · Moderate–severe rheumatic MS (MVA &lt; 1.5 cm²)<br>
+          · CrCl &lt; 15 mL/min · Active major bleeding<br>
+          · Pregnancy / lactation · Child-Pugh C<br>
+          <strong style="color:var(--text)">→ Warfarin คือ ONLY option ใน 2 ข้อแรก</strong>
+        </div>
+      </div>
+      <div class="callout callout-info" style="margin-top:.4rem">
+        <div class="callout-body" style="font-size:.7rem">
+          <strong>Bioprosthetic valve:</strong> NOACs ใช้ได้หลัง 3 เดือน<br>
+          <strong>APS triple-positive:</strong> Warfarin preferred
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Section 1 · NOAC Landscape</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 4 · ROCKET-AF EVIDENCE -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="ROCKET-AF">
+  <div class="topbar r"></div>
+  <div class="slide-num">4</div>
+  <div class="pill pill-red">SECTION 2 · EVIDENCE</div>
+  <div class="sec-title">ROCKET-AF Trial — หลักฐานสำคัญ</div>
+  <p style="font-size:.7rem;color:var(--text2);margin-bottom:.4rem">14,264 ผู้ป่วย NVAF ความเสี่ยงสูง (CHADS₂ ≥ 2) · follow-up 1.9 ปี · warfarin TTR 55%</p>
+
+  <div class="g2" style="flex:1;align-items:start">
+    <div class="tw">
+      <table>
+        <thead><tr><th>Endpoint (%/yr)</th><th>Warfarin</th><th>Rivaroxaban</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><strong>Stroke / SE</strong></td><td>2.42</td><td><strong>1.70</strong></td><td><span class="chip chip-green">✅ Superior</span></td></tr>
+          <tr><td><strong>Major Bleeding</strong></td><td>3.45</td><td>3.60</td><td><span class="chip chip-blue">≈</span></td></tr>
+          <tr><td><strong>ICH</strong></td><td>0.74</td><td><strong>0.49</strong></td><td><span class="chip chip-green">↓ 33%</span></td></tr>
+          <tr><td><strong>Fatal Bleeding</strong></td><td>0.74</td><td><strong>0.24</strong></td><td><span class="chip chip-green">↓ 50%</span></td></tr>
+          <tr><td><strong>GI Bleeding</strong></td><td>2.22</td><td>3.15</td><td><span class="chip chip-red">⬆️ Higher</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.45rem">
+      <div class="bc">
+        <h4>🚀 VTE: Single-drug Approach</h4>
+        <p><strong>EINSTEIN-DVT/PE:</strong> Rivaroxaban NI vs LMWH+VKA — เริ่มได้ทันที ไม่ต้อง parenteral lead-in · ICH น้อยกว่า</p>
+      </div>
+      <div class="bc">
+        <h4>💊 Generic Rivaroxaban</h4>
+        <p>ผ่าน bioequivalence testing เทียบ Xarelto® ต้นแบบ — ประสิทธิภาพเทียบเท่า เพิ่มการเข้าถึงยา</p>
+      </div>
+      <div class="callout callout-warn">
+        <div class="callout-body" style="font-size:.68rem"><strong>⚠️ GI Bleeding สูงกว่า warfarin</strong> — แจ้งผู้ป่วยล่วงหน้า ติดตามอาการ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Section 2 · Clinical Evidence</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 5 · QUIZ 1 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="Quiz 1">
+  <div class="topbar p"></div>
+  <div class="slide-num">5</div>
+
+  <div class="quiz-wrap" style="margin-top:.2rem">
+    <div class="quiz-tag">🎯 Quiz 1 · Contraindication</div>
+    <div class="quiz-q">ผู้ป่วยหญิง อายุ 68 ปี AF ใหม่ CHA₂DS₂-VASc = 3 (HTN, DM, female sex) · Echo: moderate mitral stenosis (MVA 1.2 cm²) สาเหตุ rheumatic · CrCl 52 mL/min — ควรให้ anticoagulant ใด?</div>
+    <ul class="quiz-opts">
+      <li><button class="quiz-opt" data-q="q1" data-i="0" onclick="pick('q1',0)"><span class="opt-key">A.</span> Rivaroxaban 20 mg OD</button></li>
+      <li><button class="quiz-opt" data-q="q1" data-i="1" onclick="pick('q1',1)"><span class="opt-key">B.</span> Apixaban 5 mg BID</button></li>
+      <li><button class="quiz-opt" data-q="q1" data-i="2" onclick="pick('q1',2)"><span class="opt-key">C.</span> Dabigatran 150 mg BID</button></li>
+      <li><button class="quiz-opt" data-q="q1" data-i="3" onclick="pick('q1',3)"><span class="opt-key">D.</span> Warfarin (target INR 2–3)</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q1-btn" onclick="reveal('q1',3)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" id="q1-reset" onclick="resetQ('q1')" style="display:none">ลองใหม่</button>
+    </div>
+    <div class="quiz-exp" id="q1-exp">
+      <strong>คำตอบ D — Warfarin</strong><br>
+      Moderate–severe rheumatic MS (MVA &lt; 1.5 cm²) เป็น contraindication ต่อ NOAC <strong>ทุกชนิด รวมถึง Rivaroxaban</strong> ตาม ESC 2020 &amp; AHA 2023<br>
+      Thrombus ใน LA เกิดจาก low-flow/stasis ไม่ใช่แค่ AF — ยังไม่มี RCT รองรับ NOAC ในกลุ่มนี้
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Quiz 1 · Contraindication</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 6 · RENAL DOSE + DRUG INTERACTIONS -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="Dose & Interactions">
+  <div class="topbar p"></div>
+  <div class="slide-num">6</div>
+  <div class="pill pill-purple">SECTION 3 · DOSE & SAFETY</div>
+  <div class="sec-title">Renal Dosing · กินพร้อมอาหาร · Drug Interactions</div>
+
+  <div class="g2" style="flex:1;align-items:start">
+    <div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>CrCl (mL/min)</th><th>Rivaroxaban AF</th><th>Dabigatran AF</th></tr></thead>
+          <tbody>
+            <tr><td><strong>&gt; 50</strong></td><td><strong style="color:var(--orange)">20 mg OD</strong></td><td>150 mg BID</td></tr>
+            <tr><td><strong>15–49</strong></td><td><strong style="color:var(--orange)">15 mg OD</strong></td><td>150 mg BID *</td></tr>
+            <tr><td><strong>15–30</strong></td><td><strong style="color:var(--orange)">15 mg OD</strong> ⚠️</td><td style="color:var(--red)">❌ Avoid</td></tr>
+            <tr><td><strong>&lt; 15</strong></td><td style="color:var(--red)">🚫 Avoid</td><td style="color:var(--red)">🚫 CI</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-danger" style="margin-top:.4rem">
+        <div class="callout-body" style="font-size:.69rem"><strong>ต้องกินพร้อมอาหารเสมอ</strong> — bioavailability ↑ จาก 66% → ~100% ถ้ากินตอนท้องว่าง exposure ลดลงมีนัยสำคัญ</div>
+      </div>
+    </div>
+    <div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>ยาร่วม</th><th>Rivaroxaban</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Ketoconazole (systemic)</strong></td><td style="color:var(--red)">🚫 Avoid (↑ 160%)</td></tr>
+            <tr><td><strong>Rifampin</strong></td><td style="color:var(--red)">🚫 Avoid (↓ 50%)</td></tr>
+            <tr><td><strong>Clarithromycin</strong></td><td style="color:var(--red)">🚫 Avoid (↑ 54%)</td></tr>
+            <tr><td><strong>HIV protease inhibitors</strong></td><td style="color:var(--red)">🚫 Avoid</td></tr>
+            <tr><td><strong>Dronedarone</strong></td><td style="color:var(--red)">🚫 Avoid</td></tr>
+            <tr><td><strong>St. John's Wort</strong></td><td style="color:var(--red)">🚫 Avoid</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-warn" style="margin-top:.4rem">
+        <div class="callout-body" style="font-size:.68rem">Rivaroxaban ผ่าน <strong>CYP3A4 + P-gp</strong> ทั้งคู่ — interactions กว้างกว่า Dabigatran (P-gp only)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Section 3 · Dose & Drug Safety</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 7 · CHA2DS2-VASc + SWITCHING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="CHA₂DS₂-VASc & Switching">
+  <div class="topbar p"></div>
+  <div class="slide-num">7</div>
+  <div class="pill pill-purple">SECTION 3 · DOSE & SAFETY</div>
+  <div class="sec-title">CHA₂DS₂-VASc · Switching Warfarin</div>
+
+  <div class="g2" style="flex:1;align-items:start">
+    <div class="tw">
+      <table>
+        <thead><tr><th>ตัวย่อ</th><th>Risk Factor</th><th>คะแนน</th></tr></thead>
+        <tbody>
+          <tr><td><strong>C</strong></td><td>Congestive heart failure</td><td>1</td></tr>
+          <tr><td><strong>H</strong></td><td>Hypertension</td><td>1</td></tr>
+          <tr><td><strong style="color:var(--orange)">A₂</strong></td><td>Age ≥ 75 ปี</td><td><strong style="color:var(--orange)">2</strong></td></tr>
+          <tr><td><strong>D</strong></td><td>Diabetes mellitus</td><td>1</td></tr>
+          <tr><td><strong style="color:var(--orange)">S₂</strong></td><td>Stroke / TIA (prior)</td><td><strong style="color:var(--orange)">2</strong></td></tr>
+          <tr><td><strong>V</strong></td><td>Vascular disease</td><td>1</td></tr>
+          <tr><td><strong>A</strong></td><td>Age 65–74 ปี</td><td>1</td></tr>
+          <tr><td><strong>Sc</strong></td><td>Sex category (Female)</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="callout callout-info">
+        <div class="callout-body" style="font-size:.72rem">
+          <strong>แนะนำ OAC:</strong> ชาย ≥ 2 · หญิง ≥ 3<br>
+          Female sex = risk modifier ไม่ใช่ independent factor
+        </div>
+      </div>
+      <div class="tw" style="margin-top:.5rem">
+        <table>
+          <thead><tr><th>Switching</th><th>แนวทาง</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Warfarin → Riva</strong></td><td>รอ <strong style="color:var(--orange)">INR ≤ 3.0</strong> แล้วเริ่ม</td></tr>
+            <tr><td><strong>Riva → Warfarin</strong></td><td>Overlap จน INR ≥ 2.0 × 2 วัน</td></tr>
+            <tr><td><strong>NOAC → NOAC</strong></td><td>เริ่ม dose ถัดไปทันที</td></tr>
+            <tr><td><strong>Bridge LMWH?</strong></td><td style="color:var(--red)">ไม่แนะนำ (BRIDGE trial)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Section 3 · Dose & Drug Safety</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 8 · QUIZ 2 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="Quiz 2">
+  <div class="topbar p"></div>
+  <div class="slide-num">8</div>
+
+  <div class="quiz-wrap" style="margin-top:.2rem">
+    <div class="quiz-tag">🎯 Quiz 2 · Dose Selection</div>
+    <div class="quiz-q">ผู้ป่วยหญิง อายุ 75 ปี NVAF + DM + HTN · CrCl 35 mL/min (Cockcroft-Gault) · ต้องการเริ่ม Rivaroxaban สำหรับ AF — ควรใช้ขนาดใด?</div>
+    <ul class="quiz-opts">
+      <li><button class="quiz-opt" data-q="q2" data-i="0" onclick="pick('q2',0)"><span class="opt-key">A.</span> 20 mg OD กับอาหารมื้อเย็น (standard dose)</button></li>
+      <li><button class="quiz-opt" data-q="q2" data-i="1" onclick="pick('q2',1)"><span class="opt-key">B.</span> 15 mg OD กับอาหารมื้อเย็น (renal dose)</button></li>
+      <li><button class="quiz-opt" data-q="q2" data-i="2" onclick="pick('q2',2)"><span class="opt-key">C.</span> 10 mg OD (ขนาด VTE prophylaxis)</button></li>
+      <li><button class="quiz-opt" data-q="q2" data-i="3" onclick="pick('q2',3)"><span class="opt-key">D.</span> Contraindicated — ควรใช้ Warfarin แทน</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q2-btn" onclick="reveal('q2',1)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" id="q2-reset" onclick="resetQ('q2')" style="display:none">ลองใหม่</button>
+    </div>
+    <div class="quiz-exp" id="q2-exp">
+      <strong>คำตอบ B — 15 mg OD</strong><br>
+      CrCl 35 mL/min อยู่ในช่วง <strong>15–49 mL/min</strong> → ใช้ Rivaroxaban <strong>15 mg OD</strong> กับอาหารมื้อหลัก<br>
+      ❌ A: 20 mg OD ใช้เมื่อ CrCl ≥ 50 · ❌ C: 10 mg OD คือ VTE prophylaxis ไม่ใช่ AF · ❌ D: CrCl 35 ยังไม่ถึงเกณฑ์ CI (&lt; 15 mL/min)
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Quiz 2 · Dose Selection</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 9 · PERIOP + REVERSAL + SPECIAL POP -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="Management & Reversal">
+  <div class="topbar o"></div>
+  <div class="slide-num">9</div>
+  <div class="pill pill-orange">SECTION 4–5 · MANAGEMENT & BLEEDING</div>
+  <div class="sec-title">Perioperative · Reversal · Special Populations</div>
+
+  <div class="g2" style="flex:1;align-items:start">
+    <div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Perioperative</th><th>แนวทาง</th></tr></thead>
+          <tbody>
+            <tr><td>Low bleeding risk</td><td>หยุด ≥ 24 ชม. ก่อน</td></tr>
+            <tr><td>High bleeding risk</td><td>หยุด ≥ 48 ชม. ก่อน</td></tr>
+            <tr><td>Restart post-op</td><td>Hemostasis secure → 24–48 ชม.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tw" style="margin-top:.45rem">
+        <table>
+          <thead><tr><th>ยา</th><th>Specific Reversal</th><th>Non-specific</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong style="color:var(--orange)">Rivaroxaban ⭐</strong></td>
+              <td><strong>Andexanet alfa</strong></td>
+              <td>4F-PCC</td>
+            </tr>
+            <tr><td>Apixaban / Edoxaban</td><td>Andexanet alfa</td><td>4F-PCC</td></tr>
+            <tr>
+              <td>Dabigatran</td>
+              <td><strong>Idarucizumab</strong></td>
+              <td>4F-PCC</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-danger" style="margin-top:.4rem">
+        <div class="callout-body" style="font-size:.67rem"><strong>Rivaroxaban ไม่ dialyzable</strong> (protein binding 92%) — ต่างจาก Dabigatran ที่ dialyzable 60–70%</div>
+      </div>
+    </div>
+    <div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>กลุ่มพิเศษ</th><th>แนวทาง</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Elderly ≥ 75 ปี</strong></td><td>ปรับตาม CrCl เท่านั้น Fall risk ≠ CI</td></tr>
+            <tr><td><strong>CKD CrCl 15–49</strong></td><td>15 mg OD — ยังใช้ได้ (ต่างจาก Dabigatran)</td></tr>
+            <tr><td><strong>AF + Post-PCI</strong></td><td>Triple ≤ 1 เดือน → Dual → OAC mono</td></tr>
+            <tr><td><strong>Post-bariatric</strong></td><td>Rivaroxaban preferred vs Dabigatran</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-success" style="margin-top:.45rem">
+        <div class="callout-body" style="font-size:.67rem"><strong>VTE Lead-in:</strong> Rivaroxaban/Apixaban เริ่มได้ทันที · Dabigatran/Edoxaban ต้อง LMWH 5–10 วันก่อนเสมอ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Section 4–5 · Management & Bleeding</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 10 · QUIZ 3 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="Quiz 3">
+  <div class="topbar p"></div>
+  <div class="slide-num">10</div>
+
+  <div class="quiz-wrap" style="margin-top:.2rem">
+    <div class="quiz-tag">🎯 Quiz 3 · Bleeding Case</div>
+    <div class="quiz-q">ผู้ป่วยชาย อายุ 72 ปี ได้รับ Rivaroxaban 20 mg OD สำหรับ AF · มาด้วย ICH (spontaneous) · last dose 8 ชั่วโมงก่อน · INR 1.4 · anti-Xa level สูง — ควรจัดการอย่างไร?</div>
+    <ul class="quiz-opts">
+      <li><button class="quiz-opt" data-q="q3" data-i="0" onclick="pick('q3',0)"><span class="opt-key">A.</span> Vitamin K IV + FFP</button></li>
+      <li><button class="quiz-opt" data-q="q3" data-i="1" onclick="pick('q3',1)"><span class="opt-key">B.</span> Idarucizumab 5 g IV</button></li>
+      <li><button class="quiz-opt" data-q="q3" data-i="2" onclick="pick('q3',2)"><span class="opt-key">C.</span> Andexanet alfa (ถ้ามี) หรือ 4F-PCC 25–50 u/kg</button></li>
+      <li><button class="quiz-opt" data-q="q3" data-i="3" onclick="pick('q3',3)"><span class="opt-key">D.</span> Hemodialysis เพื่อกำจัดยา</button></li>
+    </ul>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" id="q3-btn" onclick="reveal('q3',2)" disabled>เฉลย</button>
+      <button class="btn btn-secondary" id="q3-reset" onclick="resetQ('q3')" style="display:none">ลองใหม่</button>
+    </div>
+    <div class="quiz-exp" id="q3-exp">
+      <strong>คำตอบ C — Andexanet alfa หรือ 4F-PCC</strong><br>
+      Rivaroxaban เป็น <strong>Factor Xa inhibitor</strong> → reversal ที่ถูกต้องคือ Andexanet alfa (specific) หรือ 4F-PCC (non-specific)<br>
+      ❌ B: Idarucizumab ใช้กับ <strong>Dabigatran เท่านั้น</strong> · ❌ A: Vitamin K + FFP ไม่ช่วย Xa inhibitors · ❌ D: Rivaroxaban ไม่ dialyzable (protein binding 92%)
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Quiz 3 · Bleeding Case</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 11 · TAKE-HOME -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="Take-Home">
+  <div class="topbar y"></div>
+  <div class="slide-num">11</div>
+  <div class="pill pill-yellow">SUMMARY</div>
+  <div class="sec-title">📌 Take-Home Messages</div>
+
+  <div class="g3" style="flex:1;align-items:start">
+    <div class="bc">
+      <h4>🎯 Dose ให้ถูก</h4>
+      <ul>
+        <li>CrCl &gt; 50 → <strong>20 mg OD</strong></li>
+        <li>CrCl 15–49 → <strong>15 mg OD</strong></li>
+        <li>CrCl &lt; 15 → หลีกเลี่ยง</li>
+        <li>Mechanical valve/MS → Warfarin</li>
+      </ul>
+    </div>
+    <div class="bc">
+      <h4>🍽️ กินพร้อมอาหารเสมอ</h4>
+      <ul>
+        <li>Bioavailability ↑ 66% → ~100%</li>
+        <li>แนะนำมื้อเย็น — OD ง่ายต่อ compliance</li>
+        <li>ถ้าลืม → กินทันทีที่นึกได้ วันเดียวกัน</li>
+      </ul>
+    </div>
+    <div class="bc">
+      <h4>🩸 Reversal Agent</h4>
+      <ul>
+        <li><strong>Andexanet alfa</strong> = Xa inhibitors</li>
+        <li><strong>Idarucizumab</strong> = Dabigatran เท่านั้น</li>
+        <li>ไม่ dialyzable — ต้องใช้ reversal/4F-PCC</li>
+      </ul>
+    </div>
+    <div class="bc">
+      <h4>🔄 VTE: เริ่มได้ทันที</h4>
+      <ul>
+        <li>15 mg BID × 21 วัน → 20 mg OD</li>
+        <li>ไม่ต้อง LMWH นำก่อน</li>
+        <li>Dabigatran/Edoxaban ต้องนำ 5–10 วัน</li>
+      </ul>
+    </div>
+    <div class="bc">
+      <h4>💊 Generic Rivaroxaban</h4>
+      <ul>
+        <li>Bioequivalence ≡ Xarelto® ต้นแบบ</li>
+        <li>ประสิทธิภาพเทียบเท่า ราคาเข้าถึงได้</li>
+        <li>ไม่ต้องตรวจ lab เพิ่มเมื่อเปลี่ยน</li>
+      </ul>
+    </div>
+    <div class="bc">
+      <h4>⚠️ Drug Interactions</h4>
+      <ul>
+        <li>CYP3A4 + P-gp ทั้งคู่</li>
+        <li>ห้าม: ketoconazole, rifampin</li>
+        <li>ห้าม: clarithromycin, dronedarone</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Therapeutic Goals in AF Management</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 12 · REFERENCES -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide" data-label="References">
+  <div class="topbar g"></div>
+  <div class="slide-num">12</div>
+  <div class="pill pill-green">REFS</div>
+  <div class="sec-title" style="font-size:1.1rem">📚 References</div>
+
+  <div class="tw" style="flex:1">
+    <table>
+      <thead><tr><th>Study / Guideline</th><th>ปี</th><th>สาระสำคัญ</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ROCKET-AF</strong> (Patel et al.)</td><td>2011</td><td>Rivaroxaban NI vs warfarin NVAF; ICH ↓ 33%, Fatal bleeding ↓ 50%</td></tr>
+        <tr><td><strong>EINSTEIN-DVT / PE</strong></td><td>2010, 2012</td><td>Rivaroxaban NI vs LMWH+VKA — single-drug, ไม่ต้อง parenteral lead-in</td></tr>
+        <tr><td><strong>COMPASS</strong> (Eikelboom et al.)</td><td>2017</td><td>Rivaroxaban 2.5 mg BID + ASA ↓ MACE ใน stable atherosclerosis</td></tr>
+        <tr><td><strong>BRIDGE</strong> (Douketis et al.)</td><td>2015</td><td>No bridging ≈ bridging; bridging ↑ major bleeding × 3 ใน NVAF</td></tr>
+        <tr><td><strong>ESC AF Guidelines</strong></td><td>2020</td><td>NOAC preferred ใน NVAF; warfarin สำหรับ mechanical valve/MS</td></tr>
+        <tr><td><strong>AHA/ACC AF Guidelines</strong></td><td>2023</td><td>NOAC preferred over VKA in all NVAF candidates</td></tr>
+        <tr><td><strong>ESC VTE Guidelines</strong></td><td>2019</td><td>Rivaroxaban/Apixaban: first-line NOAC สำหรับ VTE treatment</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer-bar"><span>Therapeutic Goals in AF Management</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 13 · CLOSING -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide cover" data-label="Thank You">
+  <div class="topbar rainbow"></div>
+  <div class="slide-num">13</div>
+
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+    <div style="font-size:2.8rem;margin-bottom:.8rem">🙏</div>
+    <h1 style="font-family:var(--fh);font-size:1.7rem;font-weight:700;color:var(--text);margin-bottom:.5rem">ขอบคุณสำหรับการเข้าร่วม</h1>
+    <p style="color:var(--text2);font-size:.82rem;line-height:1.9">
+      Therapeutic Goals in The Management of Atrial Fibrillation<br>
+      Generic Rivaroxaban · Siam Pharmaceutical 2026
+    </p>
+    <div style="margin-top:1.8rem">
+      <div style="font-size:.65rem;color:var(--text3);font-family:var(--fm);margin-bottom:.2rem">PRESENTER</div>
+      <div style="font-size:.88rem;color:var(--text);font-weight:600">Dr.Anuchit Wongphen</div>
+      <div style="font-size:.75rem;color:var(--text2)">Interventional Cardiologist · Udonthani Hospital</div>
+    </div>
+    <div style="margin-top:1.8rem;font-size:.6rem;color:var(--text3);font-family:var(--fm)">
+      For educational purposes only · Not a substitute for clinical judgment
+    </div>
+  </div>
+
+  <div class="footer-bar"><span>Therapeutic Goals in AF Management</span><span>Siam Pharmaceutical 2026</span></div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- ── Navigation controls ── -->
+<div id="controls">
+  <button class="ctrl-btn" id="btn-prev" onclick="go(-1)" disabled>←</button>
+  <div class="prog-wrap"><div class="prog-bar" id="prog"></div></div>
+  <span id="slide-counter">1 / 13</span>
+  <button class="ctrl-btn" id="btn-next" onclick="go(1)">→</button>
+  <button class="ctrl-btn" title="Fullscreen" onclick="toggleFS()">⛶</button>
+</div>
+
+<!-- ── Dot indicators ── -->
+<div id="dots"></div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total  = slides.length;
+let cur = 0;
+
+/* Build dots */
+const dotsEl = document.getElementById('dots');
+slides.forEach((s,i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.title = s.dataset.label || '';
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+});
+
+function goTo(n) {
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(total-1, n));
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('active');
+  document.getElementById('slide-counter').textContent = (cur+1) + ' / ' + total;
+  document.getElementById('prog').style.width = ((cur+1)/total*100) + '%';
+  document.getElementById('btn-prev').disabled = cur===0;
+  document.getElementById('btn-next').disabled = cur===total-1;
+}
+
+function go(d) { goTo(cur+d); }
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key===' ') { e.preventDefault(); go(1); }
+  if(e.key==='ArrowLeft') { e.preventDefault(); go(-1); }
+  if(e.key==='f'||e.key==='F') toggleFS();
+});
+
+function toggleFS() {
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+
+/* Quiz logic */
+const qs = {};
+function pick(q, i) {
+  if(qs[q]?.revealed) return;
+  if(!qs[q]) qs[q]={};
+  qs[q].picked = i;
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(b => {
+    b.classList.remove('picked');
+    if(parseInt(b.dataset.i)===i) b.classList.add('picked');
+  });
+  document.getElementById(q+'-btn').disabled = false;
+}
+function reveal(q, correct) {
+  if(!qs[q]||qs[q].picked===undefined) return;
+  qs[q].revealed = true;
+  const picked = qs[q].picked;
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(b => {
+    const idx = parseInt(b.dataset.i);
+    b.disabled = true;
+    b.classList.remove('picked');
+    if(idx===correct) b.classList.add('correct');
+    else if(idx===picked) b.classList.add('wrong');
+    else b.classList.add('dimmed');
+  });
+  document.getElementById(q+'-exp').classList.add('show');
+  document.getElementById(q+'-btn').style.display='none';
+  document.getElementById(q+'-reset').style.display='inline-flex';
+}
+function resetQ(q) {
+  qs[q]={};
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(b => {
+    b.disabled=false;
+    b.classList.remove('picked','correct','wrong','dimmed');
+  });
+  document.getElementById(q+'-exp').classList.remove('show');
+  document.getElementById(q+'-btn').style.display='inline-flex';
+  document.getElementById(q+'-btn').disabled=true;
+  document.getElementById(q+'-reset').style.display='none';
+}
+
+/* Init progress */
+goTo(0);
+</script>
+</body>
+</html>
