@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart HF Network — เขตสุขภาพที่ 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* ── Light palette ── */
+  --bg:      #F8FAFC;        /* slide background */
+  --surface: #FFFFFF;        /* card surface */
+  --surface2:#F1F5F9;        /* secondary surface */
+  --border:  #CBD5E1;        /* card border */
+  --border2: #E2E8F0;        /* light border */
+  --muted:   #94A3B8;        /* helper text */
+  --text:    #334155;        /* body text */
+  --head:    #0F172A;        /* headings */
+
+  /* ── Accent ── */
+  --amber:   #D97706;        /* darker amber for light bg legibility */
+  --amber-bg:#FEF3C7;
+  --amber-bd:#FCD34D;
+  --teal:    #0D9488;
+  --teal-bg: #CCFBF1;
+  --teal-bd: #99F6E4;
+  --red:     #DC2626;
+  --red-bg:  #FEE2E2;
+  --red-bd:  #FCA5A5;
+
+  /* ── Code block ── */
+  --code-bg: #F1F5F9;
+  --code-border: #CBD5E1;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: #E2E8F0;
+  font-family: 'Sarabun', sans-serif;
+  overflow: hidden;
+}
+
+/* ─── Slide Engine ─────────────────────────────── */
+#deck {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide-wrap {
+  position: relative;
+  width: 100vw; height: 56.25vw;
+  max-height: 100vh;
+  max-width: 177.78vh;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+}
+.slide {
+  position: absolute; inset: 0;
+  background: var(--bg);
+  display: none; flex-direction: column;
+  padding: 4.5% 5.5%;
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+
+/* ─── Top accent bar per slide ───────────────── */
+.slide::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:4px;
+  background: linear-gradient(90deg, var(--teal) 0%, var(--amber) 100%);
+}
+
+/* ─── Progress Bar ─────────────────────────────── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: var(--amber);
+  transition: width 0.4s ease;
+  z-index: 200;
+}
+
+/* ─── Slide Counter ─────────────────────────────── */
+#counter {
+  position: fixed; bottom: 1.2%; right: 1.5%;
+  font-family: 'Fira Code', monospace; font-size: 0.75vw;
+  color: var(--muted); z-index: 200; letter-spacing: 0.1em;
+}
+
+/* ─── Nav Arrows ─────────────────────────────────── */
+.nav-btn {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.85); border: 1px solid var(--border);
+  color: var(--muted); width: 3vw; height: 3vw; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; font-size: 1.2vw;
+  transition: all 0.2s; backdrop-filter: blur(4px);
+}
+.nav-btn:hover { background: var(--surface); color: var(--head); box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+#btn-prev { left: 0.8%; }
+#btn-next { right: 0.8%; }
+
+/* ─── Typography ────────────────────────────────── */
+.slide-title {
+  font-size: 3.2vw; font-weight: 700;
+  color: var(--head); line-height: 1.2;
+  margin-bottom: 2.5%;
+}
+.slide-title .accent { color: var(--amber); }
+.slide-title .teal   { color: var(--teal); }
+
+.body-text  { font-size: 1.55vw; color: var(--text);  line-height: 1.6; }
+.small-text { font-size: 1.2vw;  color: var(--text);  line-height: 1.6; }
+.tiny       { font-size: 0.95vw; color: var(--muted); }
+
+/* ─── Layout ────────────────────────────────────── */
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5%; flex: 1; }
+.cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2%; flex: 1; }
+.col    { display: flex; flex-direction: column; gap: 1.5%; }
+.flex1  { flex: 1; }
+
+/* ─── Cards ─────────────────────────────────────── */
+.card {
+  border: 1px solid var(--border2);
+  border-radius: 1vw; padding: 2% 2.5%;
+  background: var(--surface);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.card.amber-glow { border-color: var(--amber-bd); background: var(--amber-bg); }
+.card.teal-glow  { border-color: var(--teal-bd);  background: var(--teal-bg); }
+.card.red-glow   { border-color: var(--red-bd);   background: var(--red-bg); }
+.card.highlight  { border-color: var(--amber-bd); background: #FFFBEB; }
+
+/* ─── Stat Big ──────────────────────────────────── */
+.stat-block { text-align: center; }
+.stat-num {
+  font-size: 7vw; font-weight: 800;
+  color: var(--amber); line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-label { font-size: 1.3vw; color: var(--text); margin-top: 0.5%; }
+
+/* ─── Badge ─────────────────────────────────────── */
+.badge {
+  display: inline-block; padding: 0.3% 1.2%;
+  border-radius: 999px; font-size: 1vw; font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.badge-amber { background: var(--amber-bg); color: #92400E; border: 1px solid var(--amber-bd); }
+.badge-teal  { background: var(--teal-bg);  color: #134E4A; border: 1px solid var(--teal-bd); }
+.badge-red   { background: var(--red-bg);   color: #991B1B; border: 1px solid var(--red-bd); }
+.badge-slate { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+
+/* ─── Win Card (left border) ────────────────────── */
+.win-card {
+  border-left: 3px solid var(--teal);
+  padding-left: 3%; padding-top: 0.8%; padding-bottom: 0.8%;
+  background: var(--surface); border-radius: 0 0.5vw 0.5vw 0;
+}
+.win-card.amber { border-color: var(--amber); }
+.win-card .win-title { font-size: 1.4vw; font-weight: 700; color: var(--teal); margin-bottom: 0.3%; }
+.win-card.amber .win-title { color: var(--amber); }
+.win-card .win-body { font-size: 1.15vw; color: var(--text); }
+
+/* ─── Code block ────────────────────────────────── */
+.code-block {
+  background: var(--code-bg); border: 1px solid var(--code-border);
+  border-radius: 0.6vw; padding: 2% 2.5%;
+  font-family: 'Fira Code', monospace; font-size: 1.05vw;
+  color: #334155; line-height: 1.8; white-space: pre;
+}
+.code-block .c-green { color: #059669; }
+.code-block .c-amber { color: #B45309; }
+.code-block .c-muted { color: #94A3B8; }
+.code-block .c-teal  { color: #0D9488; }
+.code-block .c-blue  { color: #2563EB; }
+
+/* ─── Step number ───────────────────────────────── */
+.step-num {
+  width: 4vw; height: 4vw; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2vw; font-weight: 800; margin: 0 auto 4%;
+}
+.step-num.amber { background: var(--amber-bg); color: var(--amber); border: 2px solid var(--amber-bd); }
+.step-num.teal  { background: var(--teal-bg);  color: var(--teal);  border: 2px solid var(--teal-bd); }
+
+/* ─── Divider ────────────────────────────────────── */
+.divider { border: none; border-top: 1px solid var(--border2); margin: 1.5% 0; }
+
+/* ─── Transitions ───────────────────────────────── */
+.slide.enter { animation: fadeIn 0.35s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateX(1.5%); } to { opacity: 1; transform: none; } }
+
+.fade-in { opacity: 0; animation: fadeUp 0.5s ease forwards; }
+.fade-in:nth-child(1) { animation-delay: 0.1s; }
+.fade-in:nth-child(2) { animation-delay: 0.22s; }
+.fade-in:nth-child(3) { animation-delay: 0.34s; }
+.fade-in:nth-child(4) { animation-delay: 0.46s; }
+@keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:none; } }
+
+/* ─── EKG Cover ─────────────────────────────────── */
+#ekg-line { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: drawEkg 2.4s ease forwards 0.5s; }
+@keyframes drawEkg { to { stroke-dashoffset: 0; } }
+
+@media (max-width: 768px) { #btn-prev, #btn-next { display: none; } }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="counter"></div>
+<button class="nav-btn" id="btn-prev" aria-label="Previous">&#8592;</button>
+<button class="nav-btn" id="btn-next" aria-label="Next">&#8594;</button>
+
+<div id="deck"><div class="slide-wrap" id="slides">
+
+<!-- ══════════════════════════════════════
+     S1 — COVER
+══════════════════════════════════════ -->
+<div class="slide active" id="s1" style="background:linear-gradient(135deg,#F0FDFA 0%,#FFFBEB 50%,#F8FAFC 100%);">
+  <!-- EKG ambient -->
+  <svg style="position:absolute;bottom:6%;left:0;width:100%;opacity:0.08;" viewBox="0 0 1200 80" fill="none">
+    <polyline id="ekg-line"
+      points="0,40 120,40 160,40 180,10 200,70 220,5 240,60 260,40 400,40 520,40 560,40 580,15 600,65 620,8 640,55 660,40 800,40 920,40 960,40 980,12 1000,68 1020,6 1040,58 1060,40 1200,40"
+      stroke="#0D9488" stroke-width="2.5" fill="none"/>
+  </svg>
+
+  <!-- Decorative circle -->
+  <div style="position:absolute;right:4%;top:50%;transform:translateY(-50%);width:28vw;height:28vw;border-radius:50%;border:1.5px solid #99F6E4;display:flex;align-items:center;justify-content:center;opacity:0.5;">
+    <div style="width:20vw;height:20vw;border-radius:50%;border:1.5px solid #6EE7B7;display:flex;align-items:center;justify-content:center;">
+      <div style="font-size:8vw;opacity:0.25;">🫀</div>
+    </div>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:62%;position:relative;">
+    <div class="badge badge-teal" style="margin-bottom:3%;font-size:1.1vw;">Smart Healthcare · เขตสุขภาพที่ 8</div>
+
+    <h1 style="font-size:4.4vw;font-weight:800;color:#0F172A;line-height:1.15;margin-bottom:3%;">
+      จาก Google Sheet ใน Ward<br>
+      <span style="color:var(--amber);">สู่เครือข่าย HF อัจฉริยะ</span>
+    </h1>
+
+    <p class="body-text" style="color:var(--muted);margin-bottom:5%;">
+      ประสบการณ์จริงจากโรงพยาบาลอุดรธานี<br>
+      ในการสร้างระบบดูแล Heart Failure ระดับจังหวัด
+    </p>
+
+    <div style="display:flex;gap:2%;align-items:center;">
+      <div style="width:3vw;height:3vw;border-radius:50%;background:var(--teal-bg);border:2px solid var(--teal-bd);display:flex;align-items:center;justify-content:center;font-size:1.4vw;">🫀</div>
+      <div>
+        <div class="small-text" style="color:var(--head);font-weight:600;">นพ. อนุชิต  วงศ์เพ็ญ </div>
+        <div class="tiny">อายุรแพทย์โรคหัวใจ · โรงพยาบาลอุดรธานี · ประธาน service plan สาขาหัวใจเขตสุขภาพที่ 8 </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S2 — PAIN POINTS
+══════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="slide-title">ภาพที่เห็น<span class="accent">ทุกวัน</span></div>
+  <div class="cols-2 flex1">
+    <div class="col">
+      <div class="tiny" style="color:var(--muted);font-weight:600;margin-bottom:0.5%;">🏥 ในโรงพยาบาลชุมชน</div>
+      <div class="win-card amber fade-in" style="border-left-color:var(--red);">
+        <div class="win-title" style="color:var(--red);">📞 Consult ทางโทรศัพท์</div>
+        <div class="win-body">ต่อสายเฉลี่ย 15–20 นาที · แพทย์หัวใจต้องหยุดทำ procedure</div>
+      </div>
+      <div class="win-card amber fade-in" style="border-left-color:var(--red);">
+        <div class="win-title" style="color:var(--red);">📋 ข้อมูลกระจัดกระจาย</div>
+        <div class="win-body">Excel · กระดาษ · Line chat · ไม่มีที่เดียว</div>
+      </div>
+      <div class="win-card amber fade-in" style="border-left-color:var(--red);">
+        <div class="win-title" style="color:var(--red);">🫀 ไม่แน่ใจ EF</div>
+        <div class="win-body">ต้องส่งต่อ รพ.ศูนย์ หรือรอ echo อีกนาน — ผู้ป่วยรอ</div>
+      </div>
+      <div class="win-card amber fade-in" style="border-left-color:var(--red);">
+        <div class="win-title" style="color:var(--red);">🚑 Readmit ซ้ำโดยไม่รู้</div>
+        <div class="win-body">admit ผู้ป่วยที่เพิ่งออก รพ. อื่น 3 สัปดาห์ก่อน — ไม่มีใครรู้</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="tiny" style="color:var(--muted);font-weight:600;margin-bottom:0.5%;">🏨 ในโรงพยาบาลศูนย์</div>
+      <div class="win-card fade-in">
+        <div class="win-title">📵 รับโทรศัพท์ขณะทำ Cath Lab</div>
+        <div class="win-body">interrupt หัตถการ · ความเสี่ยงสูง · เครียดทั้งสองฝ่าย</div>
+      </div>
+      <div class="win-card fade-in">
+        <div class="win-title">🗂️ ไม่มีภาพรวม Bed ทั้งจังหวัด</div>
+        <div class="win-body">ไม่รู้ว่า รพช. ไหนเตียงเต็ม · ส่งต่อซ้ำซ้อน</div>
+      </div>
+      <div class="win-card fade-in">
+        <div class="win-title">📊 Data GDMT หาย</div>
+        <div class="win-body">prescription rate ไม่ถูก capture · รายงานเขตทำไม่ได้</div>
+      </div>
+      <div class="win-card fade-in">
+        <div class="win-title">⏱️ Echo review ล่าช้า</div>
+        <div class="win-body">ผู้ป่วยรอ report 3–5 วัน · ขยับแผนรักษาไม่ได้</div>
+      </div>
+    </div>
+  </div>
+  <div class="card highlight" style="margin-top:2%;text-align:center;">
+    <span class="small-text" style="color:var(--muted);">คำถามคือ: </span>
+    <span class="small-text" style="color:var(--head);font-weight:600;">เทคโนโลยีแก้ปัญหาเหล่านี้ได้จริงไหม?</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S3 — THE NUMBERS
+══════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="slide-title">ตัวเลขที่ทำให้<span class="accent">ต้องลงมือ</span></div>
+  <div class="cols-3 flex1" style="align-items:center;">
+    <div class="stat-block card red-glow fade-in" style="padding:5% 3%;">
+      <div class="stat-num">7<span style="font-size:3vw;">เดือน</span></div>
+      <div class="stat-label">คิวรอตรวจ Echo<br>ของ รพ.อุดรธานี</div>
+      <div style="margin-top:6%;"><span class="badge badge-red">สัญญาณอันตราย</span></div>
+    </div>
+    <div class="stat-block card fade-in" style="padding:5% 3%;border-color:var(--border);">
+      <div class="stat-num" style="color:var(--teal);">~20</div>
+      <div class="stat-label">รพช. ในอุดรธานี<br>ดูแล HF ไม่มีแพทย์หัวใจ</div>
+      <div style="margin-top:6%;"><span class="badge badge-teal">ช่องว่างการดูแล</span></div>
+    </div>
+    <div class="stat-block card amber-glow fade-in" style="padding:5% 3%;">
+      <div class="stat-num">&lt;10<span style="font-size:3vw;">%</span></div>
+      <div class="stat-label">HFrEF ได้รับ<br>4 Pillars GDMT ครบ</div>
+      <div style="margin-top:6%;"><span class="badge badge-amber">โอกาสปรับปรุง</span></div>
+    </div>
+  </div>
+  <div class="card highlight" style="margin-top:2%;text-align:center;">
+    <p class="body-text">
+      ปัญหาไม่ได้อยู่ที่ความรู้ของบุคลากร<br>
+      <strong style="color:var(--amber);">แต่อยู่ที่ระบบที่ทำให้การทำงานที่ดี "ยากเกินไป"</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S4 — WHAT IS VIRTUAL-HF
+══════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="slide-title"><span class="teal">Virtual-HF</span> คืออะไร?</div>
+  <div class="cols-2 flex1">
+    <div class="col" style="gap:2%;">
+      <div class="card teal-glow fade-in">
+        <div style="font-size:1.4vw;font-weight:700;color:var(--teal);margin-bottom:0.5%;">🏥 โรงพยาบาลเสมือน 100 เตียง</div>
+        <div class="small-text">รพช. 20 แห่งเชื่อมกับ Hub อุดรธานี<br>บริหารเตียง HF ทั้งจังหวัดในหน้าจอเดียว</div>
+      </div>
+      <div class="card amber-glow fade-in">
+        <div style="font-size:1.4vw;font-weight:700;color:var(--amber);margin-bottom:0.5%;">📡 FoCUS Review ทางไกล</div>
+        <div class="small-text">พยาบาลอัด echo clip 4 views ส่งมา<br>แพทย์หัวใจ review และ report กลับใน 24 ชม.</div>
+      </div>
+      <div class="card teal-glow fade-in">
+        <div style="font-size:1.4vw;font-weight:700;color:var(--teal);margin-bottom:0.5%;">🔔 Smart Alerts</div>
+        <div class="small-text">30-day readmission แจ้งเตือนอัตโนมัติ<br>ก่อนที่จะ admit ผู้ป่วยซ้ำโดยไม่รู้ประวัติ</div>
+      </div>
+      <div class="card fade-in">
+        <div style="font-size:1.3vw;font-weight:700;color:var(--teal);margin-bottom:0.5%;">📱 ทำงานบนมือถือ 100%</div>
+        <div class="small-text">PWA · ไม่ต้องติดตั้ง · ทุกอุปกรณ์ ทุก OS</div>
+      </div>
+    </div>
+    <div class="col" style="justify-content:center;">
+      <div class="code-block">
+<span class="c-muted">     รพช. (~20 แห่ง)    Hub: อุดรธานี</span>
+           │                    │
+       <span class="c-amber">[Nurse]</span>          <span class="c-teal">[Cardiologist]</span>
+           │                    │
+   บันทึก Admit ──────► <span class="c-teal">เห็น Bed ทั้งหมด</span>
+   อัด FoCUS clip ───► <span class="c-teal">Review Echo</span>
+   ขอ Consult ──────► <span class="c-teal">ตอบ + Report</span>
+           │                    │
+           └──── <span class="c-green">Firestore</span> ──────┘
+                  <span class="c-muted">(Real-time sync)</span>
+
+   Status: <span class="c-amber">Draft</span> → <span class="c-amber">Pending</span> → <span class="c-green">Finalized ✓</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S5 — SMALL WINS
+══════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="slide-title">Small Wins — <span class="teal">สิ่งที่เปลี่ยนไปจริงๆ</span></div>
+  <div class="cols-2 flex1" style="gap:2%;">
+    <div class="col" style="gap:2%;">
+      <div class="card teal-glow fade-in" style="flex:1;">
+        <div style="font-size:1.45vw;font-weight:700;color:var(--teal);margin-bottom:1%;">⏱️ เวลา Consult ลดลง</div>
+        <div class="small-text">จากโทรศัพท์เฉลี่ย 15–20 นาที เป็น async review ทำได้หลังเลิกงาน</div>
+        <hr class="divider">
+        <div class="tiny">แพทย์ตอบได้ระหว่างพักกิน · ไม่ต้องหยุด Cath Lab</div>
+      </div>
+      <div class="card amber-glow fade-in" style="flex:1;">
+        <div style="font-size:1.45vw;font-weight:700;color:var(--amber);margin-bottom:1%;">📊 Data ที่ capture ได้จริง</div>
+        <div class="small-text">GDMT prescription rate · NYHA class · door-to-diuretic time</div>
+        <hr class="divider">
+        <div class="tiny">ข้อมูลที่เคยหาย — ตอนนี้อยู่ใน dashboard ทุกวัน</div>
+      </div>
+    </div>
+    <div class="col" style="gap:2%;">
+      <div class="card teal-glow fade-in" style="flex:1;">
+        <div style="font-size:1.45vw;font-weight:700;color:var(--teal);margin-bottom:1%;">🫀 พยาบาลมั่นใจขึ้น</div>
+        <div class="small-text">"ไม่ต้องกลัวว่าจะทำผิด" — มีระบบ guide และแพทย์อยู่เบื้องหลัง</div>
+        <hr class="divider">
+        <div class="tiny">FoCUS view ที่ถูกต้อง — ระบบ guide ให้ทุก step พร้อม SVG overlay</div>
+      </div>
+      <div class="card amber-glow fade-in" style="flex:1;">
+        <div style="font-size:1.45vw;font-weight:700;color:var(--amber);margin-bottom:1%;">🔗 Readmission ถูก detect</div>
+        <div class="small-text">ผู้ป่วย admit รพช. B หลังออกจาก รพช. A 20 วัน — ระบบแจ้งเตือนทันที</div>
+        <hr class="divider">
+        <div class="tiny">ป้องกันการรักษาซ้ำซ้อนและการส่งต่อที่ไม่จำเป็น</div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1.5%;text-align:center;">
+    <span class="small-text" style="color:var(--muted);font-style:italic;">
+      "Small win ที่เห็นได้ คือสิ่งที่ทำให้คนอื่นอยากเข้าร่วม"
+    </span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S6 — IMPLEMENTATION SCIENCE
+══════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="slide-title">ทำไมถึงสำเร็จ? — <span class="accent">Implementation Science</span></div>
+  <div class="cols-3 flex1">
+    <div class="card teal-glow fade-in" style="text-align:center;">
+      <div style="font-size:3.5vw;margin-bottom:3%;">🌱</div>
+      <div style="font-size:1.5vw;font-weight:700;color:var(--teal);margin-bottom:2%;">หา Early Adopters ก่อน</div>
+      <div class="small-text" style="margin-bottom:3%;">ไม่ได้บังคับทุก รพช. พร้อมกัน เริ่มกับ 3–4 แห่งที่ "อยากลอง" แล้วให้เขาเป็น champion ขยายต่อ</div>
+      <div class="badge badge-teal">Diffusion of Innovations</div>
+    </div>
+    <div class="card amber-glow fade-in" style="text-align:center;">
+      <div style="font-size:3.5vw;margin-bottom:3%;">💡</div>
+      <div style="font-size:1.5vw;font-weight:700;color:var(--amber);margin-bottom:2%;">แก้ปัญหาที่เขามี<br>ไม่ใช่ปัญหาที่เราเห็น</div>
+      <div class="small-text" style="margin-bottom:3%;">ถามพยาบาลก่อน: "อะไรที่ทำให้งานยาก?" ระบบถูกออกแบบจาก pain point จริง ไม่ใช่จาก feature list</div>
+      <div class="badge badge-amber">User-Centered Design</div>
+    </div>
+    <div class="card fade-in" style="text-align:center;">
+      <div style="font-size:3.5vw;margin-bottom:3%;">📈</div>
+      <div style="font-size:1.5vw;font-weight:700;color:var(--head);margin-bottom:2%;">Desire ต้องมาก่อน<br>Training</div>
+      <div class="small-text" style="margin-bottom:3%;">ADKAR: Awareness → <strong style="color:var(--amber);">Desire</strong> → Knowledge ความล้มเหลวส่วนใหญ่อยู่ที่ D — คนไม่ "อยาก" เปลี่ยน</div>
+      <div class="badge badge-slate">ADKAR Model</div>
+    </div>
+  </div>
+  <div class="card highlight" style="margin-top:2%;text-align:center;">
+    <p class="small-text">
+      <strong style="color:var(--amber);">กฎข้อเดียว:</strong>
+      <span style="color:var(--text);"> ถ้าระบบทำให้งานยากขึ้น คนจะไม่ใช้</span>
+    </p>
+    <div class="tiny" style="margin-top:0.5%;">ความสำเร็จไม่ได้วัดจาก feature — แต่วัดจาก adoption rate</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S7 — HUB & SPOKE
+══════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="slide-title">Hub-and-Spoke — <span class="teal">เครือข่ายที่ทำงานจริง</span></div>
+  <div class="cols-2 flex1">
+    <div class="col" style="justify-content:center;">
+      <div class="code-block" style="font-size:1.05vw;line-height:2.1;">
+         <span class="c-teal">🏥 Hub</span>
+    โรงพยาบาลอุดรธานี
+    <span class="c-muted">(Cardiologist on call)</span>
+         │
+    ┌────┴────┐
+    │ <span class="c-amber">Virtual</span> │  ← Firestore real-time
+    │   <span class="c-amber">HF</span>    │
+    └────┬────┘
+    ┌────┴────────────────┐
+    │                     │
+<span class="c-green">🏨 รพช. A</span>          <span class="c-green">🏨 รพช. B ... (~20)</span>
+พยาบาลบันทึก      พยาบาลบันทึก
+FoCUS upload       FoCUS upload</div>
+    </div>
+    <div class="col" style="gap:2%;">
+      <div class="card teal-glow fade-in">
+        <div style="font-size:1.4vw;font-weight:700;color:var(--teal);margin-bottom:1%;">Hub ทำอะไร?</div>
+        <ul class="small-text" style="list-style:none;display:grid;gap:0.5%;">
+          <li>✓ Review echo ทุก case</li>
+          <li>✓ ดู dashboard KPI ทั้งจังหวัด</li>
+          <li>✓ Re-admission case alert</li>
+          <li>✓ Case rounds รายสัปดาห์ online</li>
+        </ul>
+      </div>
+      <div class="card amber-glow fade-in">
+        <div style="font-size:1.4vw;font-weight:700;color:var(--amber);margin-bottom:1%;">Spoke ได้อะไร?</div>
+        <ul class="small-text" style="list-style:none;display:grid;gap:0.5%;">
+          <li>✓ Backup จากแพทย์หัวใจ ไม่ต้องส่งตัว</li>
+          <li>✓ เรียนรู้จาก report ที่ได้รับ</li>
+          <li>✓ Data ของตัวเองดูได้ตลอด</li>
+          <li>✓ ความมั่นใจในการดูแล HF</li>
+        </ul>
+      </div>
+      <div class="card fade-in">
+        <div class="tiny" style="margin-bottom:0.5%;">เป้าหมายระยะยาว</div>
+        <div class="small-text">ขยายสู่ทุกจังหวัดในเขตสุขภาพที่ 8<br>ข้อมูลรายงานระดับเขตแบบ real-time</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S8 — NOT JUST TECH
+══════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="slide-title">เทคโนโลยีไม่ใช่คำตอบ — <span class="accent">แต่เป็นตัวเปิดทาง</span></div>
+  <div class="cols-3 flex1">
+    <div class="card fade-in" style="text-align:center;align-items:center;justify-content:center;display:flex;flex-direction:column;">
+      <div style="font-size:4vw;margin-bottom:3%;">🔬</div>
+      <div style="font-size:1.6vw;font-weight:700;color:var(--head);margin-bottom:2%;">เทคโนโลยี</div>
+      <div class="small-text" style="color:var(--muted);">ทำให้สิ่งที่ดีนั้น<br>"ทำได้ง่ายขึ้น"<br>แต่ไม่ได้สร้าง<br>แรงจูงใจขึ้นมาเอง</div>
+    </div>
+    <div class="card teal-glow fade-in" style="text-align:center;align-items:center;justify-content:center;display:flex;flex-direction:column;">
+      <div style="font-size:4vw;margin-bottom:3%;">🤝</div>
+      <div style="font-size:1.6vw;font-weight:700;color:var(--teal);margin-bottom:2%;">ความสัมพันธ์</div>
+      <div class="small-text">พยาบาลไว้ใจระบบ<br>เพราะไว้ใจ "คน"<br>ที่อยู่เบื้องหลัง<br>ก่อนที่จะไว้ใจ app</div>
+    </div>
+    <div class="card fade-in" style="text-align:center;align-items:center;justify-content:center;display:flex;flex-direction:column;">
+      <div style="font-size:4vw;margin-bottom:3%;">📐</div>
+      <div style="font-size:1.6vw;font-weight:700;color:var(--head);margin-bottom:2%;">ระบบ</div>
+      <div class="small-text" style="color:var(--muted);">ออกแบบให้<br>"ทำถูกง่าย<br>ทำผิดยาก"<br>ไม่ใช่แค่สวยงาม</div>
+    </div>
+  </div>
+  <div class="card highlight" style="margin-top:2%;">
+    <p style="text-align:center;" class="body-text">
+      Smart Healthcare ไม่ได้หมายความว่า AI ฉลาด<br>
+      <strong style="color:var(--amber);">"แต่หมายความว่าระบบช่วยให้คนทำงานได้ฉลาดขึ้น"</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     S9 — CALL TO ACTION
+══════════════════════════════════════ -->
+<div class="slide" id="s9" style="background:linear-gradient(135deg,#F0FDFA 0%,#FFFBEB 60%,#F8FAFC 100%);">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+    <div class="badge badge-teal" style="margin-bottom:3%;font-size:1.1vw;">Call to Action</div>
+
+    <h2 style="font-size:4.2vw;font-weight:800;color:var(--head);line-height:1.2;margin-bottom:4%;">
+      ถ้าทำได้ที่อุดรฯ<br>
+      <span style="color:var(--amber);">ทุกเขตก็ทำได้</span>
+    </h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2%;width:80%;">
+      <div class="card fade-in" style="text-align:center;border-color:var(--teal-bd);">
+        <div class="step-num teal" style="width:3.5vw;height:3.5vw;font-size:1.6vw;">1</div>
+        <div style="font-size:1.3vw;color:var(--teal);font-weight:600;margin-bottom:0.5%;">หา Early Adopters</div>
+        <div class="tiny">1–2 รพช. ที่พร้อม<br>และเต็มใจลองก่อน</div>
+      </div>
+      <div class="card fade-in amber-glow" style="text-align:center;">
+        <div class="step-num amber" style="width:3.5vw;height:3.5vw;font-size:1.6vw;">2</div>
+        <div style="font-size:1.3vw;color:var(--amber);font-weight:600;margin-bottom:0.5%;">เริ่ม Small วัดผล</div>
+        <div class="tiny">ดู Small Win ก่อน<br>แล้วค่อยขยาย</div>
+      </div>
+      <div class="card fade-in" style="text-align:center;border-color:var(--teal-bd);">
+        <div class="step-num teal" style="width:3.5vw;height:3.5vw;font-size:1.6vw;">3</div>
+        <div style="font-size:1.3vw;color:var(--teal);font-weight:600;margin-bottom:0.5%;">แชร์ Data กลับ</div>
+        <div class="tiny">ให้เครือข่ายเห็น<br>คุณค่าร่วมกัน</div>
+      </div>
+    </div>
+
+    <div class="tiny" style="margin-top:4%;">
+      🌐 <span style="color:var(--teal);font-weight:600;">virtual-hf.web.app</span>
+      &nbsp;·&nbsp; สอบถามเพิ่มเติมหลังการบรรยาย
+    </div>
+  </div>
+</div>
+
+</div></div><!-- /slide-wrap /deck -->
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total  = slides.length;
+let current  = 0;
+const bar    = document.getElementById('progress-bar');
+const ctr    = document.getElementById('counter');
+
+function goTo(n) {
+  slides[current].classList.remove('active');
+  current = Math.max(0, Math.min(n, total - 1));
+  const s = slides[current];
+  s.classList.add('active', 'enter');
+  s.addEventListener('animationend', () => s.classList.remove('enter'), { once: true });
+  bar.style.width = ((current + 1) / total * 100) + '%';
+  ctr.textContent = (current + 1) + ' / ' + total;
+}
+
+document.getElementById('btn-prev').onclick = () => goTo(current - 1);
+document.getElementById('btn-next').onclick = () => goTo(current + 1);
+
+document.addEventListener('keydown', e => {
+  if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); goTo(current + 1); }
+  if (['ArrowLeft','ArrowUp'].includes(e.key))        { e.preventDefault(); goTo(current - 1); }
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End')  goTo(total - 1);
+});
+
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) goTo(current + (dx < 0 ? 1 : -1));
+}, { passive: true });
+
+goTo(0);
+</script>
+</body>
+</html>
