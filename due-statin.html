@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUE — ยาลดไขมันราคาสูง</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --border: #dde1e7;
+    --border-focus: #1a56db;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --text-label: #374151;
+    --accent: #1a56db;
+    --accent-light: #eff4ff;
+    --pass: #065f46;
+    --pass-bg: #d1fae5;
+    --fail: #991b1b;
+    --fail-bg: #fee2e2;
+    --warn: #92400e;
+    --warn-bg: #fef3c7;
+    --section-head: #1e293b;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans Thai', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px 64px;
+    line-height: 1.6;
+  }
+
+  .app-header {
+    max-width: 760px;
+    margin: 0 auto 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .app-icon {
+    width: 48px; height: 48px;
+    background: var(--accent);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 22px;
+  }
+
+  .app-title { font-size: 20px; font-weight: 600; color: var(--section-head); }
+  .app-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    max-width: 760px;
+    margin: 0 auto 16px;
+  }
+
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .field-row { margin-bottom: 14px; }
+  .field-row:last-child { margin-bottom: 0; }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-label);
+    margin-bottom: 5px;
+  }
+
+  label .req { color: #dc2626; margin-left: 2px; }
+  label .hint { font-weight: 400; color: var(--text-muted); margin-left: 6px; font-size: 12px; }
+
+  input[type="text"], input[type="number"], input[type="date"], select, textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    transition: border-color 0.15s;
+    outline: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
+  }
+
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+  .radio-group, .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .radio-pill input { display: none; }
+  .radio-pill label, .check-pill label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin: 0;
+    user-select: none;
+  }
+  .radio-pill input:checked + label,
+  .check-pill input:checked + label {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .radio-pill label:hover, .check-pill label:hover {
+    border-color: #93c5fd;
+    background: #f0f9ff;
+  }
+  .check-pill input { display: none; }
+
+  .subcard {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 10px;
+  }
+
+  .subcard-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* Criteria badge */
+  .criteria-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .crit-badge {
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+  }
+  .crit-badge.pending { background: var(--warn-bg); color: var(--warn); border-color: #fcd34d; }
+  .crit-badge.pass { background: var(--pass-bg); color: var(--pass); border-color: #6ee7b7; }
+  .crit-badge.fail { background: var(--fail-bg); color: var(--fail); border-color: #fca5a5; }
+
+  /* Output */
+  .output-box {
+    background: #0f172a;
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: #e2e8f0;
+    white-space: pre-wrap;
+    line-height: 1.75;
+    min-height: 80px;
+    position: relative;
+  }
+
+  .output-placeholder { color: #475569; font-style: italic; font-family: var(--sans); }
+
+  .copy-btn {
+    position: absolute;
+    top: 12px; right: 12px;
+    padding: 5px 12px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    color: #94a3b8;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--sans);
+  }
+  .copy-btn:hover { background: #334155; color: #e2e8f0; }
+  .copy-btn.copied { color: #4ade80; border-color: #4ade80; }
+
+  .btn-generate {
+    width: 100%;
+    padding: 13px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    letter-spacing: 0.01em;
+    max-width: 760px;
+    display: block;
+    margin: 0 auto;
+  }
+  .btn-generate:hover { background: #1648c4; }
+  .btn-generate:active { background: #1340b0; }
+
+  .verdict-card {
+    max-width: 760px;
+    margin: 0 auto 16px;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: none;
+    align-items: center;
+    gap: 14px;
+  }
+  .verdict-card.show { display: flex; }
+  .verdict-card.pass { background: var(--pass-bg); border: 1px solid #6ee7b7; }
+  .verdict-card.fail { background: var(--fail-bg); border: 1px solid #fca5a5; }
+  .verdict-card.warn { background: var(--warn-bg); border: 1px solid #fcd34d; }
+
+  .verdict-icon { font-size: 28px; flex-shrink: 0; }
+  .verdict-title { font-size: 15px; font-weight: 600; }
+  .verdict-desc { font-size: 13px; margin-top: 2px; }
+
+  .indent-check {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    margin-top: 6px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .check-item input[type="checkbox"] {
+    width: 16px; height: 16px;
+    margin-top: 2px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 500px) {
+    .row-2, .row-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="app-icon">💊</div>
+  <div>
+    <div class="app-title">Drug Use Evaluation — ยาลดไขมันราคาสูง</div>
+    <div class="app-sub">Pitavastatin · Rosuvastatin | ประเมินตามเกณฑ์บัญชียาหลักแห่งชาติ</div>
+  </div>
+</div>
+
+<!-- Section 1: Patient Info -->
+<div class="card">
+  <div class="section-title">ข้อมูลผู้ป่วย</div>
+  <div class="row-3">
+    <div class="field-row">
+      <label>HN <span class="req">*</span></label>
+      <input type="text" id="hn" placeholder="เช่น 12345678">
+    </div>
+    <div class="field-row">
+      <label>วันที่ขอ <span class="req">*</span></label>
+      <input type="date" id="req_date">
+    </div>
+    <div class="field-row">
+      <label>แพทย์ผู้ขอ</label>
+      <input type="text" id="doctor" placeholder="ชื่อ-นามสกุล">
+    </div>
+  </div>
+  <div class="row-2">
+    <div class="field-row">
+      <label>ชื่อ-สกุลผู้ป่วย</label>
+      <input type="text" id="pt_name" placeholder="ชื่อ นามสกุล">
+    </div>
+    <div class="field-row">
+      <label>อายุ / เพศ</label>
+      <div style="display:flex;gap:8px">
+        <input type="number" id="age" placeholder="ปี" style="width:80px">
+        <select id="sex" style="flex:1">
+          <option value="">-- เพศ --</option>
+          <option value="ชาย">ชาย</option>
+          <option value="หญิง">หญิง</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 2: Drug Selection -->
+<div class="card">
+  <div class="section-title">ยาที่ขอ</div>
+  <div class="field-row">
+    <label>เลือกยา <span class="req">*</span></label>
+    <div class="radio-group">
+      <div class="radio-pill">
+        <input type="radio" name="drug" id="drug_pita" value="Pitavastatin">
+        <label for="drug_pita">Pitavastatin</label>
+      </div>
+      <div class="radio-pill">
+        <input type="radio" name="drug" id="drug_rosu" value="Rosuvastatin">
+        <label for="drug_rosu">Rosuvastatin</label>
+      </div>
+    </div>
+  </div>
+  <div class="row-2" style="margin-top:12px">
+    <div class="field-row">
+      <label>ขนาดที่ขอ (mg)</label>
+      <select id="drug_dose">
+        <option value="">-- เลือกยาก่อน --</option>
+      </select>
+    </div>
+    <div class="field-row">
+      <label>ความถี่</label>
+      <select id="drug_freq">
+        <option value="วันละ 1 ครั้ง">วันละ 1 ครั้ง (OD)</option>
+        <option value="วันเว้นวัน">วันเว้นวัน (QOD)</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Section 3: Indication -->
+<div class="card">
+  <div class="section-title">Indication <span class="req" style="text-transform:none;letter-spacing:0">*</span></div>
+
+  <div class="field-row">
+    <label>ประเภท Prevention</label>
+    <div class="radio-group" id="prevention_group">
+      <div class="radio-pill">
+        <input type="radio" name="prevention" id="prev_secondary" value="secondary">
+        <label for="prev_secondary">Secondary Prevention</label>
+      </div>
+      <div class="radio-pill">
+        <input type="radio" name="prevention" id="prev_primary" value="primary">
+        <label for="prev_primary">Primary Prevention</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secondary Prevention Detail -->
+  <div id="secondary_detail" class="subcard" style="display:none">
+    <div class="subcard-title">Secondary Prevention — ระบุโรค/เหตุการณ์</div>
+    <div class="checkbox-group" id="secondary_conditions">
+      <div class="check-pill"><input type="checkbox" id="cond_acs" value="ACS / STEMI / NSTEMI"><label for="cond_acs">ACS / STEMI / NSTEMI</label></div>
+      <div class="check-pill"><input type="checkbox" id="cond_pci" value="ประวัติ PCI / CABG"><label for="cond_pci">ประวัติ PCI / CABG</label></div>
+      <div class="check-pill"><input type="checkbox" id="cond_cad" value="Stable CAD (documented)"><label for="cond_cad">Stable CAD (documented)</label></div>
+      <div class="check-pill"><input type="checkbox" id="cond_stroke" value="Ischemic Stroke / TIA"><label for="cond_stroke">Ischemic Stroke / TIA</label></div>
+      <div class="check-pill"><input type="checkbox" id="cond_pad" value="PAD"><label for="cond_pad">PAD</label></div>
+      <div class="check-pill"><input type="checkbox" id="cond_dm_cad" value="DM + subclinical atherosclerosis"><label for="cond_dm_cad">DM + subclinical atherosclerosis</label></div>
+    </div>
+  </div>
+
+  <!-- Primary Prevention Detail -->
+  <div id="primary_detail" class="subcard" style="display:none">
+    <div class="subcard-title">Primary Prevention — เกณฑ์ความเสี่ยงสูง</div>
+    <div class="checkbox-group">
+      <div class="check-pill"><input type="checkbox" id="pri_fh" value="Familial Hypercholesterolemia (FH)"><label for="pri_fh">Familial Hypercholesterolemia (FH)</label></div>
+      <div class="check-pill"><input type="checkbox" id="pri_dm_risk" value="DM + ASCVD risk สูง (≥7.5% 10yr)"><label for="pri_dm_risk">DM + ASCVD risk ≥7.5%</label></div>
+      <div class="check-pill"><input type="checkbox" id="pri_ckd" value="CKD stage 3–4"><label for="pri_ckd">CKD stage 3–4</label></div>
+      <div class="check-pill"><input type="checkbox" id="pri_hi_risk" value="High ASCVD risk ≥10% (Thai score)"><label for="pri_hi_risk">High ASCVD risk ≥10%</label></div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 4: LDL -->
+<div class="card">
+  <div class="section-title">ผล LDL ล่าสุด</div>
+  <div class="row-3">
+    <div class="field-row">
+      <label>LDL-C (mg/dL) <span class="req">*</span></label>
+      <input type="number" id="ldl_value" placeholder="เช่น 142">
+    </div>
+    <div class="field-row">
+      <label>วันที่เจาะ</label>
+      <input type="date" id="ldl_date">
+    </div>
+    <div class="field-row">
+      <label>LDL target (mg/dL)</label>
+      <select id="ldl_target">
+        <option value="55">&lt;55 (Very high risk)</option>
+        <option value="70">&lt;70 (High risk)</option>
+        <option value="100">&lt;100 (Moderate risk)</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Section 5: Prior Statin Failure -->
+<div class="card">
+  <div class="section-title">การใช้ยาบัญชียาหลักก่อนหน้า <span class="req" style="text-transform:none;letter-spacing:0">*</span></div>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">ผ่านการใช้ Simvastatin หรือ Atorvastatin แล้วไม่ได้ผล หรือมีผลข้างเคียง</p>
+
+  <div class="field-row">
+    <label>เหตุผลที่ไม่ใช้ยาบัญชียาหลัก <span class="req">*</span></label>
+    <div class="radio-group">
+      <div class="radio-pill">
+        <input type="radio" name="fail_reason" id="fail_ineffective" value="ineffective">
+        <label for="fail_ineffective">ไม่ได้ผล (LDL ไม่ถึง target)</label>
+      </div>
+      <div class="radio-pill">
+        <input type="radio" name="fail_reason" id="fail_se" value="side_effect">
+        <label for="fail_se">ผลข้างเคียง</label>
+      </div>
+      <div class="radio-pill">
+        <input type="radio" name="fail_reason" id="fail_interaction" value="interaction">
+        <label for="fail_interaction">Major Drug Interaction</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ineffective -->
+  <div id="detail_ineffective" class="subcard" style="display:none">
+    <div class="subcard-title">ยาที่ใช้ก่อนหน้า และผล LDL</div>
+    <div class="row-3">
+      <div class="field-row">
+        <label>ยาที่ใช้</label>
+        <select id="prev_drug">
+          <option value="Simvastatin 40 mg OD">Simvastatin 40 mg OD</option>
+          <option value="Simvastatin 80 mg OD">Simvastatin 80 mg OD</option>
+          <option value="Atorvastatin 20 mg OD">Atorvastatin 20 mg OD</option>
+          <option value="Atorvastatin 40 mg OD">Atorvastatin 40 mg OD</option>
+          <option value="Atorvastatin 80 mg OD">Atorvastatin 80 mg OD</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <label>LDL ขณะใช้ยา (mg/dL)</label>
+        <input type="number" id="prev_ldl" placeholder="เช่น 105">
+      </div>
+      <div class="field-row">
+        <label>ระยะเวลาที่ใช้</label>
+        <input type="text" id="prev_duration" placeholder="เช่น 3 เดือน">
+      </div>
+    </div>
+  </div>
+
+  <!-- Side Effects -->
+  <div id="detail_se" class="subcard" style="display:none">
+    <div class="subcard-title">ผลข้างเคียงที่พบ</div>
+    <div class="checkbox-group">
+      <div class="check-pill"><input type="checkbox" id="se_myalgia" value="myalgia (ปวดกล้ามเนื้อ)"><label for="se_myalgia">Myalgia (ปวดกล้ามเนื้อ)</label></div>
+      <div class="check-pill"><input type="checkbox" id="se_myositis" value="myositis (ยืนยันทาง lab: CK สูง)"><label for="se_myositis">Myositis (CK สูง)</label></div>
+      <div class="check-pill"><input type="checkbox" id="se_rhabdo" value="rhabdomyolysis"><label for="se_rhabdo">Rhabdomyolysis</label></div>
+      <div class="check-pill"><input type="checkbox" id="se_hepatitis" value="hepatitis (LFT สูง >3×ULN)"><label for="se_hepatitis">Hepatitis (LFT &gt;3×ULN)</label></div>
+    </div>
+    <div class="field-row" style="margin-top:10px">
+      <label>ยาที่ก่อให้เกิดผลข้างเคียง</label>
+      <div class="row-2">
+        <select id="se_drug">
+          <option value="Simvastatin">Simvastatin</option>
+          <option value="Atorvastatin">Atorvastatin</option>
+          <option value="Simvastatin และ Atorvastatin">ทั้งสองชนิด</option>
+        </select>
+        <input type="text" id="se_dose" placeholder="ขนาดยา เช่น 40 mg OD">
+      </div>
+    </div>
+  </div>
+
+  <!-- Interaction -->
+  <div id="detail_interaction" class="subcard" style="display:none">
+    <div class="subcard-title">Major Drug Interaction</div>
+    <div class="field-row">
+      <label>ยาที่มี interaction กับ statin</label>
+      <input type="text" id="interact_drug" placeholder="เช่น Cyclosporine, Gemfibrozil, Amiodarone">
+    </div>
+    <div class="field-row">
+      <label>Statin ที่ไม่สามารถใช้ได้</label>
+      <div class="checkbox-group">
+        <div class="check-pill"><input type="checkbox" id="int_simva" value="Simvastatin"><label for="int_simva">Simvastatin</label></div>
+        <div class="check-pill"><input type="checkbox" id="int_atorva" value="Atorvastatin"><label for="int_atorva">Atorvastatin</label></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 6: Additional Info -->
+<div class="card">
+  <div class="section-title">ข้อมูลเพิ่มเติม</div>
+  <div class="row-2">
+    <div class="field-row">
+      <label>Comorbidities สำคัญ</label>
+      <div class="checkbox-group" id="comorbidities">
+        <div class="check-pill"><input type="checkbox" id="co_dm" value="DM"><label for="co_dm">DM</label></div>
+        <div class="check-pill"><input type="checkbox" id="co_htn" value="HT"><label for="co_htn">HT</label></div>
+        <div class="check-pill"><input type="checkbox" id="co_ckd" value="CKD"><label for="co_ckd">CKD</label></div>
+        <div class="check-pill"><input type="checkbox" id="co_hf" value="HF"><label for="co_hf">HF</label></div>
+        <div class="check-pill"><input type="checkbox" id="co_af" value="AF"><label for="co_af">AF</label></div>
+      </div>
+    </div>
+    <div class="field-row">
+      <label>ข้อมูลเพิ่มเติม / หมายเหตุ</label>
+      <textarea id="extra_note" rows="3" placeholder="เช่น ผู้ป่วยปฏิเสธการรับประทาน Atorvastatin ซ้ำ..."></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- Generate Button -->
+<button class="btn-generate" onclick="evaluate()">📋 ประเมินและสร้าง DUE Text</button>
+
+<!-- Verdict -->
+<div class="verdict-card" id="verdict_card">
+  <div class="verdict-icon" id="verdict_icon"></div>
+  <div>
+    <div class="verdict-title" id="verdict_title"></div>
+    <div class="verdict-desc" id="verdict_desc"></div>
+  </div>
+</div>
+
+<!-- Output -->
+<div class="card" id="output_section" style="display:none">
+  <div class="section-title">DUE Text สำหรับบันทึกใน HIS</div>
+  <div class="output-box" id="output_text">
+    <span class="output-placeholder">กำลังประมวลผล...</span>
+    <button class="copy-btn" onclick="copyText()" id="copy_btn">คัดลอก</button>
+  </div>
+</div>
+
+<script>
+// Drug dose options
+const doseMap = {
+  'Pitavastatin': ['1 mg', '2 mg', '4 mg'],
+  'Rosuvastatin': ['5 mg', '10 mg', '20 mg', '40 mg']
+};
+
+// Init date
+document.getElementById('req_date').valueAsDate = new Date();
+
+// Drug change → update doses
+document.querySelectorAll('input[name="drug"]').forEach(r => {
+  r.addEventListener('change', () => {
+    const sel = document.getElementById('drug_dose');
+    sel.innerHTML = '';
+    doseMap[r.value].forEach(d => {
+      const o = document.createElement('option');
+      o.value = d; o.textContent = d;
+      sel.appendChild(o);
+    });
+  });
+});
+
+// Prevention toggle
+document.querySelectorAll('input[name="prevention"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('secondary_detail').style.display =
+      r.value === 'secondary' ? 'block' : 'none';
+    document.getElementById('primary_detail').style.display =
+      r.value === 'primary' ? 'block' : 'none';
+  });
+});
+
+// Fail reason toggle
+document.querySelectorAll('input[name="fail_reason"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('detail_ineffective').style.display = 'none';
+    document.getElementById('detail_se').style.display = 'none';
+    document.getElementById('detail_interaction').style.display = 'none';
+    if (r.value === 'ineffective') document.getElementById('detail_ineffective').style.display = 'block';
+    if (r.value === 'side_effect') document.getElementById('detail_se').style.display = 'block';
+    if (r.value === 'interaction') document.getElementById('detail_interaction').style.display = 'block';
+  });
+});
+
+function getChecked(group) {
+  return [...document.querySelectorAll(`#${group} input[type="checkbox"]:checked`)].map(x => x.value);
+}
+
+function getCheckedGlobal(selector) {
+  return [...document.querySelectorAll(`${selector}:checked`)].map(x => x.value);
+}
+
+function evaluate() {
+  const drug = document.querySelector('input[name="drug"]:checked')?.value;
+  const prevention = document.querySelector('input[name="prevention"]:checked')?.value;
+  const failReason = document.querySelector('input[name="fail_reason"]:checked')?.value;
+  const ldl = parseFloat(document.getElementById('ldl_value').value);
+  const ldlTarget = parseFloat(document.getElementById('ldl_target').value);
+  const hn = document.getElementById('hn').value.trim();
+  const ptName = document.getElementById('pt_name').value.trim();
+  const age = document.getElementById('age').value;
+  const sex = document.getElementById('sex').value;
+  const dose = document.getElementById('drug_dose').value;
+  const freq = document.getElementById('drug_freq').value;
+  const doctor = document.getElementById('doctor').value.trim();
+  const reqDate = document.getElementById('req_date').value;
+  const extraNote = document.getElementById('extra_note').value.trim();
+  const ldlDate = document.getElementById('ldl_date').value;
+  const comorbidities = getCheckedGlobal('#comorbidities input');
+
+  const errors = [];
+  if (!drug) errors.push('กรุณาเลือกยา');
+  if (!prevention) errors.push('กรุณาระบุประเภท Prevention');
+  if (!failReason) errors.push('กรุณาระบุเหตุผลที่ไม่ใช้ยาบัญชียาหลัก');
+  if (!ldl) errors.push('กรุณาใส่ค่า LDL');
+
+  if (errors.length) {
+    showVerdict('warn', '⚠️', 'กรุณากรอกข้อมูลให้ครบ', errors.join(' · '));
+    return;
+  }
+
+  // Build criteria checks
+  let criteriaPass = true;
+  const issues = [];
+
+  // Indication check
+  let indicationOk = false;
+  let indicationDetail = '';
+  if (prevention === 'secondary') {
+    const conds = getChecked('secondary_conditions');
+    if (conds.length > 0) {
+      indicationOk = true;
+      indicationDetail = conds.join(', ');
+    } else {
+      issues.push('ยังไม่ได้ระบุโรค/เหตุการณ์สำหรับ Secondary Prevention');
+    }
+  } else {
+    const priConds = getCheckedGlobal('#primary_detail input[type="checkbox"]');
+    if (priConds.length > 0) {
+      indicationOk = true;
+      indicationDetail = priConds.join(', ');
+    } else {
+      issues.push('ยังไม่ได้ระบุเกณฑ์ Primary Prevention');
+    }
+  }
+
+  // Prior statin detail
+  let priorStatin = '';
+  let failDetail = '';
+  if (failReason === 'ineffective') {
+    const prevDrug = document.getElementById('prev_drug').value;
+    const prevLdl = document.getElementById('prev_ldl').value;
+    const prevDur = document.getElementById('prev_duration').value;
+    priorStatin = prevDrug;
+    failDetail = `LDL ขณะใช้ ${prevDrug} = ${prevLdl || '?'} mg/dL${prevDur ? ` (ใช้ ${prevDur})` : ''}`;
+    if (!prevLdl) issues.push('กรุณาใส่ LDL ขณะใช้ยาเดิม');
+  } else if (failReason === 'side_effect') {
+    const ses = getCheckedGlobal('#detail_se input[type="checkbox"]');
+    const seDrug = document.getElementById('se_drug').value;
+    const seDose = document.getElementById('se_dose').value;
+    priorStatin = seDrug;
+    failDetail = `ผลข้างเคียง: ${ses.join(', ')} จากการใช้ ${seDrug}${seDose ? ' ' + seDose : ''}`;
+    if (ses.length === 0) issues.push('กรุณาระบุผลข้างเคียงที่พบ');
+  } else if (failReason === 'interaction') {
+    const intDrug = document.getElementById('interact_drug').value;
+    const intStatins = getCheckedGlobal('#detail_interaction input[type="checkbox"]');
+    priorStatin = intStatins.join('/');
+    failDetail = `Major interaction กับ ${intDrug || '?'} — ไม่สามารถใช้ ${intStatins.join(', ')} ได้`;
+    if (!intDrug) issues.push('กรุณาระบุยาที่มี interaction');
+  }
+
+  if (issues.length) {
+    showVerdict('warn', '⚠️', 'กรอกข้อมูลไม่ครบ', issues.join(' · '));
+    return;
+  }
+
+  // LDL vs target
+  const ldlAboveTarget = ldl > ldlTarget;
+
+  // Final verdict
+  if (!indicationOk) {
+    criteriaPass = false;
+  }
+
+  const verdictPass = indicationOk && criteriaPass;
+
+  // Format date
+  const fmtDate = (d) => {
+    if (!d) return '-';
+    const [y, m, day] = d.split('-');
+    const thYear = parseInt(y) + 543;
+    return `${day}/${m}/${thYear}`;
+  };
+
+  const today = fmtDate(reqDate);
+  const ldlDateFmt = fmtDate(ldlDate);
+
+  // === Generate HIS Text ===
+  const prevLine = prevention === 'secondary' ? 'Secondary Prevention' : 'Primary Prevention';
+  const failReasonLabel = failReason === 'ineffective' ? 'ไม่บรรลุ LDL target' :
+    failReason === 'side_effect' ? 'ผลข้างเคียงจากยา' : 'Major Drug Interaction';
+
+  const comorbLine = comorbidities.length > 0 ? comorbidities.join(', ') : '-';
+  const extraLine = extraNote ? `\nหมายเหตุ: ${extraNote}` : '';
+  const ldlLine = `LDL-C = ${ldl} mg/dL${ldlDateFmt !== '-' ? ` (${ldlDateFmt})` : ''} [target <${ldlTarget} mg/dL → ${ldlAboveTarget ? 'ยังไม่ถึง target' : 'ถึง target แล้ว'}]`;
+
+  const drugLine = `${drug} ${dose} ${freq}`;
+
+  const text = `==== DUE: ยาลดไขมันราคาสูง ====
+วันที่: ${today}  |  HN: ${hn || '-'}  |  ผู้ป่วย: ${ptName || '-'}  ${age ? `อายุ ${age} ปี` : ''}${sex ? ` ${sex}` : ''}
+แพทย์ผู้ขอ: ${doctor || '-'}
+
+[ยาที่ขอ]
+${drugLine}
+
+[Indication]
+ประเภท: ${prevLine}
+เหตุผลทางคลินิก: ${indicationDetail}
+${ldlLine}
+Comorbidities: ${comorbLine}
+
+[เหตุผลที่ไม่ใช้ยาบัญชียาหลัก (Simvastatin/Atorvastatin)]
+เหตุผล: ${failReasonLabel}
+รายละเอียด: ${failDetail}
+
+[สรุปผลการประเมิน]
+${verdictPass ? '✓ ผ่านเกณฑ์ DUE — อนุมัติให้ใช้ยา' : '✗ ไม่ผ่านเกณฑ์ DUE — พิจารณาทบทวนข้อมูลเพิ่มเติม'}
+${extraLine}
+================================`;
+
+  document.getElementById('output_text').textContent = text;
+  document.getElementById('output_section').style.display = 'block';
+
+  if (verdictPass) {
+    showVerdict('pass', '✅', 'ผ่านเกณฑ์ DUE', `อนุมัติ ${drugLine} — คัดลอก text ด้านล่างบันทึกใน HIS`);
+  } else {
+    showVerdict('fail', '❌', 'ไม่ผ่านเกณฑ์', 'กรุณาตรวจสอบ Indication หรือเหตุผลการใช้ยา');
+  }
+
+  document.getElementById('output_section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showVerdict(type, icon, title, desc) {
+  const card = document.getElementById('verdict_card');
+  card.className = `verdict-card show ${type}`;
+  document.getElementById('verdict_icon').textContent = icon;
+  document.getElementById('verdict_title').textContent = title;
+  document.getElementById('verdict_desc').textContent = desc;
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function copyText() {
+  const text = document.getElementById('output_text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy_btn');
+    btn.textContent = '✓ คัดลอกแล้ว';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'คัดลอก'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>
