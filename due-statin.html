@@ -289,6 +289,56 @@
     flex-shrink: 0;
   }
 
+  /* Reason A–F blocks */
+  .reason-block {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .reason-block:last-child { margin-bottom: 0; }
+
+  .reason-header { padding: 12px 14px; background: var(--bg); }
+  .reason-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+  }
+  .reason-label input[type="checkbox"] {
+    width: 17px; height: 17px;
+    margin-top: 2px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .reason-code {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: -2px;
+  }
+  .reason-A { background: #fde8e8; color: #b91c1c; }
+  .reason-B { background: #fef9c3; color: #854d0e; }
+  .reason-C { background: #dbeafe; color: #1d4ed8; }
+  .reason-D { background: #f3e8ff; color: #7c3aed; }
+  .reason-E { background: #dcfce7; color: #166534; }
+  .reason-F { background: #f1f5f9; color: #94a3b8; }
+
+  .reason-block .subcard { border-radius: 0; border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  .reason-f-disabled { opacity: 0.6; }
+
   @media (max-width: 500px) {
     .row-2, .row-3 { grid-template-columns: 1fr; }
   }
@@ -439,89 +489,158 @@
   </div>
 </div>
 
-<!-- Section 5: Prior Statin Failure -->
+<!-- Section 5: เหตุผลการใช้ยานอกบัญชี (กรมบัญชีกลาง/อปท. A–E) -->
 <div class="card">
-  <div class="section-title">การใช้ยาบัญชียาหลักก่อนหน้า <span class="req" style="text-transform:none;letter-spacing:0">*</span></div>
-  <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">ผ่านการใช้ Simvastatin หรือ Atorvastatin แล้วไม่ได้ผล หรือมีผลข้างเคียง</p>
+  <div class="section-title">เหตุผลการใช้ยานอกบัญชียาหลักฯ <span class="req" style="text-transform:none;letter-spacing:0">*</span></div>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px">
+    ตามเกณฑ์กรมบัญชีกลาง/อปท. — เลือกได้มากกว่า 1 ข้อ (ยกเว้น F ไม่สามารถเบิกได้)
+  </p>
 
-  <div class="field-row">
-    <label>เหตุผลที่ไม่ใช้ยาบัญชียาหลัก <span class="req">*</span></label>
-    <div class="radio-group">
-      <div class="radio-pill">
-        <input type="radio" name="fail_reason" id="fail_ineffective" value="ineffective">
-        <label for="fail_ineffective">ไม่ได้ผล (LDL ไม่ถึง target)</label>
-      </div>
-      <div class="radio-pill">
-        <input type="radio" name="fail_reason" id="fail_se" value="side_effect">
-        <label for="fail_se">ผลข้างเคียง</label>
-      </div>
-      <div class="radio-pill">
-        <input type="radio" name="fail_reason" id="fail_interaction" value="interaction">
-        <label for="fail_interaction">Major Drug Interaction</label>
-      </div>
+  <!-- Reason A -->
+  <div class="reason-block" id="block_A">
+    <div class="reason-header">
+      <label class="reason-label">
+        <input type="checkbox" id="reason_A" value="A" onchange="toggleReason('A')">
+        <span class="reason-code reason-A">A</span>
+        <span>เกิดอาการข้างเคียงจากยา (ADR) หรือแพ้ยาในบัญชียาหลักฯ</span>
+      </label>
     </div>
-  </div>
-
-  <!-- Ineffective -->
-  <div id="detail_ineffective" class="subcard" style="display:none">
-    <div class="subcard-title">ยาที่ใช้ก่อนหน้า และผล LDL</div>
-    <div class="row-3">
-      <div class="field-row">
-        <label>ยาที่ใช้</label>
-        <select id="prev_drug">
-          <option value="Simvastatin 40 mg OD">Simvastatin 40 mg OD</option>
-          <option value="Simvastatin 80 mg OD">Simvastatin 80 mg OD</option>
-          <option value="Atorvastatin 20 mg OD">Atorvastatin 20 mg OD</option>
-          <option value="Atorvastatin 40 mg OD">Atorvastatin 40 mg OD</option>
-          <option value="Atorvastatin 80 mg OD">Atorvastatin 80 mg OD</option>
-        </select>
+    <div id="detail_A" class="subcard" style="display:none">
+      <div class="subcard-title">รายละเอียด ADR / การแพ้ยา</div>
+      <div class="checkbox-group" style="margin-bottom:10px">
+        <div class="check-pill"><input type="checkbox" id="adr_myalgia" value="myalgia (ปวดกล้ามเนื้อ)"><label for="adr_myalgia">Myalgia (ปวดกล้ามเนื้อ)</label></div>
+        <div class="check-pill"><input type="checkbox" id="adr_myositis" value="myositis (CK สูง)"><label for="adr_myositis">Myositis (CK สูง)</label></div>
+        <div class="check-pill"><input type="checkbox" id="adr_rhabdo" value="rhabdomyolysis"><label for="adr_rhabdo">Rhabdomyolysis</label></div>
+        <div class="check-pill"><input type="checkbox" id="adr_hepatitis" value="drug-induced hepatitis (LFT >3×ULN)"><label for="adr_hepatitis">Hepatitis (LFT &gt;3×ULN)</label></div>
+        <div class="check-pill"><input type="checkbox" id="adr_allergy" value="ผื่นแพ้ยา / hypersensitivity"><label for="adr_allergy">Hypersensitivity / แพ้ยา</label></div>
       </div>
-      <div class="field-row">
-        <label>LDL ขณะใช้ยา (mg/dL)</label>
-        <input type="number" id="prev_ldl" placeholder="เช่น 105">
-      </div>
-      <div class="field-row">
-        <label>ระยะเวลาที่ใช้</label>
-        <input type="text" id="prev_duration" placeholder="เช่น 3 เดือน">
-      </div>
-    </div>
-  </div>
-
-  <!-- Side Effects -->
-  <div id="detail_se" class="subcard" style="display:none">
-    <div class="subcard-title">ผลข้างเคียงที่พบ</div>
-    <div class="checkbox-group">
-      <div class="check-pill"><input type="checkbox" id="se_myalgia" value="myalgia (ปวดกล้ามเนื้อ)"><label for="se_myalgia">Myalgia (ปวดกล้ามเนื้อ)</label></div>
-      <div class="check-pill"><input type="checkbox" id="se_myositis" value="myositis (ยืนยันทาง lab: CK สูง)"><label for="se_myositis">Myositis (CK สูง)</label></div>
-      <div class="check-pill"><input type="checkbox" id="se_rhabdo" value="rhabdomyolysis"><label for="se_rhabdo">Rhabdomyolysis</label></div>
-      <div class="check-pill"><input type="checkbox" id="se_hepatitis" value="hepatitis (LFT สูง >3×ULN)"><label for="se_hepatitis">Hepatitis (LFT &gt;3×ULN)</label></div>
-    </div>
-    <div class="field-row" style="margin-top:10px">
-      <label>ยาที่ก่อให้เกิดผลข้างเคียง</label>
       <div class="row-2">
-        <select id="se_drug">
-          <option value="Simvastatin">Simvastatin</option>
-          <option value="Atorvastatin">Atorvastatin</option>
-          <option value="Simvastatin และ Atorvastatin">ทั้งสองชนิด</option>
-        </select>
-        <input type="text" id="se_dose" placeholder="ขนาดยา เช่น 40 mg OD">
+        <div class="field-row">
+          <label>ยาที่ทำให้เกิด ADR</label>
+          <select id="adr_drug">
+            <option value="Simvastatin">Simvastatin</option>
+            <option value="Atorvastatin">Atorvastatin</option>
+            <option value="Simvastatin และ Atorvastatin">ทั้งสองชนิด</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label>ขนาดยา</label>
+          <input type="text" id="adr_dose" placeholder="เช่น 40 mg OD">
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Interaction -->
-  <div id="detail_interaction" class="subcard" style="display:none">
-    <div class="subcard-title">Major Drug Interaction</div>
-    <div class="field-row">
-      <label>ยาที่มี interaction กับ statin</label>
-      <input type="text" id="interact_drug" placeholder="เช่น Cyclosporine, Gemfibrozil, Amiodarone">
+  <!-- Reason B -->
+  <div class="reason-block" id="block_B">
+    <div class="reason-header">
+      <label class="reason-label">
+        <input type="checkbox" id="reason_B" value="B" onchange="toggleReason('B')">
+        <span class="reason-code reason-B">B</span>
+        <span>ผลการรักษาไม่บรรลุเป้าหมาย (LDL ไม่ถึง target)</span>
+      </label>
     </div>
-    <div class="field-row">
-      <label>Statin ที่ไม่สามารถใช้ได้</label>
-      <div class="checkbox-group">
-        <div class="check-pill"><input type="checkbox" id="int_simva" value="Simvastatin"><label for="int_simva">Simvastatin</label></div>
-        <div class="check-pill"><input type="checkbox" id="int_atorva" value="Atorvastatin"><label for="int_atorva">Atorvastatin</label></div>
+    <div id="detail_B" class="subcard" style="display:none">
+      <div class="subcard-title">รายละเอียดยาที่ใช้และผล LDL</div>
+      <div class="row-3">
+        <div class="field-row">
+          <label>ยาที่ใช้</label>
+          <select id="prev_drug">
+            <option value="Simvastatin 20 mg OD">Simvastatin 20 mg OD</option>
+            <option value="Simvastatin 40 mg OD">Simvastatin 40 mg OD</option>
+            <option value="Atorvastatin 10 mg OD">Atorvastatin 10 mg OD</option>
+            <option value="Atorvastatin 20 mg OD">Atorvastatin 20 mg OD</option>
+            <option value="Atorvastatin 40 mg OD">Atorvastatin 40 mg OD</option>
+            <option value="Atorvastatin 80 mg OD">Atorvastatin 80 mg OD</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label>LDL ขณะใช้ยา (mg/dL)</label>
+          <input type="number" id="prev_ldl" placeholder="เช่น 105">
+        </div>
+        <div class="field-row">
+          <label>ระยะเวลาที่ใช้</label>
+          <input type="text" id="prev_duration" placeholder="เช่น 3 เดือน">
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Reason C -->
+  <div class="reason-block" id="block_C">
+    <div class="reason-header">
+      <label class="reason-label">
+        <input type="checkbox" id="reason_C" value="C" onchange="toggleReason('C')">
+        <span class="reason-code reason-C">C</span>
+        <span>ไม่มียาในบัญชียาหลักฯ ให้ใช้ แต่มีข้อบ่งชี้ตามที่ อย. กำหนด</span>
+      </label>
+    </div>
+    <div id="detail_C" class="subcard" style="display:none">
+      <div class="field-row">
+        <label>ระบุข้อบ่งชี้ตาม อย.</label>
+        <input type="text" id="c_indication" placeholder="เช่น ข้อบ่งชี้เฉพาะที่ยาในบัญชีไม่ครอบคลุม">
+      </div>
+    </div>
+  </div>
+
+  <!-- Reason D -->
+  <div class="reason-block" id="block_D">
+    <div class="reason-header">
+      <label class="reason-label">
+        <input type="checkbox" id="reason_D" value="D" onchange="toggleReason('D')">
+        <span class="reason-code reason-D">D</span>
+        <span>มี Contraindication หรือ Drug Interaction กับยาในบัญชียาหลักฯ</span>
+      </label>
+    </div>
+    <div id="detail_D" class="subcard" style="display:none">
+      <div class="field-row">
+        <label>ยาที่มี Interaction / Contraindication</label>
+        <input type="text" id="interact_drug" placeholder="เช่น Cyclosporine, Gemfibrozil, Amiodarone">
+      </div>
+      <div class="row-2" style="margin-top:8px">
+        <div class="field-row">
+          <label>Statin ที่ไม่สามารถใช้ได้</label>
+          <div class="checkbox-group">
+            <div class="check-pill"><input type="checkbox" id="int_simva" value="Simvastatin"><label for="int_simva">Simvastatin</label></div>
+            <div class="check-pill"><input type="checkbox" id="int_atorva" value="Atorvastatin"><label for="int_atorva">Atorvastatin</label></div>
+          </div>
+        </div>
+        <div class="field-row">
+          <label>ประเภท</label>
+          <div class="radio-group">
+            <div class="radio-pill"><input type="radio" name="d_type" id="d_ci" value="Contraindication"><label for="d_ci">Contraindication</label></div>
+            <div class="radio-pill"><input type="radio" name="d_type" id="d_int" value="Drug Interaction"><label for="d_int">Drug Interaction</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reason E -->
+  <div class="reason-block" id="block_E">
+    <div class="reason-header">
+      <label class="reason-label">
+        <input type="checkbox" id="reason_E" value="E" onchange="toggleReason('E')">
+        <span class="reason-code reason-E">E</span>
+        <span>ยาในบัญชียาหลักฯ ราคาแพงกว่า</span>
+      </label>
+    </div>
+    <div id="detail_E" class="subcard" style="display:none">
+      <div class="field-row">
+        <label>หมายเหตุ (ราคาเปรียบเทียบ)</label>
+        <input type="text" id="e_note" placeholder="เช่น ราคา Generic Rosuvastatin ถูกกว่า Atorvastatin brand">
+      </div>
+    </div>
+  </div>
+
+  <!-- Reason F (disabled) -->
+  <div class="reason-block reason-f-disabled">
+    <div class="reason-header">
+      <label class="reason-label" style="opacity:0.45;cursor:not-allowed">
+        <input type="checkbox" disabled>
+        <span class="reason-code reason-F">F</span>
+        <span>ผู้ป่วยแสดงความจำนงต้องการ <strong style="color:var(--fail)">(เบิกไม่ได้)</strong></span>
+      </label>
     </div>
   </div>
 </div>
@@ -601,17 +720,11 @@ document.querySelectorAll('input[name="prevention"]').forEach(r => {
   });
 });
 
-// Fail reason toggle
-document.querySelectorAll('input[name="fail_reason"]').forEach(r => {
-  r.addEventListener('change', () => {
-    document.getElementById('detail_ineffective').style.display = 'none';
-    document.getElementById('detail_se').style.display = 'none';
-    document.getElementById('detail_interaction').style.display = 'none';
-    if (r.value === 'ineffective') document.getElementById('detail_ineffective').style.display = 'block';
-    if (r.value === 'side_effect') document.getElementById('detail_se').style.display = 'block';
-    if (r.value === 'interaction') document.getElementById('detail_interaction').style.display = 'block';
-  });
-});
+// Toggle reason detail panels (A–E)
+function toggleReason(code) {
+  const checked = document.getElementById(`reason_${code}`).checked;
+  document.getElementById(`detail_${code}`).style.display = checked ? 'block' : 'none';
+}
 
 function getChecked(group) {
   return [...document.querySelectorAll(`#${group} input[type="checkbox"]:checked`)].map(x => x.value);
@@ -624,7 +737,6 @@ function getCheckedGlobal(selector) {
 function evaluate() {
   const drug = document.querySelector('input[name="drug"]:checked')?.value;
   const prevention = document.querySelector('input[name="prevention"]:checked')?.value;
-  const failReason = document.querySelector('input[name="fail_reason"]:checked')?.value;
   const ldl = parseFloat(document.getElementById('ldl_value').value);
   const ldlTarget = parseFloat(document.getElementById('ldl_target').value);
   const hn = document.getElementById('hn').value.trim();
@@ -639,10 +751,15 @@ function evaluate() {
   const ldlDate = document.getElementById('ldl_date').value;
   const comorbidities = getCheckedGlobal('#comorbidities input');
 
+  // Collect selected reasons A–E
+  const selectedReasons = ['A','B','C','D','E'].filter(c =>
+    document.getElementById(`reason_${c}`)?.checked
+  );
+
   const errors = [];
   if (!drug) errors.push('กรุณาเลือกยา');
   if (!prevention) errors.push('กรุณาระบุประเภท Prevention');
-  if (!failReason) errors.push('กรุณาระบุเหตุผลที่ไม่ใช้ยาบัญชียาหลัก');
+  if (selectedReasons.length === 0) errors.push('กรุณาเลือกเหตุผลการใช้ยานอกบัญชี (A–E) อย่างน้อย 1 ข้อ');
   if (!ldl) errors.push('กรุณาใส่ค่า LDL');
 
   if (errors.length) {
@@ -650,8 +767,6 @@ function evaluate() {
     return;
   }
 
-  // Build criteria checks
-  let criteriaPass = true;
   const issues = [];
 
   // Indication check
@@ -659,45 +774,49 @@ function evaluate() {
   let indicationDetail = '';
   if (prevention === 'secondary') {
     const conds = getChecked('secondary_conditions');
-    if (conds.length > 0) {
-      indicationOk = true;
-      indicationDetail = conds.join(', ');
-    } else {
-      issues.push('ยังไม่ได้ระบุโรค/เหตุการณ์สำหรับ Secondary Prevention');
-    }
+    if (conds.length > 0) { indicationOk = true; indicationDetail = conds.join(', '); }
+    else issues.push('ยังไม่ได้ระบุโรค/เหตุการณ์สำหรับ Secondary Prevention');
   } else {
     const priConds = getCheckedGlobal('#primary_detail input[type="checkbox"]');
-    if (priConds.length > 0) {
-      indicationOk = true;
-      indicationDetail = priConds.join(', ');
-    } else {
-      issues.push('ยังไม่ได้ระบุเกณฑ์ Primary Prevention');
-    }
+    if (priConds.length > 0) { indicationOk = true; indicationDetail = priConds.join(', '); }
+    else issues.push('ยังไม่ได้ระบุเกณฑ์ Primary Prevention');
   }
 
-  // Prior statin detail
-  let priorStatin = '';
-  let failDetail = '';
-  if (failReason === 'ineffective') {
+  // Build reason details per selected code
+  const reasonLines = [];
+
+  if (selectedReasons.includes('A')) {
+    const adrs = getCheckedGlobal('#detail_A input[type="checkbox"]');
+    const adrDrug = document.getElementById('adr_drug').value;
+    const adrDose = document.getElementById('adr_dose').value;
+    if (adrs.length === 0) issues.push('เหตุผล A: กรุณาระบุอาการ ADR ที่พบ');
+    reasonLines.push(`[A] ADR/แพ้ยา: ${adrs.join(', ')} จากการใช้ ${adrDrug}${adrDose ? ' ' + adrDose : ''}`);
+  }
+
+  if (selectedReasons.includes('B')) {
     const prevDrug = document.getElementById('prev_drug').value;
     const prevLdl = document.getElementById('prev_ldl').value;
     const prevDur = document.getElementById('prev_duration').value;
-    priorStatin = prevDrug;
-    failDetail = `LDL ขณะใช้ ${prevDrug} = ${prevLdl || '?'} mg/dL${prevDur ? ` (ใช้ ${prevDur})` : ''}`;
-    if (!prevLdl) issues.push('กรุณาใส่ LDL ขณะใช้ยาเดิม');
-  } else if (failReason === 'side_effect') {
-    const ses = getCheckedGlobal('#detail_se input[type="checkbox"]');
-    const seDrug = document.getElementById('se_drug').value;
-    const seDose = document.getElementById('se_dose').value;
-    priorStatin = seDrug;
-    failDetail = `ผลข้างเคียง: ${ses.join(', ')} จากการใช้ ${seDrug}${seDose ? ' ' + seDose : ''}`;
-    if (ses.length === 0) issues.push('กรุณาระบุผลข้างเคียงที่พบ');
-  } else if (failReason === 'interaction') {
-    const intDrug = document.getElementById('interact_drug').value;
-    const intStatins = getCheckedGlobal('#detail_interaction input[type="checkbox"]');
-    priorStatin = intStatins.join('/');
-    failDetail = `Major interaction กับ ${intDrug || '?'} — ไม่สามารถใช้ ${intStatins.join(', ')} ได้`;
-    if (!intDrug) issues.push('กรุณาระบุยาที่มี interaction');
+    if (!prevLdl) issues.push('เหตุผล B: กรุณาใส่ LDL ขณะใช้ยาเดิม');
+    reasonLines.push(`[B] ผลการรักษาไม่บรรลุเป้าหมาย: ใช้ ${prevDrug}, LDL = ${prevLdl || '?'} mg/dL${prevDur ? ` (${prevDur})` : ''}`);
+  }
+
+  if (selectedReasons.includes('C')) {
+    const cInd = document.getElementById('c_indication').value.trim();
+    reasonLines.push(`[C] ไม่มียาในบัญชีฯ ที่ใช้ได้: ${cInd || 'ตามข้อบ่งชี้ที่ อย. กำหนด'}`);
+  }
+
+  if (selectedReasons.includes('D')) {
+    const intDrug = document.getElementById('interact_drug').value.trim();
+    const intStatins = getCheckedGlobal('#detail_D input[type="checkbox"]');
+    const dType = document.querySelector('input[name="d_type"]:checked')?.value || 'Contraindication/Drug Interaction';
+    if (!intDrug) issues.push('เหตุผล D: กรุณาระบุยาที่มี Interaction/Contraindication');
+    reasonLines.push(`[D] ${dType}: ยา ${intDrug || '?'} — ไม่สามารถใช้ ${intStatins.join(', ') || 'ยาบัญชี'} ได้`);
+  }
+
+  if (selectedReasons.includes('E')) {
+    const eNote = document.getElementById('e_note').value.trim();
+    reasonLines.push(`[E] ยาในบัญชีฯ ราคาแพงกว่า${eNote ? ': ' + eNote : ''}`);
   }
 
   if (issues.length) {
@@ -705,39 +824,26 @@ function evaluate() {
     return;
   }
 
-  // LDL vs target
+  const verdictPass = indicationOk;
   const ldlAboveTarget = ldl > ldlTarget;
 
-  // Final verdict
-  if (!indicationOk) {
-    criteriaPass = false;
-  }
-
-  const verdictPass = indicationOk && criteriaPass;
-
-  // Format date
+  // Format date (Thai Buddhist year)
   const fmtDate = (d) => {
     if (!d) return '-';
     const [y, m, day] = d.split('-');
-    const thYear = parseInt(y) + 543;
-    return `${day}/${m}/${thYear}`;
+    return `${day}/${m}/${parseInt(y) + 543}`;
   };
 
   const today = fmtDate(reqDate);
   const ldlDateFmt = fmtDate(ldlDate);
-
-  // === Generate HIS Text ===
   const prevLine = prevention === 'secondary' ? 'Secondary Prevention' : 'Primary Prevention';
-  const failReasonLabel = failReason === 'ineffective' ? 'ไม่บรรลุ LDL target' :
-    failReason === 'side_effect' ? 'ผลข้างเคียงจากยา' : 'Major Drug Interaction';
-
   const comorbLine = comorbidities.length > 0 ? comorbidities.join(', ') : '-';
   const extraLine = extraNote ? `\nหมายเหตุ: ${extraNote}` : '';
   const ldlLine = `LDL-C = ${ldl} mg/dL${ldlDateFmt !== '-' ? ` (${ldlDateFmt})` : ''} [target <${ldlTarget} mg/dL → ${ldlAboveTarget ? 'ยังไม่ถึง target' : 'ถึง target แล้ว'}]`;
-
   const drugLine = `${drug} ${dose} ${freq}`;
+  const reasonCodeStr = selectedReasons.join(', ');
 
-  const text = `==== DUE: ยาลดไขมันราคาสูง ====
+  const text = `==== DUE: ยาลดไขมันราคาสูง (นอกบัญชียาหลักฯ) ====
 วันที่: ${today}  |  HN: ${hn || '-'}  |  ผู้ป่วย: ${ptName || '-'}  ${age ? `อายุ ${age} ปี` : ''}${sex ? ` ${sex}` : ''}
 แพทย์ผู้ขอ: ${doctor || '-'}
 
@@ -750,9 +856,9 @@ ${drugLine}
 ${ldlLine}
 Comorbidities: ${comorbLine}
 
-[เหตุผลที่ไม่ใช้ยาบัญชียาหลัก (Simvastatin/Atorvastatin)]
-เหตุผล: ${failReasonLabel}
-รายละเอียด: ${failDetail}
+[เหตุผลการใช้ยานอกบัญชียาหลักฯ (กรมบัญชีกลาง/อปท.)]
+รหัสเหตุผล: ${reasonCodeStr}
+${reasonLines.join('\n')}
 
 [สรุปผลการประเมิน]
 ${verdictPass ? '✓ ผ่านเกณฑ์ DUE — อนุมัติให้ใช้ยา' : '✗ ไม่ผ่านเกณฑ์ DUE — พิจารณาทบทวนข้อมูลเพิ่มเติม'}
@@ -763,7 +869,7 @@ ${extraLine}
   document.getElementById('output_section').style.display = 'block';
 
   if (verdictPass) {
-    showVerdict('pass', '✅', 'ผ่านเกณฑ์ DUE', `อนุมัติ ${drugLine} — คัดลอก text ด้านล่างบันทึกใน HIS`);
+    showVerdict('pass', '✅', `ผ่านเกณฑ์ DUE [รหัส ${reasonCodeStr}]`, `อนุมัติ ${drugLine} — คัดลอก text ด้านล่างบันทึกใน HIS`);
   } else {
     showVerdict('fail', '❌', 'ไม่ผ่านเกณฑ์', 'กรุณาตรวจสอบ Indication หรือเหตุผลการใช้ยา');
   }
