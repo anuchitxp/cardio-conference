@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUE Dashboard — คณะกรรมการยา รพ.อุดรธานี</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+:root {
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+  --navy: #1e3a5f;
+  --navy-mid: #2d5f8a;
+  --blue: #2563eb;
+  --blue-light: #dbeafe;
+  --green: #059669;
+  --green-light: #d1fae5;
+  --amber: #d97706;
+  --amber-light: #fef3c7;
+  --red: #dc2626;
+  --red-light: #fee2e2;
+  --purple: #7c3aed;
+  --purple-light: #ede9fe;
+  --teal: #0891b2;
+  --reason-A: #ef4444;
+  --reason-B: #f59e0b;
+  --reason-C: #3b82f6;
+  --reason-D: #8b5cf6;
+  --reason-E: #10b981;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans Thai', sans-serif;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  background: var(--navy);
+  color: white;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-logo {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.topbar-title { font-size: 15px; font-weight: 600; letter-spacing: 0.01em; }
+.topbar-sub { font-size: 11px; opacity: 0.6; margin-top: 1px; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+
+.period-select {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+}
+.period-select option { background: var(--navy); color: white; }
+
+.btn-print {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: background 0.15s;
+}
+.btn-print:hover { background: rgba(255,255,255,0.2); }
+
+/* ── LAYOUT ── */
+.page { max-width: 1200px; margin: 0 auto; padding: 24px 20px 48px; }
+
+/* Report header (print) */
+.report-header {
+  display: none;
+  text-align: center;
+  padding: 16px 0 20px;
+  border-bottom: 2px solid var(--navy);
+  margin-bottom: 24px;
+}
+.report-header h1 { font-size: 18px; font-weight: 700; color: var(--navy); }
+.report-header p { font-size: 13px; color: var(--text-2); margin-top: 4px; }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin: 28px 0 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── KPI STRIP ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.kpi::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  border-radius: 12px 0 0 12px;
+}
+.kpi.blue::before { background: var(--blue); }
+.kpi.green::before { background: var(--green); }
+.kpi.red::before { background: var(--red); }
+.kpi.amber::before { background: var(--amber); }
+.kpi.purple::before { background: var(--purple); }
+
+.kpi-label { font-size: 11px; color: var(--text-2); font-weight: 500; margin-bottom: 6px; }
+.kpi-value { font-size: 28px; font-weight: 700; color: var(--text); font-family: var(--mono); line-height: 1; }
+.kpi-sub { font-size: 11px; color: var(--text-3); margin-top: 5px; }
+.kpi-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 5px;
+}
+.badge-up { background: var(--green-light); color: var(--green); }
+.badge-down { background: var(--red-light); color: var(--red); }
+.badge-neutral { background: var(--blue-light); color: var(--blue); }
+
+/* ── CHARTS GRID ── */
+.charts-row { display: grid; gap: 16px; margin-bottom: 4px; }
+.charts-row-2 { grid-template-columns: 2fr 1fr; }
+.charts-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+.charts-row-half { grid-template-columns: 1fr 1fr; }
+
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+}
+.chart-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.chart-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 14px;
+}
+.chart-wrap {
+  position: relative;
+}
+
+/* ── REASON LEGEND ── */
+.reason-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.reason-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.reason-pill .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.pill-A { background: #fff1f1; color: var(--reason-A); border-color: #fca5a5; }
+.pill-B { background: #fffbeb; color: var(--reason-B); border-color: #fcd34d; }
+.pill-C { background: #eff6ff; color: var(--reason-C); border-color: #93c5fd; }
+.pill-D { background: #f5f3ff; color: var(--reason-D); border-color: #c4b5fd; }
+.pill-E { background: #ecfdf5; color: var(--reason-E); border-color: #6ee7b7; }
+
+/* ── TABLE ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.data-table th {
+  background: var(--surface-2);
+  padding: 9px 12px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+}
+.data-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--surface-2); }
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.tag-pass { background: var(--green-light); color: var(--green); }
+.tag-fail { background: var(--red-light); color: var(--red); }
+.tag-pita { background: var(--purple-light); color: var(--purple); }
+.tag-rosu { background: var(--blue-light); color: var(--blue); }
+
+/* reason code tags in table */
+.code-tag {
+  display: inline-flex;
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 2px;
+}
+.ct-A { background: #fef2f2; color: var(--reason-A); }
+.ct-B { background: #fffbeb; color: var(--reason-B); }
+.ct-C { background: #eff6ff; color: var(--reason-C); }
+.ct-D { background: #f5f3ff; color: var(--reason-D); }
+.ct-E { background: #ecfdf5; color: var(--reason-E); }
+
+/* ── INSIGHT BOX ── */
+.insight-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.insight-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+.insight-head {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+.insight-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.insight-item:last-child { border-bottom: none; }
+.insight-val { font-family: var(--mono); font-weight: 600; color: var(--navy); }
+
+/* ── FOOTER ── */
+.dash-footer {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; font-size: 12px; }
+  .topbar { display: none; }
+  .btn-print { display: none; }
+  .period-select { display: none; }
+  .report-header { display: block; }
+  .page { padding: 0; max-width: 100%; }
+  .kpi-grid { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .charts-row-2 { grid-template-columns: 2fr 1fr; }
+  .chart-card, .insight-card { box-shadow: none; border: 1px solid #cbd5e1; }
+  .section-label { margin: 16px 0 8px; }
+  .data-table { page-break-inside: avoid; }
+}
+
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  .charts-row-2, .charts-row-3, .charts-row-half, .insight-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">💊</div>
+    <div>
+      <div class="topbar-title">DUE Dashboard — ยาลดไขมันราคาสูง</div>
+      <div class="topbar-sub">คณะกรรมการยา โรงพยาบาลอุดรธานี</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <select class="period-select" id="periodSelect" onchange="updatePeriod()">
+      <option value="q1_2568">ไตรมาส 1/2568</option>
+      <option value="q2_2568" selected>ไตรมาส 2/2568</option>
+      <option value="q3_2568">ไตรมาส 3/2568</option>
+      <option value="all_2568">ทั้งปี 2568</option>
+    </select>
+    <button class="btn-print" onclick="window.print()">🖨️ พิมพ์รายงาน</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Print header (hidden on screen) -->
+  <div class="report-header">
+    <h1>รายงาน Drug Use Evaluation — ยาลดไขมันราคาสูง</h1>
+    <p>โรงพยาบาลอุดรธานี | คณะกรรมการยา | <span id="print-period">ไตรมาส 2/2568 (เมษายน–มิถุนายน 2568)</span></p>
+  </div>
+
+  <!-- ── KPI STRIP ── -->
+  <div class="section-label">ภาพรวมการใช้ยา</div>
+  <div class="kpi-grid">
+    <div class="kpi blue">
+      <div class="kpi-label">คำขอ DUE ทั้งหมด</div>
+      <div class="kpi-value" id="kpi-total">—</div>
+      <div class="kpi-sub">รายการในช่วงเวลาที่เลือก</div>
+      <span class="kpi-badge badge-up" id="kpi-total-badge">—</span>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-label">ผ่านเกณฑ์ DUE</div>
+      <div class="kpi-value" id="kpi-pass">—</div>
+      <div class="kpi-sub" id="kpi-pass-pct">— % ของคำขอ</div>
+      <span class="kpi-badge badge-up">อนุมัติ</span>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">ไม่ผ่านเกณฑ์</div>
+      <div class="kpi-value" id="kpi-fail">—</div>
+      <div class="kpi-sub" id="kpi-fail-pct">— % ของคำขอ</div>
+      <span class="kpi-badge badge-down">ปฏิเสธ</span>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">มูลค่ายารวม (บาท)</div>
+      <div class="kpi-value" id="kpi-cost">—</div>
+      <div class="kpi-sub" id="kpi-cost-sub">ประมาณการ</div>
+      <span class="kpi-badge badge-neutral" id="kpi-cost-badge">—</span>
+    </div>
+    <div class="kpi purple">
+      <div class="kpi-label">เหตุผลที่พบบ่อยที่สุด</div>
+      <div class="kpi-value" id="kpi-top-reason">—</div>
+      <div class="kpi-sub" id="kpi-top-reason-sub">—</div>
+      <span class="kpi-badge badge-neutral">รหัสหลัก</span>
+    </div>
+  </div>
+
+  <!-- ── TREND + REASON ── -->
+  <div class="section-label">แนวโน้มรายเดือน และการกระจายเหตุผล</div>
+  <div class="charts-row charts-row-2">
+    <div class="chart-card">
+      <div class="chart-title">แนวโน้มคำขอ DUE รายเดือน</div>
+      <div class="chart-sub">จำนวนคำขอแยกตามผลการประเมิน (ผ่าน / ไม่ผ่าน)</div>
+      <div class="chart-wrap" style="height:220px">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">สัดส่วนเหตุผล A–E</div>
+      <div class="chart-sub">ตามเกณฑ์กรมบัญชีกลาง/อปท.</div>
+      <div class="reason-legend" id="reasonLegend"></div>
+      <div class="chart-wrap" style="height:170px">
+        <canvas id="reasonChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DRUG + PREVENTION ── -->
+  <div class="section-label">การกระจายตามชนิดยา และประเภท Prevention</div>
+  <div class="charts-row charts-row-3">
+    <div class="chart-card">
+      <div class="chart-title">สัดส่วนตามชนิดยา</div>
+      <div class="chart-sub">Pitavastatin vs Rosuvastatin</div>
+      <div class="chart-wrap" style="height:180px">
+        <canvas id="drugChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Secondary vs Primary Prevention</div>
+      <div class="chart-sub">ประเภท Indication ที่ได้รับการอนุมัติ</div>
+      <div class="chart-wrap" style="height:180px">
+        <canvas id="prevChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">เหตุผล A–E แนวโน้มรายเดือน</div>
+      <div class="chart-sub">จำนวนคำขอแยกตามรหัสเหตุผล</div>
+      <div class="chart-wrap" style="height:180px">
+        <canvas id="reasonTrendChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LDL DISTRIBUTION ── -->
+  <div class="section-label">การกระจาย LDL-C และ Indication</div>
+  <div class="charts-row charts-row-half">
+    <div class="chart-card">
+      <div class="chart-title">LDL-C ณ วันที่ขอ DUE (mg/dL)</div>
+      <div class="chart-sub">จำแนกตามช่วง LDL</div>
+      <div class="chart-wrap" style="height:200px">
+        <canvas id="ldlChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Secondary Prevention — โรค/เหตุการณ์ที่พบ</div>
+      <div class="chart-sub">จำนวนผู้ป่วยแยกตาม Indication หลัก</div>
+      <div class="chart-wrap" style="height:200px">
+        <canvas id="indicationChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INSIGHTS ── -->
+  <div class="section-label">ข้อมูลเชิงลึก</div>
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-head">📊 สถิติสำคัญ</div>
+      <div class="insight-item"><span>อัตราการอนุมัติเฉลี่ย</span><span class="insight-val" id="ins-approve">—</span></div>
+      <div class="insight-item"><span>มูลค่าต่อรายการ (เฉลี่ย)</span><span class="insight-val" id="ins-cost-avg">—</span></div>
+      <div class="insight-item"><span>Pitavastatin (เฉลี่ยขนาด)</span><span class="insight-val" id="ins-pita-dose">—</span></div>
+      <div class="insight-item"><span>Rosuvastatin (เฉลี่ยขนาด)</span><span class="insight-val" id="ins-rosu-dose">—</span></div>
+      <div class="insight-item"><span>เหตุผลที่ถูกปฏิเสธบ่อย</span><span class="insight-val" id="ins-fail-reason">—</span></div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-head">⚠️ ประเด็นที่ควรติดตาม</div>
+      <div class="insight-item"><span>คำขอไม่ผ่านเกณฑ์ (เพิ่มขึ้น)</span><span class="insight-val" id="ins-flag1">—</span></div>
+      <div class="insight-item"><span>ขาด LDL ก่อนเริ่มยาเดิม</span><span class="insight-val" id="ins-flag2">—</span></div>
+      <div class="insight-item"><span>Primary Prevention ไม่มี risk score</span><span class="insight-val" id="ins-flag3">—</span></div>
+      <div class="insight-item"><span>ใช้เหตุผล E (ราคา) โดยไม่มี A/B</span><span class="insight-val" id="ins-flag4">—</span></div>
+      <div class="insight-item"><span>Rosuvastatin 40 mg ขอเป็น 1st-line</span><span class="insight-val" id="ins-flag5">—</span></div>
+    </div>
+  </div>
+
+  <!-- ── RECENT TABLE ── -->
+  <div class="section-label">รายการ DUE ล่าสุด (20 รายการ)</div>
+  <div class="chart-card" style="padding:0;overflow:hidden">
+    <table class="data-table" id="dueTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>วันที่</th>
+          <th>ยา</th>
+          <th>ขนาด</th>
+          <th>Prevention</th>
+          <th>LDL (mg/dL)</th>
+          <th>เหตุผล</th>
+          <th>ผล DUE</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="dash-footer">
+    <span>ข้อมูล: Mock data สำหรับนำเสนอคณะกรรมการยา รพ.อุดรธานี</span>
+    <span>สร้างเมื่อ: <span id="gen-date"></span></span>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ═══════════════════════════════════════════
+// MOCK DATA
+// ═══════════════════════════════════════════
+const MOCK = {
+  q1_2568: {
+    label: 'ไตรมาส 1/2568 (มกราคม–มีนาคม 2568)',
+    months: ['ม.ค.', 'ก.พ.', 'มี.ค.'],
+    pass:  [18, 22, 25],
+    fail:  [3,  4,  3],
+    cost: 142800,
+    topReason: 'B',
+    reasonCounts: { A:14, B:38, C:5, D:20, E:8 },
+    reasonMonthly: {
+      A: [4,5,5], B:[12,13,13], C:[2,1,2], D:[7,6,7], E:[2,3,3]
+    },
+    drugs: { Pitavastatin: 38, Rosuvastatin: 37 },
+    prevention: { secondary: 56, primary: 19 },
+    ldlBuckets: [5, 18, 27, 15, 7, 3],   // <55, 55-70, 70-100, 100-130, 130-160, >160
+    indications: { 'ACS/STEMI/NSTEMI':22, 'PCI/CABG':16, 'Stable CAD':10, 'Stroke/TIA':5, 'PAD':3 },
+    recentRows: generateRows('q1_2568'),
+    insights: { approve:'88.9%', costAvg:'1,898 บาท', pitaDose:'2 mg', rouDose:'10 mg', failReason:'ข้อมูลไม่ครบ',
+      flag1:'7 ราย (+2)', flag2:'4 ราย', flag3:'3 ราย', flag4:'2 ราย', flag5:'1 ราย' }
+  },
+  q2_2568: {
+    label: 'ไตรมาส 2/2568 (เมษายน–มิถุนายน 2568)',
+    months: ['เม.ย.', 'พ.ค.', 'มิ.ย.'],
+    pass:  [26, 29, 31],
+    fail:  [4,  3,  5],
+    cost: 178500,
+    topReason: 'B',
+    reasonCounts: { A:18, B:52, C:7, D:24, E:10 },
+    reasonMonthly: {
+      A:[5,6,7], B:[17,18,17], C:[2,2,3], D:[7,8,9], E:[3,3,4]
+    },
+    drugs: { Pitavastatin: 50, Rosuvastatin: 48 },
+    prevention: { secondary: 72, primary: 26 },
+    ldlBuckets: [8, 22, 34, 18, 11, 5],
+    indications: { 'ACS/STEMI/NSTEMI':30, 'PCI/CABG':20, 'Stable CAD':14, 'Stroke/TIA':6, 'PAD':2, 'DM+Athero':4 },
+    recentRows: generateRows('q2_2568'),
+    insights: { approve:'89.4%', costAvg:'1,847 บาท', pitaDose:'2 mg', rouDose:'10 mg', failReason:'ข้อมูล Indication ไม่ครบ',
+      flag1:'12 ราย (+5)', flag2:'6 ราย', flag3:'4 ราย', flag4:'3 ราย', flag5:'2 ราย' }
+  },
+  q3_2568: {
+    label: 'ไตรมาส 3/2568 (กรกฎาคม–กันยายน 2568)',
+    months: ['ก.ค.', 'ส.ค.', 'ก.ย.'],
+    pass:  [30, 32, 28],
+    fail:  [5,  4,  6],
+    cost: 189200,
+    topReason: 'A',
+    reasonCounts: { A:26, B:48, C:6, D:22, E:9 },
+    reasonMonthly: {
+      A:[8,9,9], B:[15,17,16], C:[2,2,2], D:[7,8,7], E:[3,3,3]
+    },
+    drugs: { Pitavastatin: 58, Rosuvastatin: 47 },
+    prevention: { secondary: 78, primary: 27 },
+    ldlBuckets: [10, 25, 30, 20, 13, 7],
+    indications: { 'ACS/STEMI/NSTEMI':33, 'PCI/CABG':22, 'Stable CAD':13, 'Stroke/TIA':7, 'PAD':3, 'DM+Athero':5 },
+    recentRows: generateRows('q3_2568'),
+    insights: { approve:'87.5%', costAvg:'1,920 บาท', pitaDose:'2 mg', rouDose:'10 mg', failReason:'ADR ไม่มี lab ยืนยัน',
+      flag1:'15 ราย (+3)', flag2:'5 ราย', flag3:'5 ราย', flag4:'4 ราย', flag5:'3 ราย' }
+  },
+  all_2568: {
+    label: 'ทั้งปี 2568',
+    months: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.'],
+    pass:  [18,22,25,26,29,31,30,32,28],
+    fail:  [3,4,3,4,3,5,5,4,6],
+    cost: 510500,
+    topReason: 'B',
+    reasonCounts: { A:58, B:138, C:18, D:66, E:27 },
+    reasonMonthly: {
+      A:[4,5,5,5,6,7,8,9,9], B:[12,13,13,17,18,17,15,17,16],
+      C:[2,1,2,2,2,3,2,2,2], D:[7,6,7,7,8,9,7,8,7], E:[2,3,3,3,3,4,3,3,3]
+    },
+    drugs: { Pitavastatin: 146, Rosuvastatin: 132 },
+    prevention: { secondary: 206, primary: 72 },
+    ldlBuckets: [23, 65, 91, 53, 31, 15],
+    indications: { 'ACS/STEMI/NSTEMI':85, 'PCI/CABG':58, 'Stable CAD':37, 'Stroke/TIA':18, 'PAD':8, 'DM+Athero':11 },
+    recentRows: generateRows('all_2568'),
+    insights: { approve:'88.5%', costAvg:'1,884 บาท', pitaDose:'2 mg', rouDose:'10 mg', failReason:'Indication ไม่ครบ',
+      flag1:'34 ราย', flag2:'15 ราย', flag3:'12 ราย', flag4:'9 ราย', flag5:'6 ราย' }
+  }
+};
+
+function generateRows(period) {
+  const drugs = ['Pitavastatin', 'Rosuvastatin'];
+  const doses = { Pitavastatin: ['1 mg','2 mg','4 mg'], Rosuvastatin: ['5 mg','10 mg','20 mg'] };
+  const prevs = ['Secondary','Primary'];
+  const reasons = [['A','B'],['B'],['B','D'],['A'],['D'],['B','E'],['C'],['A','B','D'],['B'],['D']];
+  const ldls = [68,72,85,98,110,123,77,88,62,105,134,91,79,66,115,88,97,73,142,84];
+  const months = { q1_2568:['2568-01','2568-02','2568-03'], q2_2568:['2568-04','2568-05','2568-06'],
+                   q3_2568:['2568-07','2568-08','2568-09'], all_2568:['2568-01','2568-02','2568-03','2568-04','2568-05','2568-06'] };
+  const mths = months[period] || months['q2_2568'];
+  return Array.from({length:20}, (_,i) => {
+    const drug = drugs[i%2];
+    const dose = doses[drug][i%3];
+    const prev = prevs[i%2];
+    const reas = reasons[i%reasons.length];
+    const ldl = ldls[i];
+    const pass = reas.includes('B') || reas.includes('A') || reas.includes('D');
+    const day = String((i*3%28)+1).padStart(2,'0');
+    const month = mths[i%mths.length];
+    return { date:`${day}/${month.slice(5)}/${month.slice(0,4)}`, drug, dose, prev, ldl, reasons:reas, pass };
+  });
+}
+
+// ═══════════════════════════════════════════
+// CHART INSTANCES
+// ═══════════════════════════════════════════
+const REASON_COLORS = {
+  A: '#ef4444', B: '#f59e0b', C: '#3b82f6', D: '#8b5cf6', E: '#10b981'
+};
+const REASON_LABELS = {
+  A: 'A: ADR/แพ้ยา', B: 'B: ผลรักษาไม่บรรลุเป้า', C: 'C: ไม่มียาในบัญชี', D: 'D: CI/DDI', E: 'E: ราคาแพงกว่า'
+};
+
+let charts = {};
+
+function destroyAll() {
+  Object.values(charts).forEach(c => c && c.destroy());
+  charts = {};
+}
+
+function buildAll(d) {
+  destroyAll();
+
+  const total = d.pass.reduce((a,b)=>a+b,0) + d.fail.reduce((a,b)=>a+b,0);
+  const totalPass = d.pass.reduce((a,b)=>a+b,0);
+  const totalFail = d.fail.reduce((a,b)=>a+b,0);
+
+  // KPIs
+  document.getElementById('kpi-total').textContent = total;
+  document.getElementById('kpi-total-badge').textContent = `+${Math.floor(total*0.12)} จากช่วงก่อน`;
+  document.getElementById('kpi-pass').textContent = totalPass;
+  document.getElementById('kpi-pass-pct').textContent = `${(totalPass/total*100).toFixed(1)}% ของคำขอ`;
+  document.getElementById('kpi-fail').textContent = totalFail;
+  document.getElementById('kpi-fail-pct').textContent = `${(totalFail/total*100).toFixed(1)}% ของคำขอ`;
+  document.getElementById('kpi-cost').textContent = (d.cost/1000).toFixed(0)+'K';
+  document.getElementById('kpi-cost-sub').textContent = `${d.cost.toLocaleString()} บาท`;
+  document.getElementById('kpi-cost-badge').textContent = d.cost > 150000 ? '↑ สูงขึ้น' : '~ คงที่';
+  document.getElementById('kpi-top-reason').textContent = d.topReason;
+  document.getElementById('kpi-top-reason-sub').textContent = REASON_LABELS[d.topReason];
+
+  // Insights
+  const ins = d.insights;
+  document.getElementById('ins-approve').textContent = ins.approve;
+  document.getElementById('ins-cost-avg').textContent = ins.costAvg;
+  document.getElementById('ins-pita-dose').textContent = ins.pitaDose;
+  document.getElementById('ins-rosu-dose').textContent = ins.rouDose;
+  document.getElementById('ins-fail-reason').textContent = ins.failReason;
+  document.getElementById('ins-flag1').textContent = ins.flag1;
+  document.getElementById('ins-flag2').textContent = ins.flag2;
+  document.getElementById('ins-flag3').textContent = ins.flag3;
+  document.getElementById('ins-flag4').textContent = ins.flag4;
+  document.getElementById('ins-flag5').textContent = ins.flag5;
+
+  // Reason legend
+  const legEl = document.getElementById('reasonLegend');
+  legEl.innerHTML = Object.entries(REASON_COLORS).map(([k,c])=>
+    `<div class="reason-pill pill-${k}"><div class="dot" style="background:${c}"></div>${k}: ${d.reasonCounts[k]}</div>`
+  ).join('');
+
+  // Trend chart
+  charts.trend = new Chart(document.getElementById('trendChart'), {
+    type: 'bar',
+    data: {
+      labels: d.months,
+      datasets: [
+        { label:'ผ่าน', data: d.pass, backgroundColor:'#bbf7d0', borderColor:'#059669', borderWidth:1.5, borderRadius:5 },
+        { label:'ไม่ผ่าน', data: d.fail, backgroundColor:'#fecaca', borderColor:'#dc2626', borderWidth:1.5, borderRadius:5 }
+      ]
+    },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}},
+      scales:{ x:{grid:{display:false},ticks:{font:{size:11}}}, y:{beginAtZero:true,ticks:{stepSize:5,font:{size:11}}} } }
+  });
+
+  // Reason donut
+  const rKeys = Object.keys(d.reasonCounts);
+  charts.reason = new Chart(document.getElementById('reasonChart'), {
+    type: 'doughnut',
+    data: {
+      labels: rKeys.map(k=>REASON_LABELS[k]),
+      datasets:[{ data: rKeys.map(k=>d.reasonCounts[k]),
+        backgroundColor: rKeys.map(k=>REASON_COLORS[k]),
+        borderWidth:2, borderColor:'white', hoverOffset:6 }]
+    },
+    options: { responsive:true, maintainAspectRatio:false, cutout:'60%',
+      plugins:{ legend:{display:false} } }
+  });
+
+  // Drug pie
+  charts.drug = new Chart(document.getElementById('drugChart'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(d.drugs),
+      datasets:[{ data: Object.values(d.drugs),
+        backgroundColor:['#8b5cf6','#2563eb'], borderWidth:2, borderColor:'white', hoverOffset:4 }]
+    },
+    options: { responsive:true, maintainAspectRatio:false, cutout:'55%',
+      plugins:{ legend:{position:'bottom',labels:{font:{size:11},boxWidth:10}} } }
+  });
+
+  // Prevention bar
+  charts.prev = new Chart(document.getElementById('prevChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Secondary Prevention','Primary Prevention'],
+      datasets:[{ data: Object.values(d.prevention),
+        backgroundColor:['#1e3a5f','#93c5fd'], borderWidth:2, borderColor:'white' }]
+    },
+    options: { responsive:true, maintainAspectRatio:false, cutout:'55%',
+      plugins:{ legend:{position:'bottom',labels:{font:{size:11},boxWidth:10}} } }
+  });
+
+  // Reason trend
+  charts.reasonTrend = new Chart(document.getElementById('reasonTrendChart'), {
+    type: 'line',
+    data: {
+      labels: d.months,
+      datasets: Object.entries(d.reasonMonthly).map(([k,v])=>({
+        label: k,
+        data: v,
+        borderColor: REASON_COLORS[k],
+        backgroundColor: REASON_COLORS[k]+'22',
+        borderWidth: 2,
+        pointRadius: 3,
+        tension: 0.35,
+        fill: false
+      }))
+    },
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}} },
+      scales:{ x:{grid:{display:false},ticks:{font:{size:10}}}, y:{beginAtZero:true,ticks:{font:{size:10}}} } }
+  });
+
+  // LDL histogram
+  charts.ldl = new Chart(document.getElementById('ldlChart'), {
+    type: 'bar',
+    data: {
+      labels: ['<55','55–70','70–100','100–130','130–160','>160'],
+      datasets:[{ label:'จำนวนราย',
+        data: d.ldlBuckets,
+        backgroundColor:['#6ee7b7','#86efac','#fde68a','#fca5a5','#f87171','#dc2626'],
+        borderRadius: 6, borderWidth:0 }]
+    },
+    options: { responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
+      scales:{ x:{grid:{display:false},ticks:{font:{size:11}}},
+               y:{beginAtZero:true,ticks:{stepSize:5,font:{size:11}}} } }
+  });
+
+  // Indication bar
+  const indKeys = Object.keys(d.indications);
+  charts.indication = new Chart(document.getElementById('indicationChart'), {
+    type: 'bar',
+    data: {
+      labels: indKeys,
+      datasets:[{ data: indKeys.map(k=>d.indications[k]),
+        backgroundColor:'#1e3a5f', borderRadius:5, borderWidth:0 }]
+    },
+    options: { indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false} },
+      scales:{ x:{beginAtZero:true,ticks:{font:{size:11}}}, y:{ticks:{font:{size:11}}} } }
+  });
+
+  // Table
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  d.recentRows.forEach((r,i) => {
+    const codesHtml = r.reasons.map(c=>`<span class="code-tag ct-${c}">${c}</span>`).join('');
+    tbody.innerHTML += `<tr>
+      <td style="color:var(--text-3);font-family:var(--mono)">${String(i+1).padStart(2,'0')}</td>
+      <td style="font-family:var(--mono);font-size:12px">${r.date}</td>
+      <td><span class="tag tag-${r.drug==='Pitavastatin'?'pita':'rosu'}">${r.drug}</span></td>
+      <td style="font-family:var(--mono)">${r.dose}</td>
+      <td style="font-size:12px">${r.prev}</td>
+      <td style="font-family:var(--mono);font-weight:600">${r.ldl}</td>
+      <td>${codesHtml}</td>
+      <td><span class="tag ${r.pass?'tag-pass':'tag-fail'}">${r.pass?'ผ่าน':'ไม่ผ่าน'}</span></td>
+    </tr>`;
+  });
+
+  // Print period label
+  document.getElementById('print-period').textContent = d.label;
+}
+
+function updatePeriod() {
+  const key = document.getElementById('periodSelect').value;
+  buildAll(MOCK[key]);
+}
+
+// Init
+document.getElementById('gen-date').textContent = new Date().toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});
+buildAll(MOCK['q2_2568']);
+</script>
+</body>
+</html>
